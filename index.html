@@ -853,7 +853,13 @@
     .slide[data-index="6"] .slide-content,
     .slide[data-index="7"] .slide-content {
       overflow-y: auto;
-      max-height: calc(100dvh - 260px);
+      max-height: calc(100dvh - 130px);
+      scrollbar-width: none;
+    }
+    .slide[data-index="5"] .slide-content::-webkit-scrollbar,
+    .slide[data-index="6"] .slide-content::-webkit-scrollbar,
+    .slide[data-index="7"] .slide-content::-webkit-scrollbar {
+      display: none;
     }
   }
 
@@ -1318,12 +1324,12 @@
         <div class="qr-card glow-card">
           <div class="qr-color-frame">
             <div class="qr-image-wrapper">
-              <img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=0&data=https%3A%2F%2Ft.me%2FROWA_RED_8002" alt="QR @ROWA_RED_8002">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=0&data=https%3A%2F%2Ft.me%2Fr0wa_RED_8002" alt="QR @r0wa_RED_8002">
               <div class="qr-tg-badge"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg></div>
             </div>
           </div>
           <h3>Редько Роман</h3>
-          <a href="https://t.me/ROWA_RED_8002" target="_blank" rel="noopener" class="qr-link-btn">@ROWA_RED_8002</a>
+          <a href="https://t.me/r0wa_RED_8002" target="_blank" rel="noopener" class="qr-link-btn">@r0wa_RED_8002</a>
         </div>
 
         <div class="qr-card glow-card">
@@ -1420,7 +1426,7 @@
 </div>
 
 <script>
-  const NTFY_TOPIC = 'vladivostok-qa-rxdyon-2026';
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzJsz8nJKFyfGVDP6DGce3V2dEK760xcEdtG4_-zlRbJbnxYYTwc8OIPfWiKuGlwFy5iw/exec';
 
   const params = new URLSearchParams(location.search);
   if (params.has('ask')) {
@@ -1440,10 +1446,15 @@
       askSend.disabled = true;
       askSend.textContent = 'Отправляем...';
       try {
-        const res = await fetch('https://ntfy.sh/' + NTFY_TOPIC, {
+        const res = await fetch(SHEET_URL, {
           method: 'POST',
-          body: JSON.stringify({ name: name, text: text }),
-          headers: { 'Content-Type': 'text/plain' }
+          body: JSON.stringify({
+            name: name,
+            text: text,
+            slide: currentSlide,
+            device: /Mobi/.test(navigator.userAgent) ? 'mobile' : 'desktop'
+          }),
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' }
         });
         if (!res.ok) throw new Error('HTTP ' + res.status);
         askCard.style.display = 'none';
@@ -1486,8 +1497,8 @@
   if (counterTotal) counterTotal.textContent = String(total).padStart(2, '0');
 
   function goTo(index) {
-    if (index < 0) index = 0;
-    if (index >= total) index = total - 1;
+    if (index < 0) index = total - 1;
+    if (index >= total) index = 0;
     slider.scrollTo({ left: index * slider.clientWidth, behavior: 'smooth' });
   }
 
@@ -1643,6 +1654,7 @@
   const qaList   = document.getElementById('qaList');
   const qaCount  = document.getElementById('qaCount');
   let qaTotal = 0;
+  let lastSeenCount = 0;
 
   function qaEscape(s) {
     return String(s)
@@ -1677,17 +1689,23 @@
     }, 15000);
   }
 
-  if ('EventSource' in window) {
-    const es = new EventSource('https://ntfy.sh/' + NTFY_TOPIC + '/sse');
-    es.onmessage = (e) => {
-      try {
-        const data = JSON.parse(e.data);
-        if (data.event !== 'message') return;
-        const payload = JSON.parse(data.message);
-        qaAddItem(payload.name, payload.text);
-      } catch (err) {}
-    };
+  async function pollQuestions() {
+    try {
+      const res = await fetch(SHEET_URL, { cache: 'no-store' });
+      if (!res.ok) return;
+      const data = await res.json();
+      if (!Array.isArray(data)) return;
+      if (data.length > lastSeenCount) {
+        for (let i = lastSeenCount; i < data.length; i++) {
+          qaAddItem(data[i].name, data[i].text);
+        }
+        lastSeenCount = data.length;
+      }
+    } catch (err) {}
   }
+
+  pollQuestions();
+  setInterval(pollQuestions, 4000);
 </script>
 </body>
 </html>
