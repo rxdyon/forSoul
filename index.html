@@ -351,9 +351,8 @@
 <div class="ask-view" id="askView">
   <div class="ask-card" id="askCard">
     <h1>Задать вопрос</h1>
-    <p class="sub">Ваш вопрос появится на экране презентации в реальном времени. Можно анонимно.</p>
-    <input type="text" id="askName" placeholder="Ваше имя (или пусто)" maxlength="30" autocomplete="off">
-    <input type="text" id="askTg" placeholder="Ваш Telegram @username (необязательно)" maxlength="40" autocomplete="off">
+    <p class="sub">Ваш вопрос появится на экране презентации в реальном времени.</p>
+    <input type="text" id="askTg" placeholder="Ваш Telegram @username (обязательно)" maxlength="40" autocomplete="off" required>
     <textarea id="askText" placeholder="Ваш вопрос спикерам..." maxlength="200"></textarea>
     <button id="askSend">Отправить вопрос</button>
     <div id="askMeta" style="margin-top:10px;font-size:11px;color:#7e8b9b;text-align:center;letter-spacing:1px;"></div>
@@ -643,7 +642,6 @@
     document.body.style.overflow = 'auto';
 
     const askSend = document.getElementById('askSend');
-    const askName = document.getElementById('askName');
     const askTg = document.getElementById('askTg');
     const askText = document.getElementById('askText');
     const askCard = document.getElementById('askCard');
@@ -697,12 +695,17 @@
     setInterval(renderMeta, 5000);
 
     askSend.addEventListener('click', async () => {
-      const name = askName.value.trim() || 'Аноним';
       let tg = askTg.value.trim();
-      if (tg) {
-        tg = tg.replace(/^https?:\/\/t\.me\//i, '').replace(/^@/, '').replace(/[^a-zA-Z0-9_]/g, '');
-      }
       const text = askText.value.trim();
+
+      if (!tg) { alert('Введите ваш Telegram @username.'); askTg.focus(); return; }
+      if (!/^@[a-zA-Z0-9_]{3,32}$/.test(tg)) {
+        alert('Telegram должен быть в формате @username (латиница, цифры, знак подчёркивания, от 3 до 32 символов).');
+        askTg.focus();
+        return;
+      }
+      const name = tg.replace(/^@/, '');
+      tg = tg.replace(/^@/, '');
 
       if (!text) { askText.focus(); return; }
       if (text.length < MIN_LEN) { alert('Вопрос слишком короткий. Минимум ' + MIN_LEN + ' символов.'); askText.focus(); return; }
@@ -729,7 +732,7 @@
           slide: currentSlide,
           device: /Mobi/.test(navigator.userAgent) ? 'mobile' : 'desktop',
           hash: hash,
-          telegram: tg || '',
+          telegram: tg,
           createdAt: serverTimestamp(),
           hidden: false,
           answered: false,
