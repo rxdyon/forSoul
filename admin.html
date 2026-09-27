@@ -76,6 +76,11 @@
   .log-row .what { color: #ff006e; font-weight: 700; }
   .log-row .when { color: #7e8b9b; font-size: 10px; margin-left: auto; }
   .log-row .obj { color: #b0b7c6; font-size: 11px; }
+  .log-pager { display: flex; gap: 10px; align-items: center; justify-content: center; margin-top: 14px; }
+  .log-pager button { background: rgba(0,210,255,.1); border: 1px solid rgba(0,210,255,.3); color: #00d2ff; padding: 8px 16px; border-radius: 10px; font-family: inherit; font-size: 11px; font-weight: 900; letter-spacing: 1px; cursor: pointer; }
+  .log-pager button:hover:not(:disabled) { background: #00d2ff; color: #05070f; }
+  .log-pager button:disabled { opacity: .3; cursor: not-allowed; }
+  .log-pager .pg { color: #b0b7c6; font-size: 12px; font-weight: 700; }
   .modal-back { position: fixed; inset: 0; background: rgba(0,0,0,.7); backdrop-filter: blur(10px); z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; }
   .modal-back.show { display: flex; }
   .modal { width: 100%; max-width: 460px; background: rgba(10,14,28,.95); border: 1px solid rgba(0,210,255,.3); border-radius: 20px; padding: 28px 24px; }
@@ -175,7 +180,6 @@
     <h2>Действия</h2>
     <div class="danger-buttons">
       <button class="btn-warn" onclick="clearHidden()">🧹 Удалить скрытые</button>
-      <button class="btn-danger" onclick="clearAll()">🗑 Удалить все</button>
       <button class="btn-info" onclick="toggleEmployees()">👥 Сотрудники</button>
       <button class="btn-info" onclick="toggleLog()">📜 Лог действий</button>
       <button class="btn-info" onclick="openChangePassword()">🔒 Сменить пароль</button>
@@ -201,6 +205,11 @@
   <div class="panel" id="logPanel" style="display:none;">
     <h2>Лог действий</h2>
     <div id="logList"></div>
+    <div class="log-pager" id="logPager">
+      <button id="logPrev" onclick="logPrev()">← Назад</button>
+      <span class="pg" id="logPageInfo">стр. 1</span>
+      <button id="logNext" onclick="logNext()">Вперёд →</button>
+    </div>
   </div>
 </div>
 
@@ -255,6 +264,8 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
+  const LOG_PER_PAGE = 20;
+
   let currentEmp = null;
   let currentSlide = 0;
   let currentFilter = 'all';
@@ -263,6 +274,8 @@
   let nameTargetLogin = null;
   let answerTargetId = null;
   let allBroadcasts = [];
+  let allLogs = [];
+  let logPage = 0;
 
   function showToast(msg, isErr) {
     const t = document.getElementById('toast');
@@ -346,9 +359,6 @@
       document.querySelectorAll('.qitem-actions button, .slider-ctrl button, .slider-ctrl select, .danger-buttons button, .broadcast-form button').forEach(b => b.disabled = true);
     }
     if (currentEmp.role !== 'admin') {
-      document.querySelectorAll('.btn-danger').forEach(b => {
-        if (b.getAttribute('onclick') === 'clearAll()') b.style.display = 'none';
-      });
       const empBtn = document.querySelector('[onclick="toggleEmployees()"]');
       if (empBtn) empBtn.style.display = 'none';
     }
@@ -605,16 +615,6 @@
     await writeLog('удалил скрытые', '', '');
     showToast('Удалено');
   }
-  async function clearAll() {
-    if (!currentEmp || currentEmp.role !== 'admin') return showToast('Только для админа', true);
-    if (!confirm('Удалить ВСЕ вопросы? Это нельзя отменить.')) return;
-    const snap = await getDocs(collection(db, 'questions'));
-    const batch = writeBatch(db);
-    snap.docs.forEach(d => batch.delete(d.ref));
-    await batch.commit();
-    await writeLog('удалил все вопросы', '', '');
-    showToast('Всё удалено');
-  }
 
   async function addEmployee() {
     if (!currentEmp || currentEmp.role !== 'admin') return showToast('Только для админа', true);
@@ -774,11 +774,29 @@
   async function loadLog() {
     const el = document.getElementById('logList');
     el.innerHTML = '<div style="color:#7e8b9b;font-size:12px;">Загрузка...</div>';
-    const q = query(collection(db, 'log'), orderBy('createdAt', 'desc'), limit(200));
+    const q = query(collection(db, 'log'), orderBy('createdAt', 'desc'), limit(500));
     const snap = await getDocs(q);
-    if (snap.empty) { el.innerHTML = '<div style="color:#7e8b9b;font-size:12px;">Пусто</div>'; return; }
-    el.innerHTML = snap.docs.map(d => {
-      const l = d.data();
+    allLogs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    logPage = 0;
+    renderLogPage();
+  }
+
+  function renderLogPage() {
+    const el = document.getElementById('logList');
+    if (!allLogs.length) {
+      el.innerHTML = '<div style="color:#7e8b9b;font-size:12px;">Пусто</div>';
+      document.getElementById('logPager').style.display = 'none';
+      return;
+    }
+    const totalPages = Math.max(1, Math.ceil(allLogs.length / LOG_PER_PAGE));
+    if (logPage >= totalPages) logPage = totalPages - 1;
+    if (logPage < 0) logPage = 0;
+
+    const start = logPage * LOG_PER_PAGE;
+    const end = start + LOG_PER_PAGE;
+    const slice = allLogs.slice(start, end);
+
+    el.innerHTML = slice.map(l => {
       const det = [];
       if (l.object) det.push('> ' + l.object);
       if (l.details) det.push('(' + l.details + ')');
@@ -791,6 +809,17 @@
         </div>
       `;
     }).join('');
+
+    document.getElementById('logPager').style.display = 'flex';
+    document.getElementById('logPageInfo').textContent = 'стр. ' + (logPage + 1) + ' / ' + totalPages + ' (' + allLogs.length + ' записей)';
+    document.getElementById('logPrev').disabled = logPage === 0;
+    document.getElementById('logNext').disabled = logPage >= totalPages - 1;
+  }
+
+  function logPrev() { if (logPage > 0) { logPage--; renderLogPage(); } }
+  function logNext() {
+    const totalPages = Math.max(1, Math.ceil(allLogs.length / LOG_PER_PAGE));
+    if (logPage < totalPages - 1) { logPage++; renderLogPage(); }
   }
 
   function toggleEmployees() {
@@ -833,7 +862,6 @@
   window.hideQ = hideQ;
   window.unhideQ = unhideQ;
   window.clearHidden = clearHidden;
-  window.clearAll = clearAll;
   window.addEmployee = addEmployee;
   window.removeEmployee = removeEmployee;
   window.toggleEmployee = toggleEmployee;
@@ -853,6 +881,8 @@
   window.sendBroadcast = sendBroadcast;
   window.clearBroadcast = clearBroadcast;
   window.spamBroadcast = spamBroadcast;
+  window.logPrev = logPrev;
+  window.logNext = logNext;
 
   const saved = sessionStorage.getItem('vld_admin_ok');
   if (saved) {
