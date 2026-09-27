@@ -56,7 +56,6 @@
   .user-bar .role { padding: 3px 10px; border-radius: 12px; background: rgba(255,0,110,.15); color: #ff006e; }
   .user-bar a { color: #ff006e; cursor: pointer; font-weight: 900; text-decoration: none; }
   .user-bar a:hover { color: #fff; }
-
   .emp-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; padding: 12px 14px; background: rgba(5,7,15,.6); border: 1px solid rgba(255,255,255,.06); border-left: 3px solid #00d2ff; border-radius: 0 12px 12px 0; margin-bottom: 8px; font-size: 13px; }
   .emp-row.inactive { opacity: .45; }
   .emp-row .name { font-weight: 900; color: #fff; }
@@ -68,27 +67,34 @@
   .emp-row .actions { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
   .emp-row .actions button { background: transparent; border: 1px solid rgba(255,255,255,.15); color: #b0b7c6; padding: 5px 10px; border-radius: 8px; font-family: inherit; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; }
   .emp-row .actions button:hover { color: #fff; border-color: #00d2ff; }
-
   .add-form { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
   .add-form input, .add-form select { width: 100%; padding: 10px 14px; background: rgba(5,7,15,.75); border: 1px solid rgba(0,210,255,.25); border-radius: 10px; color: #fff; font-family: inherit; font-size: 13px; outline: none; }
   .add-form input:focus, .add-form select:focus { border-color: #00d2ff; }
   .add-form button { grid-column: span 2; padding: 12px; border: none; border-radius: 10px; background: linear-gradient(135deg, #00d2ff, #8338ec); color: #fff; font-family: inherit; font-size: 12px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; }
-
   .log-row { padding: 8px 12px; background: rgba(5,7,15,.6); border-left: 3px solid #8338ec; border-radius: 0 8px 8px 0; font-size: 12px; margin-bottom: 6px; display: flex; gap: 8px; flex-wrap: wrap; align-items: baseline; }
   .log-row .who { color: #00d2ff; font-weight: 900; }
   .log-row .what { color: #ff006e; font-weight: 700; }
   .log-row .when { color: #7e8b9b; font-size: 10px; margin-left: auto; }
   .log-row .obj { color: #b0b7c6; font-size: 11px; }
-
   .modal-back { position: fixed; inset: 0; background: rgba(0,0,0,.7); backdrop-filter: blur(10px); z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; }
   .modal-back.show { display: flex; }
-  .modal { width: 100%; max-width: 400px; background: rgba(10,14,28,.95); border: 1px solid rgba(0,210,255,.3); border-radius: 20px; padding: 28px 24px; text-align: center; }
-  .modal h3 { font-size: 14px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; color: #00d2ff; margin-bottom: 8px; }
-  .modal p { font-size: 12px; color: #7e8b9b; margin-bottom: 18px; }
-  .modal input { width: 100%; padding: 14px 16px; margin-bottom: 12px; background: rgba(5,7,15,.75); border: 1px solid rgba(0,210,255,.25); border-radius: 12px; color: #fff; font-family: inherit; font-size: 15px; outline: none; }
-  .modal input:focus { border-color: #00d2ff; box-shadow: 0 0 0 3px rgba(0,210,255,.15); }
+  .modal { width: 100%; max-width: 460px; background: rgba(10,14,28,.95); border: 1px solid rgba(0,210,255,.3); border-radius: 20px; padding: 28px 24px; }
+  .modal h3 { font-size: 14px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; color: #00d2ff; margin-bottom: 8px; text-align: center; }
+  .modal p { font-size: 12px; color: #7e8b9b; margin-bottom: 18px; text-align: center; }
+  .modal input, .modal textarea { width: 100%; padding: 14px 16px; margin-bottom: 12px; background: rgba(5,7,15,.75); border: 1px solid rgba(0,210,255,.25); border-radius: 12px; color: #fff; font-family: inherit; font-size: 15px; outline: none; }
+  .modal textarea { resize: vertical; min-height: 100px; }
+  .modal input:focus, .modal textarea:focus { border-color: #00d2ff; box-shadow: 0 0 0 3px rgba(0,210,255,.15); }
   .modal button { width: 100%; padding: 12px; border: none; border-radius: 24px; background: linear-gradient(135deg, #00d2ff, #8338ec); color: #fff; font-family: inherit; font-size: 11px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; }
   .modal button.modal-close { background: transparent; border: 1px solid rgba(255,255,255,.2); color: #b0b7c6; margin-top: 8px; }
+  .broadcast-form { display: flex; gap: 10px; flex-wrap: wrap; }
+  .broadcast-form input { flex: 1; min-width: 200px; padding: 14px 16px; background: rgba(5,7,15,.75); border: 1px solid rgba(255,0,110,.3); border-radius: 12px; color: #fff; font-family: inherit; font-size: 15px; outline: none; }
+  .broadcast-form input:focus { border-color: #ff006e; box-shadow: 0 0 0 3px rgba(255,0,110,.15); }
+  .broadcast-form button { padding: 14px 24px; border: none; border-radius: 12px; background: linear-gradient(135deg, #ff006e, #8338ec); color: #fff; font-family: inherit; font-size: 12px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; }
+  .broadcast-form button:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(255,0,110,.4); }
+  .broadcast-list { margin-top: 14px; display: flex; flex-direction: column; gap: 6px; max-height: 300px; overflow-y: auto; }
+  .broadcast-item { background: rgba(255,0,110,.08); border-left: 3px solid #ff006e; border-radius: 0 8px 8px 0; padding: 10px 14px; font-size: 13px; display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline; }
+  .broadcast-item .txt { flex: 1; }
+  .broadcast-item .t { color: #7e8b9b; font-size: 10px; margin-left: auto; }
 </style>
 </head>
 <body>
@@ -111,6 +117,15 @@
   </div>
   <h1>Админ-панель</h1>
   <div class="sub">Управление презентацией</div>
+
+  <div class="panel">
+    <h2>📢 Эфирный чат</h2>
+    <div class="broadcast-form">
+      <input type="text" id="broadcastInput" placeholder="Сообщение для всех зрителей..." maxlength="200">
+      <button onclick="sendBroadcast()">Отправить</button>
+    </div>
+    <div class="broadcast-list" id="broadcastList"></div>
+  </div>
 
   <div class="panel">
     <h2>Статистика</h2>
@@ -166,7 +181,7 @@
     <h2>Сотрудники</h2>
     <div id="employeesList"></div>
     <div class="add-form">
-      <input type="text" id="newEmpName" placeholder="Имя (например, Roman Redko)">
+      <input type="text" id="newEmpName" placeholder="Имя">
       <input type="text" id="newEmpLogin" placeholder="Логин (латиница, без пробелов)">
       <input type="password" id="newEmpPass" placeholder="Пароль">
       <select id="newEmpRole">
@@ -188,11 +203,32 @@
   <div class="modal">
     <h3 id="passModalTitle">Смена пароля</h3>
     <p id="passModalSub">Введите текущий и новый пароль</p>
-    <input type="password" id="passOld" placeholder="Текущий пароль" autocomplete="current-password">
-    <input type="password" id="passNew" placeholder="Новый пароль (мин. 6 символов)" autocomplete="new-password">
-    <input type="password" id="passNew2" placeholder="Повторите новый пароль" autocomplete="new-password">
+    <input type="password" id="passOld" placeholder="Текущий пароль">
+    <input type="password" id="passNew" placeholder="Новый пароль (мин. 6 символов)">
+    <input type="password" id="passNew2" placeholder="Повторите новый пароль">
     <button onclick="submitChangePassword()">Сохранить</button>
     <button class="modal-close" onclick="closePassModal()">Отмена</button>
+  </div>
+</div>
+
+<div class="modal-back" id="nameModal">
+  <div class="modal">
+    <h3 id="nameModalTitle">Смена имени</h3>
+    <p id="nameModalSub">Введите новое имя сотрудника</p>
+    <input type="text" id="nameNew" placeholder="Новое имя" maxlength="40">
+    <button onclick="submitChangeName()">Сохранить</button>
+    <button class="modal-close" onclick="closeNameModal()">Отмена</button>
+  </div>
+</div>
+
+<div class="modal-back" id="answerModal">
+  <div class="modal">
+    <h3>Ответ на вопрос</h3>
+    <p>Ответ увидит только автор вопроса на своём телефоне</p>
+    <div id="answerModalQuestion" style="font-size: 12px; color: #7e8b9b; background: rgba(5,7,15,.6); border-left: 3px solid #00d2ff; padding: 10px 12px; border-radius: 0 8px 8px 0; margin-bottom: 14px; font-style: italic;"></div>
+    <textarea id="answerText" placeholder="Ваш ответ..." maxlength="500"></textarea>
+    <button onclick="submitAnswer()">Отправить ответ</button>
+    <button class="modal-close" onclick="closeAnswerModal()">Отмена</button>
   </div>
 </div>
 
@@ -219,6 +255,9 @@
   let currentFilter = 'all';
   let allQuestions = [];
   let passTargetLogin = null;
+  let nameTargetLogin = null;
+  let answerTargetId = null;
+  let allBroadcasts = [];
 
   function showToast(msg, isErr) {
     const t = document.getElementById('toast');
@@ -261,33 +300,33 @@
       if (!empSnap.exists()) {
         if (login === 'admin' && password === '1234') {
           const hash = await sha256Hex(password);
-          await setDoc(empRef, { name: 'Glavny Admin', login: 'admin', passHash: hash, role: 'admin', active: true, createdAt: serverTimestamp() });
-          currentEmp = { name: 'Glavny Admin', login: 'admin', role: 'admin' };
+          await setDoc(empRef, { name: 'Главный админ', login: 'admin', passHash: hash, role: 'admin', active: true, createdAt: serverTimestamp() });
+          currentEmp = { name: 'Главный админ', login: 'admin', role: 'admin' };
           sessionStorage.setItem('vld_admin_ok', JSON.stringify(currentEmp));
-          await writeLog('login', '', 'first login');
+          await writeLog('вход', '', 'первый вход');
           enterPanel();
           return;
         }
-        showToast('Neverny login ili parol', true);
+        showToast('Неверный логин или пароль', true);
         return;
       }
 
       const data = empSnap.data();
-      if (!data.active) { showToast('Akkaunt otklyuchyon', true); return; }
+      if (!data.active) { showToast('Аккаунт отключён', true); return; }
       const hash = await sha256Hex(password);
-      if (hash !== data.passHash) { showToast('Neverny parol', true); return; }
+      if (hash !== data.passHash) { showToast('Неверный пароль', true); return; }
 
       currentEmp = { name: data.name, login: data.login, role: data.role };
       sessionStorage.setItem('vld_admin_ok', JSON.stringify(currentEmp));
-      await writeLog('login', '', '');
+      await writeLog('вход', '', '');
       enterPanel();
     } catch (err) {
-      showToast('Oshibka: ' + err.message, true);
+      showToast('Ошибка входа: ' + err.message, true);
     }
   }
 
   function logout() {
-    if (currentEmp) writeLog('logout', '', '');
+    if (currentEmp) writeLog('выход', '', '');
     sessionStorage.removeItem('vld_admin_ok');
     location.reload();
   }
@@ -299,7 +338,7 @@
     document.getElementById('userRole').textContent = currentEmp.role;
 
     if (currentEmp.role === 'viewer') {
-      document.querySelectorAll('.qitem-actions button, .slider-ctrl button, .slider-ctrl select, .danger-buttons button').forEach(b => b.disabled = true);
+      document.querySelectorAll('.qitem-actions button, .slider-ctrl button, .slider-ctrl select, .danger-buttons button, .broadcast-form button').forEach(b => b.disabled = true);
     }
     if (currentEmp.role !== 'admin') {
       document.querySelectorAll('.btn-warn, .btn-danger').forEach(b => b.style.display = 'none');
@@ -308,8 +347,48 @@
     }
 
     loadQuestions();
+    loadBroadcasts();
     loadSlide();
     setInterval(loadSlide, 3000);
+  }
+
+  async function sendBroadcast() {
+    if (!currentEmp || currentEmp.role === 'viewer') return;
+    const inp = document.getElementById('broadcastInput');
+    const text = inp.value.trim();
+    if (!text) return;
+    try {
+      await setDoc(doc(collection(db, 'broadcast')), {
+        text: text,
+        author: currentEmp.name || currentEmp.login,
+        user: currentEmp.login,
+        createdAt: serverTimestamp()
+      });
+      await writeLog('эфир', '', text.slice(0, 60));
+      inp.value = '';
+      showToast('Отправлено в эфир');
+    } catch (err) {
+      showToast('Ошибка: ' + err.message, true);
+    }
+  }
+
+  function loadBroadcasts() {
+    const q = query(collection(db, 'broadcast'), orderBy('createdAt', 'desc'), limit(50));
+    onSnapshot(q, (snap) => {
+      allBroadcasts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderBroadcasts();
+    });
+  }
+
+  function renderBroadcasts() {
+    const el = document.getElementById('broadcastList');
+    if (!allBroadcasts.length) { el.innerHTML = '<div style="color:#7e8b9b;font-size:12px;text-align:center;padding:12px;">Пока пусто</div>'; return; }
+    el.innerHTML = allBroadcasts.map(b => `
+      <div class="broadcast-item">
+        <span class="txt">${escapeHtml(b.text)}</span>
+        <span class="t">${fmtDateTime(b.createdAt)}</span>
+      </div>
+    `).join('');
   }
 
   async function gotoSlide(n) {
@@ -320,8 +399,8 @@
     document.getElementById('slideSelect').value = String(n);
     try {
       await setDoc(doc(db, 'config', 'currentSlide'), { value: n }, { merge: true });
-      await writeLog('slide', String(n), '');
-    } catch (err) { showToast('Oshibka: ' + err.message, true); }
+      await writeLog('сменил слайд', String(n), '');
+    } catch (err) { showToast('Ошибка: ' + err.message, true); }
   }
 
   function gotoSlidePrev() { gotoSlide(currentSlide - 1); }
@@ -377,22 +456,23 @@
     document.getElementById('stAnswered').textContent = allQuestions.filter(q => q.answered).length;
 
     if (!items.length) {
-      list.innerHTML = '<div style="color:#7e8b9b;font-size:12px;text-align:center;padding:20px;">Pusto</div>';
+      list.innerHTML = '<div style="color:#7e8b9b;font-size:12px;text-align:center;padding:20px;">Пусто</div>';
       return;
     }
     const canMod = currentEmp && (currentEmp.role === 'admin' || currentEmp.role === 'moderator');
     list.innerHTML = items.map(q => `
       <div class="qitem ${q.hidden ? 'hidden' : ''} ${q.answered ? 'answered' : ''}">
         <div class="qitem-head">
-          <span>${escapeHtml(q.name || 'Anonym')}</span>
+          <span>${escapeHtml(q.name || 'Аноним')}</span>
           ${q.telegram ? `<a href="https://t.me/${escapeHtml(q.telegram)}" target="_blank" rel="noopener" style="color:#00d2ff;text-decoration:none;font-weight:900;margin-left:6px;">@${escapeHtml(q.telegram)}</a>` : ''}
-          <span class="meta">${fmtTime(q.createdAt)} · slide ${q.slide ?? '—'}</span>
+          <span class="meta">${fmtTime(q.createdAt)} · слайд ${q.slide ?? '—'}</span>
         </div>
         <div class="qitem-body">${escapeHtml(q.text || '')}</div>
+        ${q.answer ? `<div style="margin-top: 10px; padding: 10px 14px; background: rgba(34,197,94,.08); border-left: 3px solid #22c55e; border-radius: 0 8px 8px 0; font-size: 13px; color: #22c55e;"><b>Ответ:</b> ${escapeHtml(q.answer)}</div>` : ''}
         ${canMod ? `
         <div class="qitem-actions">
-          ${q.answered ? `<button onclick="unanswerQ('${q.id}')">↺ Sniat</button>` : `<button onclick="answerQ('${q.id}')">✓ Otvetil</button>`}
-          ${q.hidden ? `<button onclick="unhideQ('${q.id}')">↺ Pokazat</button>` : `<button onclick="hideQ('${q.id}')">✕ Skryt</button>`}
+          <button onclick="openAnswerModal('${q.id}')">💬 Ответить</button>
+          ${q.hidden ? `<button onclick="unhideQ('${q.id}')">↺ Показать</button>` : `<button onclick="hideQ('${q.id}')">✕ Скрыть</button>`}
         </div>` : ''}
       </div>
     `).join('');
@@ -401,156 +481,197 @@
   async function hideQ(id) {
     if (!currentEmp || currentEmp.role === 'viewer') return;
     await updateDoc(doc(db, 'questions', id), { hidden: true });
-    await writeLog('hide', id, '');
+    await writeLog('скрыл вопрос', id, '');
   }
   async function unhideQ(id) {
     if (!currentEmp || currentEmp.role === 'viewer') return;
     await updateDoc(doc(db, 'questions', id), { hidden: false });
-    await writeLog('unhide', id, '');
+    await writeLog('показал вопрос', id, '');
   }
-  async function answerQ(id) {
+
+  function openAnswerModal(id) {
     if (!currentEmp || currentEmp.role === 'viewer') return;
-    await updateDoc(doc(db, 'questions', id), { answered: true });
-    await writeLog('answer', id, '');
+    answerTargetId = id;
+    const q = allQuestions.find(x => x.id === id);
+    document.getElementById('answerModalQuestion').textContent = q ? '«' + (q.text || '') + '»' : '';
+    document.getElementById('answerText').value = (q && q.answer) || '';
+    document.getElementById('answerModal').classList.add('show');
+    setTimeout(() => document.getElementById('answerText').focus(), 100);
   }
-  async function unanswerQ(id) {
-    if (!currentEmp || currentEmp.role === 'viewer') return;
-    await updateDoc(doc(db, 'questions', id), { answered: false });
-    await writeLog('unanswer', id, '');
+  function closeAnswerModal() {
+    document.getElementById('answerModal').classList.remove('show');
+    answerTargetId = null;
+  }
+  async function submitAnswer() {
+    if (!answerTargetId || !currentEmp) return;
+    const text = document.getElementById('answerText').value.trim();
+    if (!text) { showToast('Введите текст ответа', true); return; }
+    await updateDoc(doc(db, 'questions', answerTargetId), {
+      answer: text,
+      answeredBy: currentEmp.login,
+      answeredAt: serverTimestamp(),
+      answered: true
+    });
+    await writeLog('ответил на вопрос', answerTargetId, text.slice(0, 60));
+    showToast('Ответ отправлен');
+    closeAnswerModal();
   }
 
   async function clearHidden() {
-    if (!currentEmp || currentEmp.role !== 'admin') return showToast('Tolko dlya admina', true);
-    if (!confirm('Udalit vse skrytye?')) return;
+    if (!currentEmp || currentEmp.role !== 'admin') return showToast('Только для админа', true);
+    if (!confirm('Удалить все скрытые вопросы?')) return;
     const batch = writeBatch(db);
     allQuestions.filter(q => q.hidden).forEach(q => batch.delete(doc(db, 'questions', q.id)));
     await batch.commit();
-    await writeLog('clearHidden', '', '');
-    showToast('Udалено');
+    await writeLog('удалил скрытые', '', '');
+    showToast('Удалено');
   }
   async function clearAll() {
-    if (!currentEmp || currentEmp.role !== 'admin') return showToast('Tolko dlya admina', true);
-    if (!confirm('Udalit VSE voprosy?')) return;
+    if (!currentEmp || currentEmp.role !== 'admin') return showToast('Только для админа', true);
+    if (!confirm('Удалить ВСЕ вопросы? Это нельзя отменить.')) return;
     const snap = await getDocs(collection(db, 'questions'));
     const batch = writeBatch(db);
     snap.docs.forEach(d => batch.delete(d.ref));
     await batch.commit();
-    await writeLog('clearAll', '', '');
-    showToast('Vsyo udалено');
+    await writeLog('удалил все вопросы', '', '');
+    showToast('Всё удалено');
   }
 
   async function addEmployee() {
-    if (!currentEmp || currentEmp.role !== 'admin') return showToast('Tolko dlya admina', true);
+    if (!currentEmp || currentEmp.role !== 'admin') return showToast('Только для админа', true);
     const name = document.getElementById('newEmpName').value.trim();
     const login = document.getElementById('newEmpLogin').value.trim().toLowerCase();
     const pass = document.getElementById('newEmpPass').value;
     const role = document.getElementById('newEmpRole').value;
-    if (!login || !pass) return showToast('Login i parol obyazatelny', true);
-    if (!/^[a-z0-9_]+$/.test(login)) return showToast('Login: latinitsa, tsifry, _', true);
-    if (pass.length < 6) return showToast('Parol min 6 simvolov', true);
+    if (!login || !pass) return showToast('Логин и пароль обязательны', true);
+    if (!/^[a-z0-9_]+$/.test(login)) return showToast('Логин: только латиница, цифры, _', true);
+    if (pass.length < 6) return showToast('Пароль минимум 6 символов', true);
 
     const ref = doc(db, 'employees', login);
     const exists = await getDoc(ref);
-    if (exists.exists()) return showToast('Takoy login uje est', true);
+    if (exists.exists()) return showToast('Такой логин уже занят', true);
 
     const hash = await sha256Hex(pass);
     await setDoc(ref, { name: name || login, login: login, passHash: hash, role: role, active: true, createdAt: serverTimestamp() });
-    await writeLog('addEmployee', login, 'role: ' + role);
+    await writeLog('добавил сотрудника', login, 'роль: ' + role);
     document.getElementById('newEmpName').value = '';
     document.getElementById('newEmpLogin').value = '';
     document.getElementById('newEmpPass').value = '';
-    showToast('Dobavlen: ' + login);
+    showToast('Добавлен: ' + login);
     loadEmployees();
   }
 
   async function removeEmployee(login) {
     if (!currentEmp || currentEmp.role !== 'admin') return;
-    if (login === currentEmp.login) return showToast('Nelzya udalit sebya', true);
-    if (!confirm('Udalit ' + login + '?')) return;
+    if (login === currentEmp.login) return showToast('Нельзя удалить себя', true);
+    if (!confirm('Удалить сотрудника ' + login + '?')) return;
     await deleteDoc(doc(db, 'employees', login));
-    await writeLog('removeEmployee', login, '');
+    await writeLog('удалил сотрудника', login, '');
     loadEmployees();
   }
 
   async function toggleEmployee(login) {
     if (!currentEmp || currentEmp.role !== 'admin') return;
-    if (login === currentEmp.login) return showToast('Nelzya otklyuchit sebya', true);
+    if (login === currentEmp.login) return showToast('Нельзя отключить себя', true);
     const snap = await getDoc(doc(db, 'employees', login));
     if (!snap.exists()) return;
     const next = !snap.data().active;
     await updateDoc(doc(db, 'employees', login), { active: next });
-    await writeLog('toggleEmployee', login, next ? 'on' : 'off');
+    await writeLog(next ? 'включил сотрудника' : 'отключил сотрудника', login, '');
     loadEmployees();
   }
 
   async function changeRole(login) {
     if (!currentEmp || currentEmp.role !== 'admin') return;
-    const role = prompt('Role for ' + login + ' (admin / moderator / viewer):');
+    const role = prompt('Роль для ' + login + ' (admin / moderator / viewer):');
     if (!role || ['admin','moderator','viewer'].indexOf(role) === -1) return;
     await updateDoc(doc(db, 'employees', login), { role: role });
-    await writeLog('changeRole', login, role);
+    await writeLog('сменил роль', login, role);
+    loadEmployees();
+  }
+
+  function openChangeName(login) {
+    if (!currentEmp || currentEmp.role !== 'admin') { showToast('Только для админа', true); return; }
+    nameTargetLogin = login;
+    document.getElementById('nameModalTitle').textContent = 'Смена имени: ' + login;
+    document.getElementById('nameModalSub').textContent = 'Введите новое имя для сотрудника';
+    document.getElementById('nameNew').value = '';
+    document.getElementById('nameModal').classList.add('show');
+  }
+  function closeNameModal() {
+    document.getElementById('nameModal').classList.remove('show');
+    nameTargetLogin = null;
+  }
+  async function submitChangeName() {
+    if (!nameTargetLogin) return;
+    const newName = document.getElementById('nameNew').value.trim();
+    if (!newName) { showToast('Введите имя', true); return; }
+    await updateDoc(doc(db, 'employees', nameTargetLogin), { name: newName });
+    await writeLog('сменил имя', nameTargetLogin, newName);
+    if (nameTargetLogin === currentEmp.login) {
+      currentEmp.name = newName;
+      sessionStorage.setItem('vld_admin_ok', JSON.stringify(currentEmp));
+      document.getElementById('userName').textContent = newName;
+    }
+    showToast('Имя изменено');
+    closeNameModal();
     loadEmployees();
   }
 
   function openChangePassword() {
     passTargetLogin = currentEmp.login;
-    document.getElementById('passModalTitle').textContent = 'Change own password';
-    document.getElementById('passModalSub').textContent = 'Old password + new (min 6 chars)';
+    document.getElementById('passModalTitle').textContent = 'Смена своего пароля';
+    document.getElementById('passModalSub').textContent = 'Введите текущий и новый пароль';
     document.getElementById('passOld').value = '';
     document.getElementById('passOld').style.display = 'block';
     document.getElementById('passNew').value = '';
     document.getElementById('passNew2').value = '';
     document.getElementById('passModal').classList.add('show');
   }
-
   function openChangePasswordFor(login) {
-    if (!currentEmp || currentEmp.role !== 'admin') { showToast('Tolko dlya admina', true); return; }
+    if (!currentEmp || currentEmp.role !== 'admin') { showToast('Только для админа', true); return; }
     passTargetLogin = login;
-    document.getElementById('passModalTitle').textContent = 'Change password: ' + login;
-    document.getElementById('passModalSub').textContent = 'Enter new password';
+    document.getElementById('passModalTitle').textContent = 'Смена пароля: ' + login;
+    document.getElementById('passModalSub').textContent = 'Введите новый пароль для сотрудника';
     document.getElementById('passOld').value = '';
     document.getElementById('passOld').style.display = 'none';
     document.getElementById('passNew').value = '';
     document.getElementById('passNew2').value = '';
     document.getElementById('passModal').classList.add('show');
   }
-
   function closePassModal() {
     document.getElementById('passModal').classList.remove('show');
     passTargetLogin = null;
   }
-
   async function submitChangePassword() {
     if (!passTargetLogin) return;
     const isSelf = passTargetLogin === currentEmp.login;
     const oldP = document.getElementById('passOld').value;
     const newP = document.getElementById('passNew').value;
     const newP2 = document.getElementById('passNew2').value;
-
-    if (newP.length < 6) { showToast('Parol min 6 simvolov', true); return; }
-    if (newP !== newP2) { showToast('Paroli ne sovpadayut', true); return; }
+    if (newP.length < 6) { showToast('Пароль минимум 6 символов', true); return; }
+    if (newP !== newP2) { showToast('Пароли не совпадают', true); return; }
 
     if (isSelf) {
       const empRef = doc(db, 'employees', currentEmp.login);
       const snap = await getDoc(empRef);
-      if (!snap.exists()) { showToast('Akkaunt ne nayden', true); return; }
+      if (!snap.exists()) { showToast('Аккаунт не найден', true); return; }
       const oldHash = await sha256Hex(oldP);
-      if (oldHash !== snap.data().passHash) { showToast('Stary parol neveren', true); return; }
+      if (oldHash !== snap.data().passHash) { showToast('Старый пароль неверный', true); return; }
     }
 
     const newHash = await sha256Hex(newP);
     await updateDoc(doc(db, 'employees', passTargetLogin), { passHash: newHash });
-    await writeLog('changePassword', passTargetLogin, isSelf ? 'self' : 'admin change');
-
-    showToast('Parol izmenyon');
+    await writeLog('сменил пароль', passTargetLogin, isSelf ? 'себе' : 'сотруднику');
+    showToast('Пароль изменён');
     closePassModal();
   }
 
   async function loadEmployees() {
     const el = document.getElementById('employeesList');
-    el.innerHTML = '<div style="color:#7e8b9b;font-size:12px;">Zagruzka...</div>';
+    el.innerHTML = '<div style="color:#7e8b9b;font-size:12px;">Загрузка...</div>';
     const snap = await getDocs(collection(db, 'employees'));
-    if (snap.empty) { el.innerHTML = '<div style="color:#7e8b9b;font-size:12px;">Pusto</div>'; return; }
+    if (snap.empty) { el.innerHTML = '<div style="color:#7e8b9b;font-size:12px;">Пусто</div>'; return; }
     el.innerHTML = snap.docs.map(d => {
       const e = d.data();
       const inactive = !e.active;
@@ -560,10 +681,11 @@
           <span class="login">@${escapeHtml(e.login)}</span>
           <span class="role-tag ${e.role}">${e.role}</span>
           <div class="actions">
-            <button onclick="changeRole('${e.login}')">Role</button>
-            <button onclick="openChangePasswordFor('${e.login}')">Parol</button>
-            <button onclick="toggleEmployee('${e.login}')">${e.active ? 'Off' : 'On'}</button>
-            <button onclick="removeEmployee('${e.login}')">Del</button>
+            <button onclick="openChangeName('${e.login}')">Имя</button>
+            <button onclick="changeRole('${e.login}')">Роль</button>
+            <button onclick="openChangePasswordFor('${e.login}')">Пароль</button>
+            <button onclick="toggleEmployee('${e.login}')">${e.active ? 'Откл.' : 'Вкл.'}</button>
+            <button onclick="removeEmployee('${e.login}')">Удалить</button>
           </div>
         </div>
       `;
@@ -572,10 +694,10 @@
 
   async function loadLog() {
     const el = document.getElementById('logList');
-    el.innerHTML = '<div style="color:#7e8b9b;font-size:12px;">Zagruzka...</div>';
+    el.innerHTML = '<div style="color:#7e8b9b;font-size:12px;">Загрузка...</div>';
     const q = query(collection(db, 'log'), orderBy('createdAt', 'desc'), limit(200));
     const snap = await getDocs(q);
-    if (snap.empty) { el.innerHTML = '<div style="color:#7e8b9b;font-size:12px;">Pusto</div>'; return; }
+    if (snap.empty) { el.innerHTML = '<div style="color:#7e8b9b;font-size:12px;">Пусто</div>'; return; }
     el.innerHTML = snap.docs.map(d => {
       const l = d.data();
       const det = [];
@@ -620,6 +742,10 @@
     });
   });
 
+  document.getElementById('broadcastInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') sendBroadcast();
+  });
+
   window.tryLogin = tryLogin;
   window.logout = logout;
   window.gotoSlide = gotoSlide;
@@ -627,8 +753,6 @@
   window.gotoSlideNext = gotoSlideNext;
   window.hideQ = hideQ;
   window.unhideQ = unhideQ;
-  window.answerQ = answerQ;
-  window.unanswerQ = unanswerQ;
   window.clearHidden = clearHidden;
   window.clearAll = clearAll;
   window.addEmployee = addEmployee;
@@ -641,6 +765,13 @@
   window.openChangePasswordFor = openChangePasswordFor;
   window.closePassModal = closePassModal;
   window.submitChangePassword = submitChangePassword;
+  window.openChangeName = openChangeName;
+  window.closeNameModal = closeNameModal;
+  window.submitChangeName = submitChangeName;
+  window.openAnswerModal = openAnswerModal;
+  window.closeAnswerModal = closeAnswerModal;
+  window.submitAnswer = submitAnswer;
+  window.sendBroadcast = sendBroadcast;
 
   const saved = sessionStorage.getItem('vld_admin_ok');
   if (saved) {
