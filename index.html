@@ -853,7 +853,13 @@
     .slide[data-index="6"] .slide-content,
     .slide[data-index="7"] .slide-content {
       overflow-y: auto;
-      max-height: calc(100dvh - 260px);
+      max-height: calc(100dvh - 130px);
+      scrollbar-width: none;
+    }
+    .slide[data-index="5"] .slide-content::-webkit-scrollbar,
+    .slide[data-index="6"] .slide-content::-webkit-scrollbar,
+    .slide[data-index="7"] .slide-content::-webkit-scrollbar {
+      display: none;
     }
   }
 
@@ -1486,8 +1492,8 @@
   if (counterTotal) counterTotal.textContent = String(total).padStart(2, '0');
 
   function goTo(index) {
-    if (index < 0) index = 0;
-    if (index >= total) index = total - 1;
+    if (index < 0) index = total - 1;
+    if (index >= total) index = 0;
     slider.scrollTo({ left: index * slider.clientWidth, behavior: 'smooth' });
   }
 
