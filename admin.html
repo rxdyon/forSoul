@@ -79,6 +79,16 @@
   .log-row .what { color: #ff006e; font-weight: 700; }
   .log-row .when { color: #7e8b9b; font-size: 10px; margin-left: auto; }
   .log-row .obj { color: #b0b7c6; font-size: 11px; }
+
+  .modal-back { position: fixed; inset: 0; background: rgba(0,0,0,.7); backdrop-filter: blur(10px); z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; }
+  .modal-back.show { display: flex; }
+  .modal { width: 100%; max-width: 400px; background: rgba(10,14,28,.95); border: 1px solid rgba(0,210,255,.3); border-radius: 20px; padding: 28px 24px; text-align: center; }
+  .modal h3 { font-size: 14px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; color: #00d2ff; margin-bottom: 8px; }
+  .modal p { font-size: 12px; color: #7e8b9b; margin-bottom: 18px; }
+  .modal input { width: 100%; padding: 14px 16px; margin-bottom: 12px; background: rgba(5,7,15,.75); border: 1px solid rgba(0,210,255,.25); border-radius: 12px; color: #fff; font-family: inherit; font-size: 15px; outline: none; }
+  .modal input:focus { border-color: #00d2ff; box-shadow: 0 0 0 3px rgba(0,210,255,.15); }
+  .modal button { width: 100%; padding: 12px; border: none; border-radius: 24px; background: linear-gradient(135deg, #00d2ff, #8338ec); color: #fff; font-family: inherit; font-size: 11px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; }
+  .modal button.modal-close { background: transparent; border: 1px solid rgba(255,255,255,.2); color: #b0b7c6; margin-top: 8px; }
 </style>
 </head>
 <body>
@@ -148,6 +158,7 @@
       <button class="btn-danger" onclick="clearAll()">🗑 Удалить все</button>
       <button class="btn-info" onclick="toggleEmployees()">👥 Сотрудники</button>
       <button class="btn-info" onclick="toggleLog()">📜 Лог действий</button>
+      <button class="btn-info" onclick="openChangePassword()">🔒 Сменить пароль</button>
     </div>
   </div>
 
@@ -155,7 +166,7 @@
     <h2>Сотрудники</h2>
     <div id="employeesList"></div>
     <div class="add-form">
-      <input type="text" id="newEmpName" placeholder="Имя (например, Редько Роман)">
+      <input type="text" id="newEmpName" placeholder="Имя (например, Roman Redko)">
       <input type="text" id="newEmpLogin" placeholder="Логин (латиница, без пробелов)">
       <input type="password" id="newEmpPass" placeholder="Пароль">
       <select id="newEmpRole">
@@ -170,6 +181,18 @@
   <div class="panel" id="logPanel" style="display:none;">
     <h2>Лог действий</h2>
     <div id="logList"></div>
+  </div>
+</div>
+
+<div class="modal-back" id="passModal">
+  <div class="modal">
+    <h3 id="passModalTitle">Смена пароля</h3>
+    <p id="passModalSub">Введите текущий и новый пароль</p>
+    <input type="password" id="passOld" placeholder="Текущий пароль" autocomplete="current-password">
+    <input type="password" id="passNew" placeholder="Новый пароль (мин. 6 символов)" autocomplete="new-password">
+    <input type="password" id="passNew2" placeholder="Повторите новый пароль" autocomplete="new-password">
+    <button onclick="submitChangePassword()">Сохранить</button>
+    <button class="modal-close" onclick="closePassModal()">Отмена</button>
   </div>
 </div>
 
@@ -195,6 +218,7 @@
   let currentSlide = 0;
   let currentFilter = 'all';
   let allQuestions = [];
+  let passTargetLogin = null;
 
   function showToast(msg, isErr) {
     const t = document.getElementById('toast');
@@ -237,28 +261,28 @@
       if (!empSnap.exists()) {
         if (login === 'admin' && password === '1234') {
           const hash = await sha256Hex(password);
-          await setDoc(empRef, { name: 'Главный админ', login: 'admin', passHash: hash, role: 'admin', active: true, createdAt: serverTimestamp() });
-          currentEmp = { name: 'Главный админ', login: 'admin', role: 'admin' };
+          await setDoc(empRef, { name: 'Glavny Admin', login: 'admin', passHash: hash, role: 'admin', active: true, createdAt: serverTimestamp() });
+          currentEmp = { name: 'Glavny Admin', login: 'admin', role: 'admin' };
           sessionStorage.setItem('vld_admin_ok', JSON.stringify(currentEmp));
-          await writeLog('login', '', 'первый вход');
+          await writeLog('login', '', 'first login');
           enterPanel();
           return;
         }
-        showToast('Неверный логин или пароль', true);
+        showToast('Neverny login ili parol', true);
         return;
       }
 
       const data = empSnap.data();
-      if (!data.active) { showToast('Аккаунт отключён', true); return; }
+      if (!data.active) { showToast('Akkaunt otklyuchyon', true); return; }
       const hash = await sha256Hex(password);
-      if (hash !== data.passHash) { showToast('Неверный пароль', true); return; }
+      if (hash !== data.passHash) { showToast('Neverny parol', true); return; }
 
       currentEmp = { name: data.name, login: data.login, role: data.role };
       sessionStorage.setItem('vld_admin_ok', JSON.stringify(currentEmp));
       await writeLog('login', '', '');
       enterPanel();
     } catch (err) {
-      showToast('Ошибка входа: ' + err.message, true);
+      showToast('Oshibka: ' + err.message, true);
     }
   }
 
@@ -278,7 +302,6 @@
       document.querySelectorAll('.qitem-actions button, .slider-ctrl button, .slider-ctrl select, .danger-buttons button').forEach(b => b.disabled = true);
     }
     if (currentEmp.role !== 'admin') {
-      // скрываем кнопки, доступные только админу
       document.querySelectorAll('.btn-warn, .btn-danger').forEach(b => b.style.display = 'none');
       const empBtn = document.querySelector('[onclick="toggleEmployees()"]');
       if (empBtn) empBtn.style.display = 'none';
@@ -298,7 +321,7 @@
     try {
       await setDoc(doc(db, 'config', 'currentSlide'), { value: n }, { merge: true });
       await writeLog('slide', String(n), '');
-    } catch (err) { showToast('Ошибка: ' + err.message, true); }
+    } catch (err) { showToast('Oshibka: ' + err.message, true); }
   }
 
   function gotoSlidePrev() { gotoSlide(currentSlide - 1); }
@@ -354,22 +377,22 @@
     document.getElementById('stAnswered').textContent = allQuestions.filter(q => q.answered).length;
 
     if (!items.length) {
-      list.innerHTML = '<div style="color:#7e8b9b;font-size:12px;text-align:center;padding:20px;">Пусто</div>';
+      list.innerHTML = '<div style="color:#7e8b9b;font-size:12px;text-align:center;padding:20px;">Pusto</div>';
       return;
     }
     const canMod = currentEmp && (currentEmp.role === 'admin' || currentEmp.role === 'moderator');
     list.innerHTML = items.map(q => `
       <div class="qitem ${q.hidden ? 'hidden' : ''} ${q.answered ? 'answered' : ''}">
         <div class="qitem-head">
-          <span>${escapeHtml(q.name || 'Аноним')}</span>
+          <span>${escapeHtml(q.name || 'Anonym')}</span>
           ${q.telegram ? `<a href="https://t.me/${escapeHtml(q.telegram)}" target="_blank" rel="noopener" style="color:#00d2ff;text-decoration:none;font-weight:900;margin-left:6px;">@${escapeHtml(q.telegram)}</a>` : ''}
-          <span class="meta">${fmtTime(q.createdAt)} · слайд ${q.slide ?? '—'}</span>
+          <span class="meta">${fmtTime(q.createdAt)} · slide ${q.slide ?? '—'}</span>
         </div>
         <div class="qitem-body">${escapeHtml(q.text || '')}</div>
         ${canMod ? `
         <div class="qitem-actions">
-          ${q.answered ? `<button onclick="unanswerQ('${q.id}')">↺ Снять</button>` : `<button onclick="answerQ('${q.id}')">✓ Ответил</button>`}
-          ${q.hidden ? `<button onclick="unhideQ('${q.id}')">↺ Показать</button>` : `<button onclick="hideQ('${q.id}')">✕ Скрыть</button>`}
+          ${q.answered ? `<button onclick="unanswerQ('${q.id}')">↺ Sniat</button>` : `<button onclick="answerQ('${q.id}')">✓ Otvetil</button>`}
+          ${q.hidden ? `<button onclick="unhideQ('${q.id}')">↺ Pokazat</button>` : `<button onclick="hideQ('${q.id}')">✕ Skryt</button>`}
         </div>` : ''}
       </div>
     `).join('');
@@ -397,52 +420,53 @@
   }
 
   async function clearHidden() {
-    if (!currentEmp || currentEmp.role !== 'admin') return showToast('Только для админа', true);
-    if (!confirm('Удалить все скрытые?')) return;
+    if (!currentEmp || currentEmp.role !== 'admin') return showToast('Tolko dlya admina', true);
+    if (!confirm('Udalit vse skrytye?')) return;
     const batch = writeBatch(db);
     allQuestions.filter(q => q.hidden).forEach(q => batch.delete(doc(db, 'questions', q.id)));
     await batch.commit();
-    await writeLog('clearHidden', '', 'удалено ' + allQuestions.filter(q => q.hidden).length);
-    showToast('Удалено');
+    await writeLog('clearHidden', '', '');
+    showToast('Udалено');
   }
   async function clearAll() {
-    if (!currentEmp || currentEmp.role !== 'admin') return showToast('Только для админа', true);
-    if (!confirm('Удалить ВСЕ вопросы?')) return;
+    if (!currentEmp || currentEmp.role !== 'admin') return showToast('Tolko dlya admina', true);
+    if (!confirm('Udalit VSE voprosy?')) return;
     const snap = await getDocs(collection(db, 'questions'));
     const batch = writeBatch(db);
     snap.docs.forEach(d => batch.delete(d.ref));
     await batch.commit();
     await writeLog('clearAll', '', '');
-    showToast('Всё удалено');
+    showToast('Vsyo udалено');
   }
 
   async function addEmployee() {
-    if (!currentEmp || currentEmp.role !== 'admin') return showToast('Только для админа', true);
+    if (!currentEmp || currentEmp.role !== 'admin') return showToast('Tolko dlya admina', true);
     const name = document.getElementById('newEmpName').value.trim();
     const login = document.getElementById('newEmpLogin').value.trim().toLowerCase();
     const pass = document.getElementById('newEmpPass').value;
     const role = document.getElementById('newEmpRole').value;
-    if (!login || !pass) return showToast('Логин и пароль обязательны', true);
-    if (!/^[a-z0-9_]+$/.test(login)) return showToast('Логин: только латиница, цифры, _', true);
+    if (!login || !pass) return showToast('Login i parol obyazatelny', true);
+    if (!/^[a-z0-9_]+$/.test(login)) return showToast('Login: latinitsa, tsifry, _', true);
+    if (pass.length < 6) return showToast('Parol min 6 simvolov', true);
 
     const ref = doc(db, 'employees', login);
     const exists = await getDoc(ref);
-    if (exists.exists()) return showToast('Такой логин уже есть', true);
+    if (exists.exists()) return showToast('Takoy login uje est', true);
 
     const hash = await sha256Hex(pass);
     await setDoc(ref, { name: name || login, login: login, passHash: hash, role: role, active: true, createdAt: serverTimestamp() });
-    await writeLog('addEmployee', login, 'роль: ' + role);
+    await writeLog('addEmployee', login, 'role: ' + role);
     document.getElementById('newEmpName').value = '';
     document.getElementById('newEmpLogin').value = '';
     document.getElementById('newEmpPass').value = '';
-    showToast('Добавлен: ' + login);
+    showToast('Dobavlen: ' + login);
     loadEmployees();
   }
 
   async function removeEmployee(login) {
     if (!currentEmp || currentEmp.role !== 'admin') return;
-    if (login === currentEmp.login) return showToast('Нельзя удалить себя', true);
-    if (!confirm('Удалить ' + login + '?')) return;
+    if (login === currentEmp.login) return showToast('Nelzya udalit sebya', true);
+    if (!confirm('Udalit ' + login + '?')) return;
     await deleteDoc(doc(db, 'employees', login));
     await writeLog('removeEmployee', login, '');
     loadEmployees();
@@ -450,29 +474,83 @@
 
   async function toggleEmployee(login) {
     if (!currentEmp || currentEmp.role !== 'admin') return;
-    if (login === currentEmp.login) return showToast('Нельзя отключить себя', true);
+    if (login === currentEmp.login) return showToast('Nelzya otklyuchit sebya', true);
     const snap = await getDoc(doc(db, 'employees', login));
     if (!snap.exists()) return;
     const next = !snap.data().active;
     await updateDoc(doc(db, 'employees', login), { active: next });
-    await writeLog('toggleEmployee', login, next ? 'включён' : 'отключён');
+    await writeLog('toggleEmployee', login, next ? 'on' : 'off');
     loadEmployees();
   }
 
   async function changeRole(login) {
     if (!currentEmp || currentEmp.role !== 'admin') return;
-    const role = prompt('Роль для ' + login + ' (admin / moderator / viewer):');
+    const role = prompt('Role for ' + login + ' (admin / moderator / viewer):');
     if (!role || ['admin','moderator','viewer'].indexOf(role) === -1) return;
     await updateDoc(doc(db, 'employees', login), { role: role });
     await writeLog('changeRole', login, role);
     loadEmployees();
   }
 
+  function openChangePassword() {
+    passTargetLogin = currentEmp.login;
+    document.getElementById('passModalTitle').textContent = 'Change own password';
+    document.getElementById('passModalSub').textContent = 'Old password + new (min 6 chars)';
+    document.getElementById('passOld').value = '';
+    document.getElementById('passOld').style.display = 'block';
+    document.getElementById('passNew').value = '';
+    document.getElementById('passNew2').value = '';
+    document.getElementById('passModal').classList.add('show');
+  }
+
+  function openChangePasswordFor(login) {
+    if (!currentEmp || currentEmp.role !== 'admin') { showToast('Tolko dlya admina', true); return; }
+    passTargetLogin = login;
+    document.getElementById('passModalTitle').textContent = 'Change password: ' + login;
+    document.getElementById('passModalSub').textContent = 'Enter new password';
+    document.getElementById('passOld').value = '';
+    document.getElementById('passOld').style.display = 'none';
+    document.getElementById('passNew').value = '';
+    document.getElementById('passNew2').value = '';
+    document.getElementById('passModal').classList.add('show');
+  }
+
+  function closePassModal() {
+    document.getElementById('passModal').classList.remove('show');
+    passTargetLogin = null;
+  }
+
+  async function submitChangePassword() {
+    if (!passTargetLogin) return;
+    const isSelf = passTargetLogin === currentEmp.login;
+    const oldP = document.getElementById('passOld').value;
+    const newP = document.getElementById('passNew').value;
+    const newP2 = document.getElementById('passNew2').value;
+
+    if (newP.length < 6) { showToast('Parol min 6 simvolov', true); return; }
+    if (newP !== newP2) { showToast('Paroli ne sovpadayut', true); return; }
+
+    if (isSelf) {
+      const empRef = doc(db, 'employees', currentEmp.login);
+      const snap = await getDoc(empRef);
+      if (!snap.exists()) { showToast('Akkaunt ne nayden', true); return; }
+      const oldHash = await sha256Hex(oldP);
+      if (oldHash !== snap.data().passHash) { showToast('Stary parol neveren', true); return; }
+    }
+
+    const newHash = await sha256Hex(newP);
+    await updateDoc(doc(db, 'employees', passTargetLogin), { passHash: newHash });
+    await writeLog('changePassword', passTargetLogin, isSelf ? 'self' : 'admin change');
+
+    showToast('Parol izmenyon');
+    closePassModal();
+  }
+
   async function loadEmployees() {
     const el = document.getElementById('employeesList');
-    el.innerHTML = '<div style="color:#7e8b9b;font-size:12px;">Загрузка...</div>';
+    el.innerHTML = '<div style="color:#7e8b9b;font-size:12px;">Zagruzka...</div>';
     const snap = await getDocs(collection(db, 'employees'));
-    if (snap.empty) { el.innerHTML = '<div style="color:#7e8b9b;font-size:12px;">Пусто</div>'; return; }
+    if (snap.empty) { el.innerHTML = '<div style="color:#7e8b9b;font-size:12px;">Pusto</div>'; return; }
     el.innerHTML = snap.docs.map(d => {
       const e = d.data();
       const inactive = !e.active;
@@ -482,9 +560,10 @@
           <span class="login">@${escapeHtml(e.login)}</span>
           <span class="role-tag ${e.role}">${e.role}</span>
           <div class="actions">
-            <button onclick="changeRole('${e.login}')">Роль</button>
-            <button onclick="toggleEmployee('${e.login}')">${e.active ? 'Откл.' : 'Вкл.'}</button>
-            <button onclick="removeEmployee('${e.login}')">Удалить</button>
+            <button onclick="changeRole('${e.login}')">Role</button>
+            <button onclick="openChangePasswordFor('${e.login}')">Parol</button>
+            <button onclick="toggleEmployee('${e.login}')">${e.active ? 'Off' : 'On'}</button>
+            <button onclick="removeEmployee('${e.login}')">Del</button>
           </div>
         </div>
       `;
@@ -493,28 +572,20 @@
 
   async function loadLog() {
     const el = document.getElementById('logList');
-    el.innerHTML = '<div style="color:#7e8b9b;font-size:12px;">Загрузка...</div>';
+    el.innerHTML = '<div style="color:#7e8b9b;font-size:12px;">Zagruzka...</div>';
     const q = query(collection(db, 'log'), orderBy('createdAt', 'desc'), limit(200));
     const snap = await getDocs(q);
-    if (snap.empty) { el.innerHTML = '<div style="color:#7e8b9b;font-size:12px;">Пусто</div>'; return; }
-    const actionLabels = {
-      login: 'вошёл', logout: 'вышел', slide: 'сменил слайд', hide: 'скрыл вопрос',
-      unhide: 'показал вопрос', answer: 'отметил ответ', unanswer: 'снял отметку',
-      clearHidden: 'удалил скрытые', clearAll: 'удалил все', addEmployee: 'добавил сотрудника',
-      removeEmployee: 'удалил сотрудника', toggleEmployee: 'переключил сотрудника',
-      changeRole: 'сменил роль'
-    };
+    if (snap.empty) { el.innerHTML = '<div style="color:#7e8b9b;font-size:12px;">Pusto</div>'; return; }
     el.innerHTML = snap.docs.map(d => {
       const l = d.data();
-      const act = actionLabels[l.action] || l.action;
       const det = [];
-      if (l.object) det.push('→ ' + l.object);
+      if (l.object) det.push('> ' + l.object);
       if (l.details) det.push('(' + l.details + ')');
       return `
         <div class="log-row">
           <span class="when">${fmtDateTime(l.createdAt)}</span>
           <span class="who">${escapeHtml(l.user || '—')}</span>
-          <span class="what">${escapeHtml(act)}</span>
+          <span class="what">${escapeHtml(l.action)}</span>
           ${det.length ? '<span class="obj">' + escapeHtml(det.join(' ')) + '</span>' : ''}
         </div>
       `;
@@ -549,7 +620,6 @@
     });
   });
 
-  // window-привязки для onclick
   window.tryLogin = tryLogin;
   window.logout = logout;
   window.gotoSlide = gotoSlide;
@@ -567,6 +637,10 @@
   window.changeRole = changeRole;
   window.toggleEmployees = toggleEmployees;
   window.toggleLog = toggleLog;
+  window.openChangePassword = openChangePassword;
+  window.openChangePasswordFor = openChangePasswordFor;
+  window.closePassModal = closePassModal;
+  window.submitChangePassword = submitChangePassword;
 
   const saved = sessionStorage.getItem('vld_admin_ok');
   if (saved) {
