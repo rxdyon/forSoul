@@ -52,6 +52,8 @@
   .login-card input { width: 100%; padding: 14px 16px; margin-bottom: 12px; background: rgba(5,7,15,.75); border: 1px solid rgba(0,210,255,.25); border-radius: 12px; color: #fff; font-family: inherit; font-size: 15px; outline: none; }
   .login-card input:focus { border-color: #00d2ff; box-shadow: 0 0 0 3px rgba(0,210,255,.15); }
   .login-card button { width: 100%; padding: 14px; border: none; border-radius: 30px; background: linear-gradient(135deg, #00d2ff, #8338ec); color: #fff; font-family: inherit; font-size: 12px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; box-shadow: 0 12px 30px rgba(0,210,255,.35); }
+  .remember-label { display: flex; align-items: center; gap: 10px; font-size: 12px; color: #b0b7c6; margin-bottom: 14px; cursor: pointer; user-select: none; }
+  .remember-label input[type="checkbox"] { width: 18px; height: 18px; accent-color: #00d2ff; cursor: pointer; }
   .user-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; font-size: 11px; color: #7e8b9b; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; flex-wrap: wrap; }
   .user-bar .role { padding: 3px 10px; border-radius: 12px; background: rgba(255,0,110,.15); color: #ff006e; }
   .user-bar a { color: #ff006e; cursor: pointer; font-weight: 900; text-decoration: none; }
@@ -110,6 +112,10 @@
     <div class="hint">Логин и пароль сотрудника</div>
     <input type="text" id="loginInput" placeholder="Логин" value="admin">
     <input type="password" id="passInput" placeholder="Пароль" value="1234">
+    <label class="remember-label">
+      <input type="checkbox" id="rememberMe" checked>
+      <span>Запомнить меня на 30 дней</span>
+    </label>
     <button onclick="tryLogin()">Войти</button>
   </div>
 </div>
@@ -309,34 +315,39 @@
   async function tryLogin() {
     const login = document.getElementById('loginInput').value.trim().toLowerCase();
     const password = document.getElementById('passInput').value;
+    const remember = document.getElementById('rememberMe').checked;
     if (!login || !password) return;
 
     try {
       const empRef = doc(db, 'employees', login);
       const empSnap = await getDoc(empRef);
 
+      let emp = null;
+
       if (!empSnap.exists()) {
         if (login === 'admin' && password === '1234') {
           const hash = await sha256Hex(password);
           await setDoc(empRef, { name: 'Главный админ', login: 'admin', passHash: hash, role: 'admin', active: true, createdAt: serverTimestamp() });
-          currentEmp = { name: 'Главный админ', login: 'admin', role: 'admin' };
-          sessionStorage.setItem('vld_admin_ok', JSON.stringify(currentEmp));
+          emp = { name: 'Главный админ', login: 'admin', role: 'admin' };
           await writeLog('вход', '', 'первый вход');
-          enterPanel();
+        } else {
+          showToast('Неверный логин или пароль', true);
           return;
         }
-        showToast('Неверный логин или пароль', true);
-        return;
+      } else {
+        const data = empSnap.data();
+        if (!data.active) { showToast('Аккаунт отключён', true); return; }
+        const hash = await sha256Hex(password);
+        if (hash !== data.passHash) { showToast('Неверный пароль', true); return; }
+        emp = { name: data.name, login: data.login, role: data.role };
+        await writeLog('вход', '', '');
       }
 
-      const data = empSnap.data();
-      if (!data.active) { showToast('Аккаунт отключён', true); return; }
-      const hash = await sha256Hex(password);
-      if (hash !== data.passHash) { showToast('Неверный пароль', true); return; }
-
-      currentEmp = { name: data.name, login: data.login, role: data.role };
-      sessionStorage.setItem('vld_admin_ok', JSON.stringify(currentEmp));
-      await writeLog('вход', '', '');
+      currentEmp = emp;
+      const storage = remember ? localStorage : sessionStorage;
+      sessionStorage.removeItem('vld_admin_ok');
+      localStorage.removeItem('vld_admin_ok');
+      storage.setItem('vld_admin_ok', JSON.stringify(currentEmp));
       enterPanel();
     } catch (err) {
       showToast('Ошибка входа: ' + err.message, true);
@@ -346,6 +357,7 @@
   function logout() {
     if (currentEmp) writeLog('выход', '', '');
     sessionStorage.removeItem('vld_admin_ok');
+    localStorage.removeItem('vld_admin_ok');
     location.reload();
   }
 
@@ -689,7 +701,8 @@
     await writeLog('сменил имя', nameTargetLogin, newName);
     if (nameTargetLogin === currentEmp.login) {
       currentEmp.name = newName;
-      sessionStorage.setItem('vld_admin_ok', JSON.stringify(currentEmp));
+      const storage = localStorage.getItem('vld_admin_ok') ? localStorage : sessionStorage;
+      storage.setItem('vld_admin_ok', JSON.stringify(currentEmp));
       document.getElementById('userName').textContent = newName;
     }
     showToast('Имя изменено');
@@ -884,12 +897,15 @@
   window.logPrev = logPrev;
   window.logNext = logNext;
 
-  const saved = sessionStorage.getItem('vld_admin_ok');
+  const saved = sessionStorage.getItem('vld_admin_ok') || localStorage.getItem('vld_admin_ok');
   if (saved) {
     try {
       currentEmp = JSON.parse(saved);
       enterPanel();
-    } catch (e) { sessionStorage.removeItem('vld_admin_ok'); }
+    } catch (e) {
+      sessionStorage.removeItem('vld_admin_ok');
+      localStorage.removeItem('vld_admin_ok');
+    }
   }
 </script>
 </body>
