@@ -612,10 +612,6 @@
   }
   .footer-links a:hover { color: #00d2ff; }
 
-  .footer-copy {
-    display: none;
-  }
-
   .footer-maestro {
     display: inline-flex; align-items: center; gap: 7px;
     padding: 5px 12px;
@@ -882,17 +878,37 @@
 
     .poll-layout {
       flex-direction: column;
-      gap: 16px;
-      margin-top: 12px;
+      gap: 14px;
+      margin-top: 10px;
     }
-    .poll-text h2 { font-size: 18px; margin-bottom: 8px; }
-    .poll-text p { font-size: 12px; margin-bottom: 10px; }
-    .poll-text ul { gap: 6px; }
+    .poll-text h2 { font-size: 17px; margin-bottom: 6px; }
+    .poll-text p { font-size: 12px; margin-bottom: 8px; }
+    .poll-text ul { gap: 5px; margin-bottom: 10px; }
     .poll-text ul li { font-size: 12px; }
-    .poll-qr-frame { padding: 5px; border-radius: 16px; }
-    .poll-qr-inner { width: 160px; height: 160px; padding: 8px; border-radius: 12px; }
-    .poll-qr-caption { font-size: 9px; margin-top: 8px; }
-    .poll-qr-btn { padding: 12px 20px; font-size: 11px; margin-top: 12px; width: 100%; text-align: center; box-sizing: border-box; }
+    .poll-qr-frame {
+      padding: 4px;
+      border-radius: 14px;
+      max-width: 180px;
+      margin: 0 auto;
+    }
+    .poll-qr-inner {
+      width: 140px; height: 140px;
+      padding: 8px;
+      border-radius: 12px;
+    }
+    .poll-qr-caption {
+      font-size: 9px;
+      margin-top: 6px;
+      letter-spacing: 1.5px;
+    }
+    .poll-qr-btn {
+      padding: 12px 20px;
+      font-size: 11px;
+      margin-top: 10px;
+      width: 100%;
+      text-align: center;
+      box-sizing: border-box;
+    }
 
     .spoiler-grid { grid-template-columns: 1fr; gap: 10px; margin-top: 14px; }
     .spoiler-card { padding: 14px 16px; }
@@ -972,8 +988,9 @@
     h1 { font-size: 18px; }
     .slide-content { padding: 66px 0 14px 0; }
     .slide-emblem { width: 40px; height: 40px; }
-    .poll-qr-inner { width: 150px; height: 150px; }
-    .qr-color-frame { max-width: 120px; }
+    .poll-qr-inner { width: 130px; height: 130px; }
+    .qr-color-frame { max-width: 110px; }
+    .poll-qr-frame { max-width: 160px; }
     .controls { bottom: 46px; }
     .swipe-hint { bottom: 105px; }
     .qa-widget { bottom: 92px; }
