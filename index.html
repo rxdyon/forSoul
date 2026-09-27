@@ -648,7 +648,7 @@
     const askSuccess = document.getElementById('askSuccess');
     const askMeta = document.getElementById('askMeta');
 
-    const COOLDOWN_MS = 90 * 1000;
+    const COOLDOWN_MS = 20 * 1000;
     const DUP_WINDOW_MS = 5 * 60 * 1000;
     const MIN_LEN = 10;
     const MAX_LEN = 200;
@@ -683,7 +683,7 @@
     function renderMeta() {
       const h = getHistory();
       const today = h.filter(x => Date.now() - x.ts < 24 * 60 * 60 * 1000).length;
-      askMeta.textContent = 'Отправлено сегодня: ' + today + ' · Лимит: 1 вопрос в 90 сек.';
+      askMeta.textContent = 'Отправлено сегодня: ' + today + ' · Лимит: 1 вопрос в 20 сек.';
     }
 
     const last = getLastSent();
