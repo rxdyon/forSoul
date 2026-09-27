@@ -270,6 +270,12 @@
     <button id="askSend">Отправить вопрос</button>
     <div id="askMeta" style="margin-top:10px;font-size:11px;color:#7e8b9b;text-align:center;letter-spacing:1px;"></div>
   </div>
+  <div class="ask-card ask-success" id="askSuccess">
+    <div class="ask-success-icon">✓</div>
+    <h2>Вопрос отправлен!</h2>
+    <p>Он появится на экране презентации в течение пары секунд.</p>
+  </div>
+</div>
 
 <div class="bg-layer"></div>
 
@@ -516,7 +522,6 @@
   }
 
   let currentSlide = 0;
-  let slidersReady = false;
 
   const params = new URLSearchParams(location.search);
   if (params.has('ask')) {
@@ -525,6 +530,7 @@
 
     const askSend = document.getElementById('askSend');
     const askName = document.getElementById('askName');
+    const askTg = document.getElementById('askTg');
     const askText = document.getElementById('askText');
     const askCard = document.getElementById('askCard');
     const askSuccess = document.getElementById('askSuccess');
@@ -576,10 +582,8 @@
     renderMeta();
     setInterval(renderMeta, 5000);
 
-    const askTg = document.getElementById('askTg');
-
     askSend.addEventListener('click', async () => {
-      let name = askName.value.trim() || 'Аноним';
+      const name = askName.value.trim() || 'Аноним';
       let tg = askTg.value.trim();
       if (tg) {
         tg = tg.replace(/^https?:\/\/t\.me\//i, '').replace(/^@/, '').replace(/[^a-zA-Z0-9_]/g, '');
