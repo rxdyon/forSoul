@@ -265,16 +265,11 @@
     <h1>Задать вопрос</h1>
     <p class="sub">Ваш вопрос появится на экране презентации в реальном времени. Можно анонимно.</p>
     <input type="text" id="askName" placeholder="Ваше имя (или пусто)" maxlength="30" autocomplete="off">
+    <input type="text" id="askTg" placeholder="Ваш Telegram @username (необязательно)" maxlength="40" autocomplete="off">
     <textarea id="askText" placeholder="Ваш вопрос спикерам..." maxlength="200"></textarea>
     <button id="askSend">Отправить вопрос</button>
     <div id="askMeta" style="margin-top:10px;font-size:11px;color:#7e8b9b;text-align:center;letter-spacing:1px;"></div>
   </div>
-  <div class="ask-card ask-success" id="askSuccess">
-    <div class="ask-success-icon">✓</div>
-    <h2>Вопрос отправлен!</h2>
-    <p>Он появится на экране презентации в течение пары секунд.</p>
-  </div>
-</div>
 
 <div class="bg-layer"></div>
 
@@ -581,8 +576,14 @@
     renderMeta();
     setInterval(renderMeta, 5000);
 
+    const askTg = document.getElementById('askTg');
+
     askSend.addEventListener('click', async () => {
-      const name = askName.value.trim() || 'Аноним';
+      let name = askName.value.trim() || 'Аноним';
+      let tg = askTg.value.trim();
+      if (tg) {
+        tg = tg.replace(/^https?:\/\/t\.me\//i, '').replace(/^@/, '').replace(/[^a-zA-Z0-9_]/g, '');
+      }
       const text = askText.value.trim();
 
       if (!text) { askText.focus(); return; }
@@ -605,9 +606,15 @@
 
       try {
         const docRef = await addDoc(collection(db, 'questions'), {
-          name: name, text: text, slide: currentSlide,
+          name: name,
+          text: text,
+          slide: currentSlide,
           device: /Mobi/.test(navigator.userAgent) ? 'mobile' : 'desktop',
-          hash: hash, createdAt: serverTimestamp(), hidden: false, answered: false
+          hash: hash,
+          telegram: tg || '',
+          createdAt: serverTimestamp(),
+          hidden: false,
+          answered: false
         });
         localStorage.setItem(LS_LAST, String(Date.now()));
         localStorage.setItem('vld_last_question_id', docRef.id);
