@@ -158,13 +158,87 @@
   .qa-broadcast { background: rgba(255,0,110,.12); border: 1px solid rgba(255,0,110,.35); border-left: 3px solid #ff006e; border-radius: 0 12px 12px 0; padding: 12px 14px; animation: qaEnter .5s cubic-bezier(.25,1,.5,1); margin-bottom: 6px; }
   .qa-broadcast .qa-broadcast-head { font-size: 11px; font-weight: 900; color: #ff006e; letter-spacing: .5px; margin-bottom: 4px; text-transform: uppercase; }
   .qa-broadcast .qa-broadcast-text { font-size: 14px; color: #fff; line-height: 1.5; font-weight: 700; }
-  .qa-fab { display: none; position: fixed; top: 12px; right: 12px; z-index: 250; width: 56px; height: 56px; border-radius: 50%; border: none; background: linear-gradient(135deg, #00d2ff 0%, #8338ec 50%, #ff006e 100%); color: #fff; font-size: 24px; font-weight: 900; cursor: pointer; box-shadow: 0 12px 35px rgba(131,56,236,.6), 0 0 0 3px rgba(255,255,255,.08); backdrop-filter: blur(20px); align-items: center; justify-content: center; padding: 0; animation: fabFloat 3s ease-in-out infinite; }
-  .qa-fab::before { content: ''; position: absolute; inset: -4px; border-radius: 50%; background: linear-gradient(135deg, #00d2ff, #8338ec, #ff006e); opacity: .4; filter: blur(8px); z-index: -1; }
-  .qa-fab .badge { position: absolute; top: -6px; right: -6px; background: #ff006e; color: #fff; font-size: 11px; font-weight: 900; min-width: 22px; height: 22px; border-radius: 11px; display: none; align-items: center; justify-content: center; padding: 0 6px; box-shadow: 0 0 0 3px #05070f, 0 0 12px rgba(255,0,110,.8); }
-  .qa-fab.has-items { animation: fabPulse 1.4s ease-in-out infinite; }
+  .qa-fab {
+    display: none;
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 250;
+    width: 58px;
+    height: 58px;
+    border-radius: 18px;
+    border: 2px solid rgba(255,255,255,.15);
+    background: linear-gradient(135deg, #003a7a 0%, #0a5fb0 35%, #00d2ff 70%, #8338ec 100%);
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 12px 35px rgba(0,210,255,.5), 0 4px 14px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.3);
+    backdrop-filter: blur(20px);
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: transform .25s cubic-bezier(.25,1,.5,1), box-shadow .25s ease;
+  }
+  .qa-fab::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(circle at 30% 25%, rgba(255,255,255,.35) 0%, transparent 55%);
+    pointer-events: none;
+  }
+  .qa-fab::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #00d2ff, #8338ec, #ff006e);
+    opacity: .35;
+    filter: blur(9px);
+    z-index: -1;
+    pointer-events: none;
+  }
+  .qa-fab svg {
+    width: 32px;
+    height: 32px;
+    display: block;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,.35));
+    position: relative;
+    z-index: 1;
+  }
+  .qa-fab:active { transform: scale(.94); }
+  .qa-fab .badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: linear-gradient(135deg, #ff006e, #ff4d94);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 900;
+    min-width: 22px;
+    height: 22px;
+    border-radius: 11px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 0 6px;
+    box-shadow: 0 0 0 3px #05070f, 0 0 14px rgba(255,0,110,.9);
+    font-family: 'Montserrat', sans-serif;
+    z-index: 2;
+  }
+  .qa-fab.has-items { animation: fabRing 1.6s ease-in-out infinite; }
   .qa-fab.has-items .badge { display: flex; }
-  @keyframes fabFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
-  @keyframes fabPulse { 0%, 100% { transform: scale(1); box-shadow: 0 12px 35px rgba(131,56,236,.6), 0 0 0 3px rgba(255,255,255,.08); } 50% { transform: scale(1.08); box-shadow: 0 15px 40px rgba(255,0,110,.7), 0 0 0 3px rgba(255,255,255,.15); } }
+  @keyframes fabRing {
+    0%, 100% {
+      transform: scale(1) rotate(0deg);
+      box-shadow: 0 12px 35px rgba(0,210,255,.5), 0 4px 14px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.3);
+    }
+    25% { transform: scale(1.06) rotate(-4deg); }
+    50% {
+      transform: scale(1.05) rotate(0deg);
+      box-shadow: 0 16px 40px rgba(255,0,110,.65), 0 4px 14px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.35);
+    }
+    75% { transform: scale(1.06) rotate(4deg); }
+  }
   .ask-view { position: fixed; inset: 0; z-index: 9999; display: none; align-items: center; justify-content: center; padding: 20px; background: radial-gradient(circle at 20% 20%, rgba(0,210,255,.15) 0%, transparent 55%), radial-gradient(circle at 80% 80%, rgba(131,56,236,.12) 0%, transparent 55%), #05070f; overflow-y: auto; }
   .ask-view.active { display: flex; }
   .ask-card { width: 100%; max-width: 460px; background: rgba(10,14,28,.85); border: 1px solid rgba(0,210,255,.2); border-radius: 24px; padding: 32px 26px; backdrop-filter: blur(20px); box-shadow: 0 30px 80px rgba(0,0,0,.6); }
@@ -475,11 +549,19 @@
 </footer>
 
 <button class="qa-fab" id="qaFab" onclick="openQaWidget()" aria-label="Открыть чат">
-  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
-    <circle cx="8.5" cy="11.5" r="0.8" fill="currentColor"/>
-    <circle cx="12" cy="11.5" r="0.8" fill="currentColor"/>
-    <circle cx="15.5" cy="11.5" r="0.8" fill="currentColor"/>
+  <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" fill="none">
+    <defs>
+      <linearGradient id="fabGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#ffffff"/>
+        <stop offset="50%" stop-color="#e0f7ff"/>
+        <stop offset="100%" stop-color="#ffffff"/>
+      </linearGradient>
+    </defs>
+    <circle cx="24" cy="11" r="4" stroke="url(#fabGrad)" stroke-width="2.5"/>
+    <line x1="24" y1="15" x2="24" y2="36" stroke="url(#fabGrad)" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="15" y1="22" x2="33" y2="22" stroke="url(#fabGrad)" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M12 30 Q18 34 24 30 T36 30" stroke="url(#fabGrad)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M12 36 Q18 40 24 36 T36 36" stroke="url(#fabGrad)" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.7"/>
   </svg>
   <span class="badge" id="qaBadge">0</span>
 </button>
@@ -838,13 +920,14 @@
   function qaEscape(s) {
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
-  function qaAddItem(name, text) {
+  function qaAddItem(name, text, id) {
     const empty = qaList.querySelector('.qa-empty');
     if (empty) empty.remove();
     qaTotal++;
     updateQaCount();
     const item = document.createElement('div');
     item.className = 'qa-item';
+    if (id) item.setAttribute('data-qid', id);
     item.innerHTML = '<div class="qa-item-name">' + qaEscape(name || 'Аноним') + '</div><div class="qa-item-text">' + qaEscape(text || '') + '</div>';
     qaList.appendChild(item);
     qaList.scrollTop = qaList.scrollHeight;
@@ -852,13 +935,14 @@
     if (!isMobile) qaWidget.classList.add('visible');
     updateQaBadge();
   }
-  function qaAddBroadcast(text, author) {
+  function qaAddBroadcast(text, author, id) {
     const empty = qaList.querySelector('.qa-empty');
     if (empty) empty.remove();
     broadcastCount++;
     updateQaCount();
     const item = document.createElement('div');
     item.className = 'qa-broadcast';
+    if (id) item.setAttribute('data-broadcast-id', id);
     item.innerHTML = '<div class="qa-broadcast-head">📢 ' + qaEscape(author || 'Команда') + '</div><div class="qa-broadcast-text">' + qaEscape(text) + '</div>';
     qaList.appendChild(item);
     qaList.scrollTop = qaList.scrollHeight;
@@ -903,25 +987,41 @@
   const q = query(collection(db, 'questions'), orderBy('createdAt', 'asc'));
   onSnapshot(q, (snap) => {
     snap.docChanges().forEach((change) => {
-      if (change.type !== 'added') return;
-      if (seenIds.has(change.doc.id)) return;
-      seenIds.add(change.doc.id);
-      const d = change.doc.data();
-      if (d.hidden) return;
-      if (!d.text) return;
-      qaAddItem(d.name, d.text);
+      if (change.type === 'added') {
+        if (seenIds.has(change.doc.id)) return;
+        seenIds.add(change.doc.id);
+        const d = change.doc.data();
+        if (d.hidden) return;
+        if (!d.text) return;
+        qaAddItem(d.name, d.text, change.doc.id);
+      } else if (change.type === 'removed') {
+        const el = document.querySelector('[data-qid="' + change.doc.id + '"]');
+        if (el) el.remove();
+        seenIds.delete(change.doc.id);
+        qaTotal = Math.max(0, qaTotal - 1);
+        updateQaCount();
+        updateQaBadge();
+      }
     });
   });
 
   const bq = query(collection(db, 'broadcast'), orderBy('createdAt', 'asc'));
   onSnapshot(bq, (snap) => {
     snap.docChanges().forEach((change) => {
-      if (change.type !== 'added') return;
-      if (seenBroadcasts.has(change.doc.id)) return;
-      seenBroadcasts.add(change.doc.id);
-      const d = change.doc.data();
-      if (!d.text) return;
-      qaAddBroadcast(d.text, d.author);
+      if (change.type === 'added') {
+        if (seenBroadcasts.has(change.doc.id)) return;
+        seenBroadcasts.add(change.doc.id);
+        const d = change.doc.data();
+        if (!d.text) return;
+        qaAddBroadcast(d.text, d.author, change.doc.id);
+      } else if (change.type === 'removed') {
+        const el = document.querySelector('[data-broadcast-id="' + change.doc.id + '"]');
+        if (el) el.remove();
+        seenBroadcasts.delete(change.doc.id);
+        broadcastCount = Math.max(0, broadcastCount - 1);
+        updateQaCount();
+        updateQaBadge();
+      }
     });
   });
 
