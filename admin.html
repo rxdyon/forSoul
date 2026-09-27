@@ -7,248 +7,94 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body {
-    font-family: 'Montserrat', sans-serif;
-    background: #05070f; color: #fff;
-    min-height: 100dvh; padding: 20px;
-  }
+  html, body { font-family: 'Montserrat', sans-serif; background: #05070f; color: #fff; min-height: 100dvh; padding: 20px; }
   h1 { font-size: 22px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px;
     background: linear-gradient(90deg, #00d2ff, #8338ec, #ff006e);
     -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
   .sub { font-size: 12px; color: #7e8b9b; margin-bottom: 22px; }
-
-  .panel {
-    background: rgba(10,14,28,.85);
-    border: 1px solid rgba(0,210,255,.2);
-    border-radius: 16px;
-    padding: 20px; margin-bottom: 20px;
-    backdrop-filter: blur(20px);
-  }
-  .panel h2 {
-    font-size: 11px; font-weight: 900; letter-spacing: 2px;
-    text-transform: uppercase; color: #00d2ff; margin-bottom: 14px;
-  }
-
+  .panel { background: rgba(10,14,28,.85); border: 1px solid rgba(0,210,255,.2); border-radius: 16px; padding: 20px; margin-bottom: 20px; backdrop-filter: blur(20px); }
+  .panel h2 { font-size: 11px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; color: #00d2ff; margin-bottom: 14px; }
   .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; }
-  .stat {
-    background: rgba(5,7,15,.6);
-    border: 1px solid rgba(0,210,255,.15);
-    border-radius: 12px; padding: 14px; text-align: center;
-  }
+  .stat { background: rgba(5,7,15,.6); border: 1px solid rgba(0,210,255,.15); border-radius: 12px; padding: 14px; text-align: center; }
   .stat .num { font-size: 28px; font-weight: 900; color: #00d2ff; line-height: 1; }
   .stat .lbl { font-size: 10px; color: #7e8b9b; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 6px; }
-
   .slider-ctrl { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
-  .slider-ctrl button {
-    background: rgba(0,210,255,.1);
-    border: 1px solid rgba(0,210,255,.3);
-    color: #00d2ff; padding: 12px 20px; border-radius: 12px;
-    font-family: inherit; font-size: 13px; font-weight: 900; letter-spacing: 1px;
-    cursor: pointer; transition: all .25s ease;
+  .slider-ctrl button, .slider-ctrl select {
+    background: rgba(0,210,255,.1); border: 1px solid rgba(0,210,255,.3); color: #00d2ff;
+    padding: 12px 20px; border-radius: 12px; font-family: inherit; font-size: 13px; font-weight: 900; letter-spacing: 1px; cursor: pointer;
   }
+  .slider-ctrl select { background: rgba(5,7,15,.9); color: #fff; }
   .slider-ctrl button:hover { background: #00d2ff; color: #05070f; }
-  .slider-ctrl select {
-    background: rgba(5,7,15,.9); color: #fff;
-    border: 1px solid rgba(0,210,255,.3);
-    padding: 12px 16px; border-radius: 12px;
-    font-family: inherit; font-size: 13px; font-weight: 700;
-    outline: none;
-  }
-
   .qlist { display: flex; flex-direction: column; gap: 10px; max-height: 500px; overflow-y: auto; padding-right: 6px; }
-  .qlist::-webkit-scrollbar { width: 6px; }
-  .qlist::-webkit-scrollbar-thumb { background: rgba(0,210,255,.3); border-radius: 3px; }
-
-  .qitem {
-    background: rgba(5,7,15,.6);
-    border: 1px solid rgba(255,255,255,.06);
-    border-left: 3px solid #00d2ff;
-    border-radius: 0 12px 12px 0;
-    padding: 12px 16px; transition: opacity .3s ease;
-  }
+  .qitem { background: rgba(5,7,15,.6); border: 1px solid rgba(255,255,255,.06); border-left: 3px solid #00d2ff; border-radius: 0 12px 12px 0; padding: 12px 16px; }
   .qitem.hidden { opacity: .35; border-left-color: #7e8b9b; }
   .qitem.answered { border-left-color: #22c55e; }
-  .qitem-head {
-    display: flex; align-items: center; gap: 10px;
-    font-size: 11px; font-weight: 900; color: #00d2ff; letter-spacing: .5px;
-    text-transform: uppercase; margin-bottom: 6px; flex-wrap: wrap;
-  }
+  .qitem-head { display: flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 900; color: #00d2ff; letter-spacing: .5px; text-transform: uppercase; margin-bottom: 6px; flex-wrap: wrap; }
   .qitem-head .meta { color: #7e8b9b; font-weight: 700; margin-left: auto; font-size: 10px; }
   .qitem-body { font-size: 14px; line-height: 1.45; margin-bottom: 10px; }
   .qitem-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-  .qitem-actions button {
-    background: rgba(255,255,255,.05);
-    border: 1px solid rgba(255,255,255,.15);
-    color: #b0b7c6; padding: 6px 12px; border-radius: 8px;
-    font-family: inherit; font-size: 10px; font-weight: 700;
-    letter-spacing: 1px; text-transform: uppercase;
-    cursor: pointer; transition: all .25s ease;
-  }
+  .qitem-actions button { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.15); color: #b0b7c6; padding: 6px 12px; border-radius: 8px; font-family: inherit; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; }
   .qitem-actions button:hover { color: #fff; border-color: #00d2ff; }
-
   .filters { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
-  .filters button {
-    background: transparent; border: 1px solid rgba(0,210,255,.25);
-    color: #b0b7c6; padding: 8px 14px; border-radius: 20px;
-    font-family: inherit; font-size: 11px; font-weight: 700;
-    letter-spacing: 1px; text-transform: uppercase;
-    cursor: pointer; transition: all .25s ease;
-  }
+  .filters button { background: transparent; border: 1px solid rgba(0,210,255,.25); color: #b0b7c6; padding: 8px 14px; border-radius: 20px; font-family: inherit; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; }
   .filters button.active { background: #00d2ff; color: #05070f; border-color: #00d2ff; }
-
   .danger-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
-  .danger-buttons button {
-    padding: 12px 18px; border-radius: 12px;
-    font-family: inherit; font-size: 11px; font-weight: 900;
-    letter-spacing: 1.5px; text-transform: uppercase;
-    cursor: pointer; border: 1px solid; background: transparent;
-    transition: all .25s ease;
-  }
+  .danger-buttons button { padding: 12px 18px; border-radius: 12px; font-family: inherit; font-size: 11px; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; border: 1px solid; background: transparent; }
   .btn-warn { color: #ffb100; border-color: rgba(255,177,0,.35); }
   .btn-warn:hover { background: #ffb100; color: #05070f; }
   .btn-danger { color: #ff006e; border-color: rgba(255,0,110,.4); }
   .btn-danger:hover { background: #ff006e; color: #fff; }
   .btn-info { color: #00d2ff; border-color: rgba(0,210,255,.4); }
   .btn-info:hover { background: #00d2ff; color: #05070f; }
-  .btn-ok { color: #22c55e; border-color: rgba(34,197,94,.4); }
-  .btn-ok:hover { background: #22c55e; color: #05070f; }
-
-  .toast {
-    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(20px);
-    background: rgba(0,210,255,.15); border: 1px solid #00d2ff; color: #00d2ff;
-    padding: 12px 24px; border-radius: 30px;
-    font-size: 12px; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase;
-    opacity: 0; transition: all .3s ease; pointer-events: none; z-index: 1000;
-  }
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(20px); background: rgba(0,210,255,.15); border: 1px solid #00d2ff; color: #00d2ff; padding: 12px 24px; border-radius: 30px; font-size: 12px; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0; transition: all .3s ease; pointer-events: none; z-index: 1000; }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   .toast.err { border-color: #ff006e; color: #ff006e; background: rgba(255,0,110,.15); }
-
-  .refresh-status { font-size: 10px; color: #7e8b9b; letter-spacing: 1px; text-transform: uppercase; margin-top: 6px; }
-
-  .login-view {
-    position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
-    background: radial-gradient(circle at 50% 50%, rgba(0,210,255,.08), transparent 60%), #05070f;
-    z-index: 100; padding: 20px;
-  }
+  .login-view { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 50% 50%, rgba(0,210,255,.08), transparent 60%), #05070f; z-index: 100; padding: 20px; }
   .login-view.hidden { display: none; }
-  .login-card {
-    width: 100%; max-width: 400px;
-    background: rgba(10,14,28,.9);
-    border: 1px solid rgba(0,210,255,.25);
-    border-radius: 20px; padding: 28px 24px;
-    backdrop-filter: blur(20px);
-    box-shadow: 0 30px 60px rgba(0,0,0,.6);
-  }
-  .login-card h2 {
-    font-size: 18px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;
-    margin-bottom: 6px;
-    background: linear-gradient(90deg, #00d2ff, #8338ec);
-    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
-  }
+  .login-card { width: 100%; max-width: 400px; background: rgba(10,14,28,.9); border: 1px solid rgba(0,210,255,.25); border-radius: 20px; padding: 28px 24px; backdrop-filter: blur(20px); box-shadow: 0 30px 60px rgba(0,0,0,.6); }
+  .login-card h2 { font-size: 18px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; background: linear-gradient(90deg, #00d2ff, #8338ec); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
   .login-card .hint { font-size: 12px; color: #7e8b9b; margin-bottom: 20px; }
-  .login-card input {
-    width: 100%; padding: 14px 16px; margin-bottom: 12px;
-    background: rgba(5,7,15,.75);
-    border: 1px solid rgba(0,210,255,.25);
-    border-radius: 12px; color: #fff;
-    font-family: inherit; font-size: 15px; outline: none;
-  }
+  .login-card input { width: 100%; padding: 14px 16px; margin-bottom: 12px; background: rgba(5,7,15,.75); border: 1px solid rgba(0,210,255,.25); border-radius: 12px; color: #fff; font-family: inherit; font-size: 15px; outline: none; }
   .login-card input:focus { border-color: #00d2ff; box-shadow: 0 0 0 3px rgba(0,210,255,.15); }
-  .login-card button {
-    width: 100%; padding: 14px;
-    border: none; border-radius: 30px;
-    background: linear-gradient(135deg, #00d2ff, #8338ec);
-    color: #fff; font-family: inherit;
-    font-size: 12px; font-weight: 900;
-    letter-spacing: 2px; text-transform: uppercase;
-    cursor: pointer;
-    box-shadow: 0 12px 30px rgba(0,210,255,.35);
-  }
+  .login-card button { width: 100%; padding: 14px; border: none; border-radius: 30px; background: linear-gradient(135deg, #00d2ff, #8338ec); color: #fff; font-family: inherit; font-size: 12px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; box-shadow: 0 12px 30px rgba(0,210,255,.35); }
   .login-card button:active { transform: scale(.97); }
-
-  .user-bar {
-    display: flex; align-items: center; gap: 12px;
-    margin-bottom: 18px;
-    font-size: 11px; color: #7e8b9b;
-    letter-spacing: 1.5px; text-transform: uppercase;
-    font-weight: 700; flex-wrap: wrap;
-  }
-  .user-bar .role {
-    padding: 3px 10px; border-radius: 12px;
-    background: rgba(0,210,255,.15); color: #00d2ff;
-  }
+  .login-link { text-align: center; margin-top: 14px; font-size: 11px; color: #7e8b9b; cursor: pointer; letter-spacing: 1.5px; text-transform: uppercase; }
+  .login-link:hover { color: #00d2ff; }
+  .user-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; font-size: 11px; color: #7e8b9b; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; flex-wrap: wrap; }
+  .user-bar .role { padding: 3px 10px; border-radius: 12px; background: rgba(0,210,255,.15); color: #00d2ff; }
   .user-bar .role.admin { background: rgba(255,0,110,.15); color: #ff006e; }
   .user-bar .role.moderator { background: rgba(255,177,0,.15); color: #ffb100; }
   .user-bar a { color: #ff006e; cursor: pointer; font-weight: 900; text-decoration: none; }
   .user-bar a:hover { color: #fff; }
-
-  .emp-row {
-    display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
-    padding: 12px 14px;
-    background: rgba(5,7,15,.6);
-    border: 1px solid rgba(255,255,255,.06);
-    border-left: 3px solid #00d2ff;
-    border-radius: 0 12px 12px 0;
-    margin-bottom: 8px;
-    font-size: 13px;
-  }
+  .emp-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; padding: 12px 14px; background: rgba(5,7,15,.6); border: 1px solid rgba(255,255,255,.06); border-left: 3px solid #00d2ff; border-radius: 0 12px 12px 0; margin-bottom: 8px; font-size: 13px; }
   .emp-row.inactive { opacity: .5; }
   .emp-row .name { font-weight: 900; color: #fff; }
   .emp-row .login { color: #7e8b9b; font-size: 11px; }
-  .emp-row .role-tag {
-    padding: 2px 10px; border-radius: 12px; font-size: 10px;
-    font-weight: 900; letter-spacing: 1px; text-transform: uppercase;
-  }
+  .emp-row .role-tag { padding: 2px 10px; border-radius: 12px; font-size: 10px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; }
   .role-tag.admin { background: rgba(255,0,110,.15); color: #ff006e; }
   .role-tag.moderator { background: rgba(255,177,0,.15); color: #ffb100; }
   .role-tag.viewer { background: rgba(126,139,155,.2); color: #b0b7c6; }
   .emp-row .actions { margin-left: auto; display: flex; gap: 6px; }
-  .emp-row .actions button {
-    background: transparent;
-    border: 1px solid rgba(255,255,255,.15);
-    color: #b0b7c6;
-    padding: 5px 10px; border-radius: 8px;
-    font-family: inherit; font-size: 10px; font-weight: 700;
-    letter-spacing: 1px; text-transform: uppercase;
-    cursor: pointer;
-  }
+  .emp-row .actions button { background: transparent; border: 1px solid rgba(255,255,255,.15); color: #b0b7c6; padding: 5px 10px; border-radius: 8px; font-family: inherit; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; }
   .emp-row .actions button:hover { color: #fff; border-color: #00d2ff; }
-
-  .add-form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 12px;
-  }
-  .add-form input, .add-form select {
-    width: 100%; padding: 10px 14px;
-    background: rgba(5,7,15,.75);
-    border: 1px solid rgba(0,210,255,.25);
-    border-radius: 10px; color: #fff;
-    font-family: inherit; font-size: 13px; outline: none;
-  }
-  .add-form button {
-    grid-column: span 2;
-    padding: 12px;
-    border: none; border-radius: 10px;
-    background: linear-gradient(135deg, #00d2ff, #8338ec);
-    color: #fff; font-family: inherit;
-    font-size: 12px; font-weight: 900;
-    letter-spacing: 2px; text-transform: uppercase;
-    cursor: pointer;
-  }
-
-  .log-row {
-    padding: 8px 12px;
-    background: rgba(5,7,15,.6);
-    border-left: 3px solid #8338ec;
-    border-radius: 0 8px 8px 0;
-    font-size: 12px;
-    margin-bottom: 6px;
-  }
+  .add-form { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+  .add-form input, .add-form select { width: 100%; padding: 10px 14px; background: rgba(5,7,15,.75); border: 1px solid rgba(0,210,255,.25); border-radius: 10px; color: #fff; font-family: inherit; font-size: 13px; outline: none; }
+  .add-form button { grid-column: span 2; padding: 12px; border: none; border-radius: 10px; background: linear-gradient(135deg, #00d2ff, #8338ec); color: #fff; font-family: inherit; font-size: 12px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; }
+  .log-row { padding: 8px 12px; background: rgba(5,7,15,.6); border-left: 3px solid #8338ec; border-radius: 0 8px 8px 0; font-size: 12px; margin-bottom: 6px; }
   .log-row .who { color: #00d2ff; font-weight: 900; }
   .log-row .what { color: #ff006e; font-weight: 700; }
   .log-row .when { color: #7e8b9b; font-size: 10px; }
+  .modal-back { position: fixed; inset: 0; background: rgba(0,0,0,.7); backdrop-filter: blur(10px); z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; }
+  .modal-back.show { display: flex; }
+  .modal { width: 100%; max-width: 400px; background: rgba(10,14,28,.95); border: 1px solid rgba(0,210,255,.3); border-radius: 20px; padding: 28px 24px; text-align: center; }
+  .modal h3 { font-size: 14px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; color: #00d2ff; margin-bottom: 8px; }
+  .modal p { font-size: 12px; color: #7e8b9b; margin-bottom: 18px; }
+  .qr-box { background: #fff; padding: 12px; border-radius: 14px; display: inline-block; margin-bottom: 14px; }
+  .qr-box img { display: block; width: 220px; height: 220px; }
+  .qr-code-text { font-size: 28px; font-weight: 900; color: #00d2ff; letter-spacing: 8px; margin-bottom: 6px; font-family: 'Montserrat', sans-serif; }
+  .qr-timer { font-size: 11px; color: #7e8b9b; letter-spacing: 1px; margin-bottom: 16px; }
+  .modal button { width: 100%; padding: 12px; border: none; border-radius: 24px; background: linear-gradient(135deg, #00d2ff, #8338ec); color: #fff; font-family: inherit; font-size: 11px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; }
+  .modal .modal-close { background: transparent; border: 1px solid rgba(255,255,255,.2); color: #b0b7c6; margin-top: 8px; }
 </style>
 </head>
 <body>
@@ -257,9 +103,31 @@
   <div class="login-card">
     <h2>Вход в админку</h2>
     <div class="hint">Введите логин и пароль сотрудника</div>
-    <input type="text" id="loginInput" placeholder="Логин" autocomplete="username">
-    <input type="password" id="passInput" placeholder="Пароль" autocomplete="current-password">
+    <input type="text" id="loginInput" placeholder="Логин" autocomplete="username" value="admin">
+    <input type="password" id="passInput" placeholder="Пароль" autocomplete="current-password" value="1234">
     <button onclick="tryLogin()">Войти</button>
+    <div class="login-link" onclick="showEnterCode()">📷 Войти по коду</div>
+  </div>
+</div>
+
+<div class="modal-back" id="codeModal">
+  <div class="modal">
+    <h3>Вход по коду</h3>
+    <p>Введи код с другого устройства</p>
+    <input type="text" id="codeInput" placeholder="XXXXXX" maxlength="6" style="width:100%;padding:14px;margin-bottom:12px;background:rgba(5,7,15,.75);border:1px solid rgba(0,210,255,.3);border-radius:12px;color:#fff;font-size:22px;font-weight:900;letter-spacing:8px;text-align:center;text-transform:uppercase;outline:none;">
+    <button onclick="loginByCode()">Войти</button>
+    <button class="modal-close" onclick="closeCodeModal()">Отмена</button>
+  </div>
+</div>
+
+<div class="modal-back" id="qrModal">
+  <div class="modal">
+    <h3>Вход по QR</h3>
+    <p>Отсканируй QR или введи код на другом устройстве</p>
+    <div class="qr-box"><img id="qrImg" src="" alt="QR"></div>
+    <div class="qr-code-text" id="qrCodeText">------</div>
+    <div class="qr-timer" id="qrTimer">действует 2 минуты</div>
+    <button onclick="closeQrModal()">Закрыть</button>
   </div>
 </div>
 
@@ -298,7 +166,6 @@
         <option value="7">07 · Контакты</option>
       </select>
       <button onclick="gotoSlide(currentSlide + 1)">Вперёд →</button>
-      <span class="refresh-status">Текущий: <b id="currentSlideLabel">0</b></span>
     </div>
   </div>
 
@@ -352,6 +219,7 @@
       <button class="btn-info" onclick="changeMyPassword()">🔒 Сменить пароль</button>
       <button class="btn-info" onclick="toggleEmployees()">👥 Сотрудники</button>
       <button class="btn-info" onclick="toggleLog()">📜 Лог действий</button>
+      <button class="btn-info" onclick="openQrModal()">📷 Войти по QR</button>
     </div>
   </div>
 </div>
@@ -362,11 +230,13 @@
   const ADMIN_URL = 'https://script.google.com/macros/s/AKfycbw5SQg8_Tu5gtx-LB5yGiOeYgoPfS0QOs8sQu1uOY8flnA2KodLDFeLj1zmxoUh4_fBtw/exec';
 
   let currentEmp = null;
+  let currentToken = null;
   let currentSlide = 0;
   let currentFilter = 'all';
   let allQuestions = [];
   let lastSeenCount = 0;
   let notificationsEnabled = false;
+  let qrTimer = null;
 
   function showToast(msg, isErr) {
     const t = document.getElementById('toast');
@@ -378,10 +248,7 @@
   }
 
   async function adminPost(payload) {
-    if (currentEmp) {
-      payload.login = currentEmp.login;
-      payload.password = currentEmp.password;
-    }
+    if (currentToken) payload.token = currentToken;
     try {
       const res = await fetch(ADMIN_URL, {
         method: 'POST',
@@ -405,16 +272,82 @@
       headers: { 'Content-Type': 'text/plain;charset=utf-8' }
     }).then(r => r.json()).catch(() => ({ ok: false }));
     if (res.ok) {
-      currentEmp = { ...res.employee, password };
-      sessionStorage.setItem('vld_emp', JSON.stringify(currentEmp));
+      currentEmp = res.employee;
+      currentToken = res.token;
+      localStorage.setItem('vld_emp', JSON.stringify(currentEmp));
+      localStorage.setItem('vld_token', currentToken);
       enterPanel();
     } else {
       showToast('Неверный логин или пароль', true);
     }
   }
 
-  function logout() {
-    sessionStorage.removeItem('vld_emp');
+  function showEnterCode() {
+    document.getElementById('codeModal').classList.add('show');
+    setTimeout(() => document.getElementById('codeInput').focus(), 100);
+  }
+
+  function closeCodeModal() {
+    document.getElementById('codeModal').classList.remove('show');
+    document.getElementById('codeInput').value = '';
+  }
+
+  async function loginByCode() {
+    const code = document.getElementById('codeInput').value.trim().toUpperCase();
+    if (code.length !== 6) { showToast('Код из 6 символов', true); return; }
+    const res = await fetch(ADMIN_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'loginByCode', code }),
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+    }).then(r => r.json()).catch(() => ({ ok: false }));
+    if (res.ok) {
+      currentEmp = res.employee;
+      currentToken = res.token;
+      localStorage.setItem('vld_emp', JSON.stringify(currentEmp));
+      localStorage.setItem('vld_token', currentToken);
+      closeCodeModal();
+      enterPanel();
+    } else {
+      showToast('Код неверный или устарел', true);
+    }
+  }
+
+  async function openQrModal() {
+    const data = await adminPost({ action: 'generateQr' });
+    if (!data.ok) { showToast('Не удалось создать QR', true); return; }
+    const url = location.origin + location.pathname + '?code=' + data.code;
+    document.getElementById('qrImg').src = 'https://api.qrserver.com/v1/create-qr-code/?size=440x440&margin=0&data=' + encodeURIComponent(url);
+    document.getElementById('qrCodeText').textContent = data.code;
+    document.getElementById('qrModal').classList.add('show');
+    startQrTimer(120);
+  }
+
+  function startQrTimer(seconds) {
+    clearInterval(qrTimer);
+    const el = document.getElementById('qrTimer');
+    const tick = () => {
+      seconds--;
+      if (seconds <= 0) {
+        clearInterval(qrTimer);
+        el.textContent = 'код устарел';
+        return;
+      }
+      const m = Math.floor(seconds / 60);
+      const s = seconds % 60;
+      el.textContent = 'действует ' + m + ':' + (s < 10 ? '0' : '') + s;
+    };
+    el.textContent = 'действует 2:00';
+    qrTimer = setInterval(tick, 1000);
+  }
+
+  function closeQrModal() {
+    document.getElementById('qrModal').classList.remove('show');
+    clearInterval(qrTimer);
+  }
+
+  async function logout() {
+    localStorage.removeItem('vld_emp');
+    localStorage.removeItem('vld_token');
     location.reload();
   }
 
@@ -425,21 +358,9 @@
     const roleEl = document.getElementById('userRole');
     roleEl.textContent = currentEmp.role;
     roleEl.className = 'role ' + currentEmp.role;
-
-    if (currentEmp.role !== 'admin') {
-      document.querySelectorAll('.btn-warn, .btn-danger').forEach(b => b.style.display = 'none');
-    }
-
-    if (currentEmp.role !== 'admin' && currentEmp.role !== 'moderator') {
-      document.querySelectorAll('.qitem-actions button').forEach(b => b.style.display = 'none');
-      document.querySelectorAll('.slider-ctrl button').forEach(b => b.style.display = 'none');
-      document.getElementById('slideSelect').disabled = true;
-    }
-
     loadSlide();
     loadQuestions();
     loadStats();
-
     setInterval(loadQuestions, 5000);
     setInterval(loadStats, 10000);
     setInterval(loadSlide, 3000);
@@ -450,9 +371,7 @@
     if (n > 7) n = 0;
     currentSlide = n;
     document.getElementById('slideSelect').value = String(n);
-    document.getElementById('currentSlideLabel').textContent = String(n);
     await adminPost({ action: 'goto', slide: n });
-    showToast('Слайд ' + n);
   }
 
   document.getElementById('slideSelect').addEventListener('change', e => {
@@ -466,8 +385,10 @@
       if (Array.isArray(data)) {
         const fresh = data.filter(q => q.text);
         const last = fresh[fresh.length - 1];
-        if (last && last.id && lastSeenCount > 0 && fresh.length > lastSeenCount) {
-          notifyNewQuestion(last);
+        if (last && last.id && lastSeenCount > 0 && fresh.length > lastSeenCount && notificationsEnabled) {
+          if (Notification.permission === 'granted') {
+            new Notification('Новый вопрос', { body: (last.name || 'Аноним') + ': ' + (last.text || '') });
+          }
         }
         lastSeenCount = fresh.length;
         allQuestions = data;
@@ -476,28 +397,10 @@
     } catch (err) {}
   }
 
-  function notifyNewQuestion(q) {
-    if (!notificationsEnabled) return;
-    if (Notification.permission === 'granted') {
-      new Notification('Новый вопрос', { body: (q.name || 'Аноним') + ': ' + (q.text || '') });
-    }
-    try {
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      const o = ctx.createOscillator();
-      const g = ctx.createGain();
-      o.connect(g); g.connect(ctx.destination);
-      o.frequency.value = 880;
-      g.gain.setValueAtTime(0.15, ctx.currentTime);
-      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
-      o.start(); o.stop(ctx.currentTime + 0.4);
-    } catch (e) {}
-  }
-
   async function enableNotifications() {
     if (!('Notification' in window)) { showToast('Не поддерживается', true); return; }
     const perm = await Notification.requestPermission();
-    if (perm === 'granted') { notificationsEnabled = true; showToast('Уведомления включены'); }
-    else { showToast('Разрешение не выдано', true); }
+    if (perm === 'granted') { notificationsEnabled = true; showToast('Включено'); }
   }
 
   async function loadStats() {
@@ -514,7 +417,6 @@
     if (data.ok) {
       currentSlide = data.slide;
       document.getElementById('slideSelect').value = String(currentSlide);
-      document.getElementById('currentSlideLabel').textContent = String(currentSlide);
     }
   }
 
@@ -524,9 +426,7 @@
   }
 
   function escapeHtml(s) {
-    return String(s)
-      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
 
   function renderQuestions() {
@@ -535,12 +435,10 @@
     if (currentFilter === 'new') items = items.filter(q => !q.hidden && !q.answered);
     if (currentFilter === 'answered') items = items.filter(q => q.answered);
     if (currentFilter === 'hidden') items = items.filter(q => q.hidden);
-
     if (!items.length) {
       list.innerHTML = '<div style="color:#7e8b9b;font-size:12px;text-align:center;padding:20px;">Пусто</div>';
       return;
     }
-
     list.innerHTML = items.map(q => `
       <div class="qitem ${q.hidden ? 'hidden' : ''} ${q.answered ? 'answered' : ''}">
         <div class="qitem-head">
@@ -549,12 +447,8 @@
         </div>
         <div class="qitem-body">${escapeHtml(q.text || '')}</div>
         <div class="qitem-actions">
-          ${q.answered
-            ? `<button onclick="unanswerQ('${q.id}')">↺ Снять</button>`
-            : `<button onclick="answerQ('${q.id}')">✓ Ответил</button>`}
-          ${q.hidden
-            ? `<button onclick="unhideQ('${q.id}')">↺ Показать</button>`
-            : `<button onclick="hideQ('${q.id}')">✕ Скрыть</button>`}
+          ${q.answered ? `<button onclick="unanswerQ('${q.id}')">↺ Снять</button>` : `<button onclick="answerQ('${q.id}')">✓ Ответил</button>`}
+          ${q.hidden ? `<button onclick="unhideQ('${q.id}')">↺ Показать</button>` : `<button onclick="hideQ('${q.id}')">✕ Скрыть</button>`}
         </div>
       </div>
     `).join('');
@@ -564,7 +458,6 @@
   async function unhideQ(id) { await adminPost({ action: 'unhideQuestion', id }); await refresh(); }
   async function answerQ(id) { await adminPost({ action: 'answerQuestion', id }); await refresh(); }
   async function unanswerQ(id) { await adminPost({ action: 'unanswerQuestion', id }); await refresh(); }
-
   async function refresh() { await loadQuestions(); await loadStats(); }
 
   async function clearHidden() {
@@ -592,27 +485,23 @@
   }
 
   async function changeMyPassword() {
-    const p = prompt('Новый пароль (минимум 6 символов):');
-    if (!p || p.length < 6) return;
+    const p = prompt('Новый пароль (минимум 4 символа):');
+    if (!p || p.length < 4) return;
     const data = await adminPost({ action: 'changePassword', newPassword: p });
-    if (data.ok) { showToast('Пароль изменён'); currentEmp.password = p; sessionStorage.setItem('vld_emp', JSON.stringify(currentEmp)); }
+    if (data.ok) showToast('Пароль изменён');
     else showToast('Ошибка: ' + data.error, true);
   }
 
   function toggleEmployees() {
     const p = document.getElementById('employeesPanel');
-    if (p.style.display === 'none') {
-      p.style.display = 'block';
-      loadEmployees();
-    } else p.style.display = 'none';
+    if (p.style.display === 'none') { p.style.display = 'block'; loadEmployees(); }
+    else p.style.display = 'none';
   }
 
   function toggleLog() {
     const p = document.getElementById('logPanel');
-    if (p.style.display === 'none') {
-      p.style.display = 'block';
-      loadLog();
-    } else p.style.display = 'none';
+    if (p.style.display === 'none') { p.style.display = 'block'; loadLog(); }
+    else p.style.display = 'none';
   }
 
   async function loadEmployees() {
@@ -625,7 +514,6 @@
         <span class="name">${escapeHtml(e.name)}</span>
         <span class="login">@${escapeHtml(e.login)}</span>
         <span class="role-tag ${e.role}">${e.role}</span>
-        ${!e.active ? '<span class="login">(отключён)</span>' : ''}
         <div class="actions">
           <button onclick="changeRole('${e.id}')">Роль</button>
           <button onclick="toggleEmp('${e.id}')">${e.active ? 'Откл.' : 'Вкл.'}</button>
@@ -653,13 +541,10 @@
     else showToast('Ошибка: ' + data.error, true);
   }
 
-  async function toggleEmp(id) {
-    const data = await adminPost({ action: 'toggleEmployee', id });
-    if (data.ok) loadEmployees();
-  }
+  async function toggleEmp(id) { const d = await adminPost({ action: 'toggleEmployee', id }); if (d.ok) loadEmployees(); }
 
   async function changeRole(id) {
-    const role = prompt('Новая роль (admin / moderator / viewer):');
+    const role = prompt('Роль (admin / moderator / viewer):');
     if (!role) return;
     const data = await adminPost({ action: 'changeRole', id, role });
     if (data.ok) { showToast('Роль изменена'); loadEmployees(); }
@@ -676,7 +561,6 @@
         <span class="who">${escapeHtml(l.login)}</span>
         <span class="what">${escapeHtml(l.action)}</span>
         ${l.object ? '<span>→ ' + escapeHtml(l.object) + '</span>' : ''}
-        ${l.details ? '<span style="color:#7e8b9b;"> ' + escapeHtml(l.details) + '</span>' : ''}
       </div>
     `).join('');
   }
@@ -690,12 +574,31 @@
     });
   });
 
-  const saved = sessionStorage.getItem('vld_emp');
-  if (saved) {
-    try {
-      currentEmp = JSON.parse(saved);
-      enterPanel();
-    } catch (e) {}
+  const urlParams = new URLSearchParams(location.search);
+  const codeFromUrl = urlParams.get('code');
+  if (codeFromUrl) {
+    document.getElementById('codeInput').value = codeFromUrl.toUpperCase();
+    loginByCode();
+    history.replaceState(null, '', location.pathname);
+  }
+
+  const savedToken = localStorage.getItem('vld_token');
+  const savedEmp = localStorage.getItem('vld_emp');
+  if (savedToken && savedEmp) {
+    fetch(ADMIN_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'loginByToken', token: savedToken }),
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+    }).then(r => r.json()).then(d => {
+      if (d.ok) {
+        currentEmp = d.employee;
+        currentToken = d.token;
+        enterPanel();
+      } else {
+        localStorage.removeItem('vld_token');
+        localStorage.removeItem('vld_emp');
+      }
+    }).catch(() => {});
   }
 </script>
 </body>
