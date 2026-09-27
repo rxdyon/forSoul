@@ -1429,6 +1429,73 @@
 <script>
   const SHEET_URL = 'https://script.google.com/macros/s/AKfycbySBLoyfblHdstXSdrfLsLDufwLijiVLdWlPPg63S1RgSb42hLuJaOOQC8zBGPuhh8SyQ/exec';
 
+  const BAD_WORDS = [
+    'хуй','хуя','хую','хуе','хуи','хуё','хуйн','хуяк','хуяч',
+    'пизд','пизж','пезд','бляд','блят','блядь','бля',
+    'ебал','ебан','ебат','ебут','ебет','ебуч','ебучк',
+    'еби','ебн','ёб','ёбн','ёба','ёбу','ёбт',
+    'выеб','заеб','наеб','отъеб','подъеб','уеб','уёб','съеб',
+    'долбоеб','долбоёб','долбаеб','долбаёб','муд','муда','муди','мудл',
+    'залуп','шлюх','шлюш',
+    'гандон','гандо','гондон','манда','мандав','мандавош',
+    'педик','пидор','пидар','пидр','пидорас',
+    'жоп',
+    'говн','говён','говен',
+    'срак',
+    'дроч','дрочи','дрочер',
+    'мраз',
+    'твар',
+    'ссат','ссыкл','ссыкун',
+    'хер',
+    'херн',
+    'нахуй','нахуя','нахуяч',
+    'похуй','похуя','похуи','похую',
+    'охуе','охуи','охуя','ахуе','ахуи','ахуя',
+    'нифига','нихуя','нихуе','нихуи',
+    'fuck','fuk','fck','phuck','phuk',
+    'shit','sh1t','shyt',
+    'bitch','b1tch','biatch','byatch',
+    'cunt','kunt',
+    'dick','d1ck','dik','dyk',
+    'pussy','puss','pussi',
+    'asshole','a55','4ss',
+    'bastard','bastar','basterd',
+    'whore','wh0re','hoar',
+    'slut','sl0t',
+    'nigg','n1gg',
+    'cock','c0ck','kok',
+    'tit','t1t','titt','tits',
+    'porn','p0rn','porno',
+    'rape','raep'
+  ];
+
+  function normalizeForFilter(str) {
+    return String(str || '')
+      .toLowerCase()
+      .replace(/@/g, 'а')
+      .replace(/4/g, 'а')
+      .replace(/0/g, 'о')
+      .replace(/3/g, 'е')
+      .replace(/\$/g, 'с')
+      .replace(/[!|1]/g, 'и')
+      .replace(/6/g, 'б')
+      .replace(/\*/g, '')
+      .replace(/[.\-_]+/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function containsBadWords(str) {
+    const norm = normalizeForFilter(str);
+    const noSpace = norm.replace(/\s+/g, '');
+    for (let i = 0; i < BAD_WORDS.length; i++) {
+      const w = BAD_WORDS[i];
+      if (norm.indexOf(w) !== -1) return true;
+      if (noSpace.indexOf(w.replace(/\s+/g, '')) !== -1) return true;
+    }
+    return false;
+  }
+
   const params = new URLSearchParams(location.search);
   if (params.has('ask')) {
     document.getElementById('askView').classList.add('active');
@@ -1528,6 +1595,11 @@
       if (text.length > MAX_LEN) {
         alert('Вопрос слишком длинный. Максимум ' + MAX_LEN + ' символов.');
         askText.focus();
+        return;
+      }
+
+      if (containsBadWords(text) || containsBadWords(name)) {
+        alert('Пожалуйста, переформулируйте вопрос без нецензурной лексики.');
         return;
       }
 
