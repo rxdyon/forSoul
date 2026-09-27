@@ -8,9 +8,7 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { font-family: 'Montserrat', sans-serif; background: #05070f; color: #fff; min-height: 100dvh; padding: 20px; }
-  h1 { font-size: 22px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px;
-    background: linear-gradient(90deg, #00d2ff, #8338ec, #ff006e);
-    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  h1 { font-size: 22px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; background: linear-gradient(90deg, #00d2ff, #8338ec, #ff006e); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
   .sub { font-size: 12px; color: #7e8b9b; margin-bottom: 22px; }
   .panel { background: rgba(10,14,28,.85); border: 1px solid rgba(0,210,255,.2); border-radius: 16px; padding: 20px; margin-bottom: 20px; backdrop-filter: blur(20px); }
   .panel h2 { font-size: 11px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; color: #00d2ff; margin-bottom: 14px; }
@@ -19,10 +17,7 @@
   .stat .num { font-size: 28px; font-weight: 900; color: #00d2ff; line-height: 1; }
   .stat .lbl { font-size: 10px; color: #7e8b9b; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 6px; }
   .slider-ctrl { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
-  .slider-ctrl button, .slider-ctrl select {
-    background: rgba(0,210,255,.1); border: 1px solid rgba(0,210,255,.3); color: #00d2ff;
-    padding: 12px 20px; border-radius: 12px; font-family: inherit; font-size: 13px; font-weight: 900; letter-spacing: 1px; cursor: pointer;
-  }
+  .slider-ctrl button, .slider-ctrl select { background: rgba(0,210,255,.1); border: 1px solid rgba(0,210,255,.3); color: #00d2ff; padding: 12px 20px; border-radius: 12px; font-family: inherit; font-size: 13px; font-weight: 900; letter-spacing: 1px; cursor: pointer; }
   .slider-ctrl select { background: rgba(5,7,15,.9); color: #fff; }
   .slider-ctrl button:hover { background: #00d2ff; color: #05070f; }
   .qlist { display: flex; flex-direction: column; gap: 10px; max-height: 500px; overflow-y: auto; padding-right: 6px; }
@@ -57,44 +52,10 @@
   .login-card input { width: 100%; padding: 14px 16px; margin-bottom: 12px; background: rgba(5,7,15,.75); border: 1px solid rgba(0,210,255,.25); border-radius: 12px; color: #fff; font-family: inherit; font-size: 15px; outline: none; }
   .login-card input:focus { border-color: #00d2ff; box-shadow: 0 0 0 3px rgba(0,210,255,.15); }
   .login-card button { width: 100%; padding: 14px; border: none; border-radius: 30px; background: linear-gradient(135deg, #00d2ff, #8338ec); color: #fff; font-family: inherit; font-size: 12px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; box-shadow: 0 12px 30px rgba(0,210,255,.35); }
-  .login-card button:active { transform: scale(.97); }
-  .login-link { text-align: center; margin-top: 14px; font-size: 11px; color: #7e8b9b; cursor: pointer; letter-spacing: 1.5px; text-transform: uppercase; }
-  .login-link:hover { color: #00d2ff; }
   .user-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; font-size: 11px; color: #7e8b9b; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; flex-wrap: wrap; }
-  .user-bar .role { padding: 3px 10px; border-radius: 12px; background: rgba(0,210,255,.15); color: #00d2ff; }
-  .user-bar .role.admin { background: rgba(255,0,110,.15); color: #ff006e; }
-  .user-bar .role.moderator { background: rgba(255,177,0,.15); color: #ffb100; }
+  .user-bar .role { padding: 3px 10px; border-radius: 12px; background: rgba(255,0,110,.15); color: #ff006e; }
   .user-bar a { color: #ff006e; cursor: pointer; font-weight: 900; text-decoration: none; }
   .user-bar a:hover { color: #fff; }
-  .emp-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; padding: 12px 14px; background: rgba(5,7,15,.6); border: 1px solid rgba(255,255,255,.06); border-left: 3px solid #00d2ff; border-radius: 0 12px 12px 0; margin-bottom: 8px; font-size: 13px; }
-  .emp-row.inactive { opacity: .5; }
-  .emp-row .name { font-weight: 900; color: #fff; }
-  .emp-row .login { color: #7e8b9b; font-size: 11px; }
-  .emp-row .role-tag { padding: 2px 10px; border-radius: 12px; font-size: 10px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; }
-  .role-tag.admin { background: rgba(255,0,110,.15); color: #ff006e; }
-  .role-tag.moderator { background: rgba(255,177,0,.15); color: #ffb100; }
-  .role-tag.viewer { background: rgba(126,139,155,.2); color: #b0b7c6; }
-  .emp-row .actions { margin-left: auto; display: flex; gap: 6px; }
-  .emp-row .actions button { background: transparent; border: 1px solid rgba(255,255,255,.15); color: #b0b7c6; padding: 5px 10px; border-radius: 8px; font-family: inherit; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; }
-  .emp-row .actions button:hover { color: #fff; border-color: #00d2ff; }
-  .add-form { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
-  .add-form input, .add-form select { width: 100%; padding: 10px 14px; background: rgba(5,7,15,.75); border: 1px solid rgba(0,210,255,.25); border-radius: 10px; color: #fff; font-family: inherit; font-size: 13px; outline: none; }
-  .add-form button { grid-column: span 2; padding: 12px; border: none; border-radius: 10px; background: linear-gradient(135deg, #00d2ff, #8338ec); color: #fff; font-family: inherit; font-size: 12px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; }
-  .log-row { padding: 8px 12px; background: rgba(5,7,15,.6); border-left: 3px solid #8338ec; border-radius: 0 8px 8px 0; font-size: 12px; margin-bottom: 6px; }
-  .log-row .who { color: #00d2ff; font-weight: 900; }
-  .log-row .what { color: #ff006e; font-weight: 700; }
-  .log-row .when { color: #7e8b9b; font-size: 10px; }
-  .modal-back { position: fixed; inset: 0; background: rgba(0,0,0,.7); backdrop-filter: blur(10px); z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; }
-  .modal-back.show { display: flex; }
-  .modal { width: 100%; max-width: 400px; background: rgba(10,14,28,.95); border: 1px solid rgba(0,210,255,.3); border-radius: 20px; padding: 28px 24px; text-align: center; }
-  .modal h3 { font-size: 14px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; color: #00d2ff; margin-bottom: 8px; }
-  .modal p { font-size: 12px; color: #7e8b9b; margin-bottom: 18px; }
-  .qr-box { background: #fff; padding: 12px; border-radius: 14px; display: inline-block; margin-bottom: 14px; }
-  .qr-box img { display: block; width: 220px; height: 220px; }
-  .qr-code-text { font-size: 28px; font-weight: 900; color: #00d2ff; letter-spacing: 8px; margin-bottom: 6px; font-family: 'Montserrat', sans-serif; }
-  .qr-timer { font-size: 11px; color: #7e8b9b; letter-spacing: 1px; margin-bottom: 16px; }
-  .modal button { width: 100%; padding: 12px; border: none; border-radius: 24px; background: linear-gradient(135deg, #00d2ff, #8338ec); color: #fff; font-family: inherit; font-size: 11px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; }
-  .modal .modal-close { background: transparent; border: 1px solid rgba(255,255,255,.2); color: #b0b7c6; margin-top: 8px; }
 </style>
 </head>
 <body>
@@ -102,52 +63,25 @@
 <div class="login-view" id="loginView">
   <div class="login-card">
     <h2>Вход в админку</h2>
-    <div class="hint">Введите логин и пароль сотрудника</div>
-    <input type="text" id="loginInput" placeholder="Логин" autocomplete="username" value="admin">
-    <input type="password" id="passInput" placeholder="Пароль" autocomplete="current-password" value="1234">
+    <div class="hint">Логин и пароль администратора</div>
+    <input type="text" id="loginInput" placeholder="Логин" value="admin">
+    <input type="password" id="passInput" placeholder="Пароль" value="1234">
     <button onclick="tryLogin()">Войти</button>
-    <div class="login-link" onclick="showEnterCode()">📷 Войти по коду</div>
-  </div>
-</div>
-
-<div class="modal-back" id="codeModal">
-  <div class="modal">
-    <h3>Вход по коду</h3>
-    <p>Введи код с другого устройства</p>
-    <input type="text" id="codeInput" placeholder="XXXXXX" maxlength="6" style="width:100%;padding:14px;margin-bottom:12px;background:rgba(5,7,15,.75);border:1px solid rgba(0,210,255,.3);border-radius:12px;color:#fff;font-size:22px;font-weight:900;letter-spacing:8px;text-align:center;text-transform:uppercase;outline:none;">
-    <button onclick="loginByCode()">Войти</button>
-    <button class="modal-close" onclick="closeCodeModal()">Отмена</button>
-  </div>
-</div>
-
-<div class="modal-back" id="qrModal">
-  <div class="modal">
-    <h3>Вход по QR</h3>
-    <p>Отсканируй QR или введи код на другом устройстве</p>
-    <div class="qr-box"><img id="qrImg" src="" alt="QR"></div>
-    <div class="qr-code-text" id="qrCodeText">------</div>
-    <div class="qr-timer" id="qrTimer">действует 2 минуты</div>
-    <button onclick="closeQrModal()">Закрыть</button>
   </div>
 </div>
 
 <div id="mainView" style="display:none;">
-  <div class="user-bar">
-    <span id="userName">—</span>
-    <span class="role" id="userRole">—</span>
-    <a onclick="logout()">Выйти</a>
-  </div>
-
+  <div class="user-bar"><span id="userName">—</span><span class="role">admin</span><a onclick="logout()">Выйти</a></div>
   <h1>Админ-панель</h1>
-  <div class="sub">Управление презентацией в реальном времени</div>
+  <div class="sub">Управление презентацией</div>
 
   <div class="panel">
     <h2>Статистика</h2>
     <div class="stats">
-      <div class="stat"><div class="num" id="stTotal">—</div><div class="lbl">Всего</div></div>
-      <div class="stat"><div class="num" id="stHour">—</div><div class="lbl">За час</div></div>
-      <div class="stat"><div class="num" id="stHidden">—</div><div class="lbl">Скрыто</div></div>
-      <div class="stat"><div class="num" id="stAnswered">—</div><div class="lbl">Отвечено</div></div>
+      <div class="stat"><div class="num" id="stTotal">0</div><div class="lbl">Всего</div></div>
+      <div class="stat"><div class="num" id="stHour">0</div><div class="lbl">За час</div></div>
+      <div class="stat"><div class="num" id="stHidden">0</div><div class="lbl">Скрыто</div></div>
+      <div class="stat"><div class="num" id="stAnswered">0</div><div class="lbl">Отвечено</div></div>
     </div>
   </div>
 
@@ -156,14 +90,9 @@
     <div class="slider-ctrl">
       <button onclick="gotoSlide(currentSlide - 1)">← Назад</button>
       <select id="slideSelect">
-        <option value="0">00 · Спойлер</option>
-        <option value="1">01 · Визитка</option>
-        <option value="2">02 · Мосты</option>
-        <option value="3">03 · Крепость</option>
-        <option value="4">04 · Природа</option>
-        <option value="5">05 · Погружение</option>
-        <option value="6">06 · Опрос</option>
-        <option value="7">07 · Контакты</option>
+        <option value="0">00 · Спойлер</option><option value="1">01 · Визитка</option><option value="2">02 · Мосты</option>
+        <option value="3">03 · Крепость</option><option value="4">04 · Природа</option><option value="5">05 · Погружение</option>
+        <option value="6">06 · Опрос</option><option value="7">07 · Контакты</option>
       </select>
       <button onclick="gotoSlide(currentSlide + 1)">Вперёд →</button>
     </div>
@@ -177,66 +106,39 @@
       <button data-filter="answered">Отвеченные</button>
       <button data-filter="hidden">Скрытые</button>
     </div>
-    <div class="qlist" id="qlist">
-      <div style="color:#7e8b9b;font-size:12px;text-align:center;padding:20px;">Загрузка...</div>
-    </div>
+    <div class="qlist" id="qlist"><div style="color:#7e8b9b;font-size:12px;text-align:center;padding:20px;">Загрузка...</div></div>
   </div>
 
   <div class="panel">
     <h2>Действия</h2>
     <div class="danger-buttons">
-      <button class="btn-info" onclick="exportCsv()">📥 Экспорт CSV</button>
       <button class="btn-warn" onclick="clearHidden()">🧹 Удалить скрытые</button>
       <button class="btn-danger" onclick="clearAll()">🗑 Удалить все</button>
-      <button class="btn-info" onclick="enableNotifications()">🔔 Уведомления</button>
-    </div>
-  </div>
-
-  <div class="panel" id="employeesPanel" style="display:none;">
-    <h2>Сотрудники</h2>
-    <div id="employeesList"></div>
-    <div class="add-form">
-      <input type="text" id="newEmpName" placeholder="Имя">
-      <input type="text" id="newEmpLogin" placeholder="Логин">
-      <input type="text" id="newEmpPassword" placeholder="Пароль">
-      <select id="newEmpRole">
-        <option value="viewer">viewer</option>
-        <option value="moderator">moderator</option>
-        <option value="admin">admin</option>
-      </select>
-      <button onclick="addEmployee()">Добавить сотрудника</button>
-    </div>
-  </div>
-
-  <div class="panel" id="logPanel" style="display:none;">
-    <h2>Лог действий</h2>
-    <div id="logList"></div>
-  </div>
-
-  <div class="panel">
-    <h2>Профиль</h2>
-    <div class="danger-buttons">
-      <button class="btn-info" onclick="changeMyPassword()">🔒 Сменить пароль</button>
-      <button class="btn-info" onclick="toggleEmployees()">👥 Сотрудники</button>
-      <button class="btn-info" onclick="toggleLog()">📜 Лог действий</button>
-      <button class="btn-info" onclick="openQrModal()">📷 Войти по QR</button>
     </div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
-<script>
-  const ADMIN_URL = 'https://script.google.com/macros/s/AKfycbw5SQg8_Tu5gtx-LB5yGiOeYgoPfS0QOs8sQu1uOY8flnA2KodLDFeLj1zmxoUh4_fBtw/exec';
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, query, orderBy, onSnapshot, doc, updateDoc, deleteDoc, setDoc, getDoc, writeBatch, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  let currentEmp = null;
-  let currentToken = null;
+  const firebaseConfig = {
+    apiKey: "AIzaSyAdU701ut5TxNUrGK-xodPxYynT5eu1RZc",
+    authDomain: "preproject-d8e53.firebaseapp.com",
+    projectId: "preproject-d8e53",
+    storageBucket: "preproject-d8e53.firebasestorage.app",
+    messagingSenderId: "64293786154",
+    appId: "1:64293786154:web:2434e112a1d7ee08f46953"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
   let currentSlide = 0;
   let currentFilter = 'all';
   let allQuestions = [];
-  let lastSeenCount = 0;
-  let notificationsEnabled = false;
-  let qrTimer = null;
 
   function showToast(msg, isErr) {
     const t = document.getElementById('toast');
@@ -247,122 +149,52 @@
     t._h = setTimeout(() => t.classList.remove('show'), 2500);
   }
 
-  async function adminPost(payload) {
-    if (currentToken) payload.token = currentToken;
-    try {
-      const res = await fetch(ADMIN_URL, {
-        method: 'POST',
-        body: JSON.stringify(payload),
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-      });
-      return await res.json();
-    } catch (err) {
-      showToast('Ошибка: ' + err.message, true);
-      return { ok: false };
-    }
+  async function sha256Hex(text) {
+    const buf = new TextEncoder().encode(text);
+    const h = await crypto.subtle.digest('SHA-256', buf);
+    return Array.from(new Uint8Array(h)).map(b => b.toString(16).padStart(2, '0')).join('');
   }
 
   async function tryLogin() {
     const login = document.getElementById('loginInput').value.trim();
     const password = document.getElementById('passInput').value;
     if (!login || !password) return;
-    const res = await fetch(ADMIN_URL, {
-      method: 'POST',
-      body: JSON.stringify({ action: 'login', login, password }),
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-    }).then(r => r.json()).catch(() => ({ ok: false }));
-    if (res.ok) {
-      currentEmp = res.employee;
-      currentToken = res.token;
-      localStorage.setItem('vld_emp', JSON.stringify(currentEmp));
-      localStorage.setItem('vld_token', currentToken);
-      enterPanel();
-    } else {
-      showToast('Неверный логин или пароль', true);
-    }
-  }
 
-  function showEnterCode() {
-    document.getElementById('codeModal').classList.add('show');
-    setTimeout(() => document.getElementById('codeInput').focus(), 100);
-  }
+    try {
+      const empRef = doc(db, 'employees', login);
+      const empSnap = await getDoc(empRef);
 
-  function closeCodeModal() {
-    document.getElementById('codeModal').classList.remove('show');
-    document.getElementById('codeInput').value = '';
-  }
-
-  async function loginByCode() {
-    const code = document.getElementById('codeInput').value.trim().toUpperCase();
-    if (code.length !== 6) { showToast('Код из 6 символов', true); return; }
-    const res = await fetch(ADMIN_URL, {
-      method: 'POST',
-      body: JSON.stringify({ action: 'loginByCode', code }),
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-    }).then(r => r.json()).catch(() => ({ ok: false }));
-    if (res.ok) {
-      currentEmp = res.employee;
-      currentToken = res.token;
-      localStorage.setItem('vld_emp', JSON.stringify(currentEmp));
-      localStorage.setItem('vld_token', currentToken);
-      closeCodeModal();
-      enterPanel();
-    } else {
-      showToast('Код неверный или устарел', true);
-    }
-  }
-
-  async function openQrModal() {
-    const data = await adminPost({ action: 'generateQr' });
-    if (!data.ok) { showToast('Не удалось создать QR', true); return; }
-    const url = location.origin + location.pathname + '?code=' + data.code;
-    document.getElementById('qrImg').src = 'https://api.qrserver.com/v1/create-qr-code/?size=440x440&margin=0&data=' + encodeURIComponent(url);
-    document.getElementById('qrCodeText').textContent = data.code;
-    document.getElementById('qrModal').classList.add('show');
-    startQrTimer(120);
-  }
-
-  function startQrTimer(seconds) {
-    clearInterval(qrTimer);
-    const el = document.getElementById('qrTimer');
-    const tick = () => {
-      seconds--;
-      if (seconds <= 0) {
-        clearInterval(qrTimer);
-        el.textContent = 'код устарел';
+      if (!empSnap.exists()) {
+        if (login === 'admin' && password === '1234') {
+          const hash = await sha256Hex(password);
+          await setDoc(empRef, { name: 'Главный админ', login: 'admin', passHash: hash, role: 'admin', active: true, createdAt: serverTimestamp() });
+          sessionStorage.setItem('vld_admin_ok', '1');
+          enterPanel();
+          return;
+        }
+        showToast('Неверный логин или пароль', true);
         return;
       }
-      const m = Math.floor(seconds / 60);
-      const s = seconds % 60;
-      el.textContent = 'действует ' + m + ':' + (s < 10 ? '0' : '') + s;
-    };
-    el.textContent = 'действует 2:00';
-    qrTimer = setInterval(tick, 1000);
+
+      const data = empSnap.data();
+      if (!data.active) { showToast('Аккаунт отключён', true); return; }
+      const hash = await sha256Hex(password);
+      if (hash !== data.passHash) { showToast('Неверный пароль', true); return; }
+
+      sessionStorage.setItem('vld_admin_ok', '1');
+      enterPanel();
+    } catch (err) {
+      showToast('Ошибка входа: ' + err.message, true);
+    }
   }
 
-  function closeQrModal() {
-    document.getElementById('qrModal').classList.remove('show');
-    clearInterval(qrTimer);
-  }
-
-  async function logout() {
-    localStorage.removeItem('vld_emp');
-    localStorage.removeItem('vld_token');
-    location.reload();
-  }
+  function logout() { sessionStorage.removeItem('vld_admin_ok'); location.reload(); }
 
   function enterPanel() {
     document.getElementById('loginView').classList.add('hidden');
     document.getElementById('mainView').style.display = 'block';
-    document.getElementById('userName').textContent = currentEmp.name || currentEmp.login;
-    const roleEl = document.getElementById('userRole');
-    roleEl.textContent = currentEmp.role;
-    roleEl.className = 'role ' + currentEmp.role;
-    loadSlide();
     loadQuestions();
-    loadStats();
-    setInterval(loadQuestions, 5000);
-    setInterval(loadStats, 10000);
+    loadSlide();
     setInterval(loadSlide, 3000);
   }
 
@@ -371,58 +203,34 @@
     if (n > 7) n = 0;
     currentSlide = n;
     document.getElementById('slideSelect').value = String(n);
-    await adminPost({ action: 'goto', slide: n });
+    try {
+      await setDoc(doc(db, 'config', 'currentSlide'), { value: n }, { merge: true });
+    } catch (err) {}
   }
 
   document.getElementById('slideSelect').addEventListener('change', e => {
     gotoSlide(parseInt(e.target.value, 10));
   });
 
-  async function loadQuestions() {
+  async function loadSlide() {
     try {
-      const res = await fetch(ADMIN_URL, { cache: 'no-store' });
-      const data = await res.json();
-      if (Array.isArray(data)) {
-        const fresh = data.filter(q => q.text);
-        const last = fresh[fresh.length - 1];
-        if (last && last.id && lastSeenCount > 0 && fresh.length > lastSeenCount && notificationsEnabled) {
-          if (Notification.permission === 'granted') {
-            new Notification('Новый вопрос', { body: (last.name || 'Аноним') + ': ' + (last.text || '') });
-          }
+      const s = await getDoc(doc(db, 'config', 'currentSlide'));
+      if (s.exists()) {
+        const v = s.data().value;
+        if (typeof v === 'number') {
+          currentSlide = v;
+          document.getElementById('slideSelect').value = String(v);
         }
-        lastSeenCount = fresh.length;
-        allQuestions = data;
-        renderQuestions();
       }
     } catch (err) {}
   }
 
-  async function enableNotifications() {
-    if (!('Notification' in window)) { showToast('Не поддерживается', true); return; }
-    const perm = await Notification.requestPermission();
-    if (perm === 'granted') { notificationsEnabled = true; showToast('Включено'); }
-  }
-
-  async function loadStats() {
-    const data = await adminPost({ action: 'stats' });
-    if (!data.ok) return;
-    document.getElementById('stTotal').textContent = data.total;
-    document.getElementById('stHour').textContent = data.lastHour;
-    document.getElementById('stHidden').textContent = data.hidden;
-    document.getElementById('stAnswered').textContent = data.answered;
-  }
-
-  async function loadSlide() {
-    const data = await adminPost({ action: 'getSlide' });
-    if (data.ok) {
-      currentSlide = data.slide;
-      document.getElementById('slideSelect').value = String(currentSlide);
-    }
-  }
-
-  function fmtTime(iso) {
-    try { return new Date(iso).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }); }
-    catch (e) { return ''; }
+  function fmtTime(ts) {
+    if (!ts) return '';
+    try {
+      const d = ts.toDate ? ts.toDate() : new Date(ts);
+      return d.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+    } catch (e) { return ''; }
   }
 
   function escapeHtml(s) {
@@ -435,6 +243,13 @@
     if (currentFilter === 'new') items = items.filter(q => !q.hidden && !q.answered);
     if (currentFilter === 'answered') items = items.filter(q => q.answered);
     if (currentFilter === 'hidden') items = items.filter(q => q.hidden);
+
+    document.getElementById('stTotal').textContent = allQuestions.length;
+    const hourAgo = Date.now() - 3600000;
+    document.getElementById('stHour').textContent = allQuestions.filter(q => q.createdAt && q.createdAt.toDate && q.createdAt.toDate().getTime() > hourAgo).length;
+    document.getElementById('stHidden').textContent = allQuestions.filter(q => q.hidden).length;
+    document.getElementById('stAnswered').textContent = allQuestions.filter(q => q.answered).length;
+
     if (!items.length) {
       list.innerHTML = '<div style="color:#7e8b9b;font-size:12px;text-align:center;padding:20px;">Пусто</div>';
       return;
@@ -443,7 +258,7 @@
       <div class="qitem ${q.hidden ? 'hidden' : ''} ${q.answered ? 'answered' : ''}">
         <div class="qitem-head">
           <span>${escapeHtml(q.name || 'Аноним')}</span>
-          <span class="meta">${fmtTime(q.time)} · слайд ${q.slide ?? '—'}</span>
+          <span class="meta">${fmtTime(q.createdAt)} · слайд ${q.slide ?? '—'}</span>
         </div>
         <div class="qitem-body">${escapeHtml(q.text || '')}</div>
         <div class="qitem-actions">
@@ -454,115 +269,35 @@
     `).join('');
   }
 
-  async function hideQ(id) { await adminPost({ action: 'hideQuestion', id }); await refresh(); }
-  async function unhideQ(id) { await adminPost({ action: 'unhideQuestion', id }); await refresh(); }
-  async function answerQ(id) { await adminPost({ action: 'answerQuestion', id }); await refresh(); }
-  async function unanswerQ(id) { await adminPost({ action: 'unanswerQuestion', id }); await refresh(); }
-  async function refresh() { await loadQuestions(); await loadStats(); }
+  async function hideQ(id) { await updateDoc(doc(db, 'questions', id), { hidden: true }); }
+  async function unhideQ(id) { await updateDoc(doc(db, 'questions', id), { hidden: false }); }
+  async function answerQ(id) { await updateDoc(doc(db, 'questions', id), { answered: true }); }
+  async function unanswerQ(id) { await updateDoc(doc(db, 'questions', id), { answered: false }); }
+  window.hideQ = hideQ; window.unhideQ = unhideQ; window.answerQ = answerQ; window.unanswerQ = unanswerQ;
 
   async function clearHidden() {
     if (!confirm('Удалить все скрытые?')) return;
-    const data = await adminPost({ action: 'clearHidden' });
-    if (data.ok) { showToast('Удалено: ' + data.removed); await refresh(); }
+    const batch = writeBatch(db);
+    allQuestions.filter(q => q.hidden).forEach(q => batch.delete(doc(db, 'questions', q.id)));
+    await batch.commit();
+    showToast('Удалено');
   }
-
   async function clearAll() {
     if (!confirm('Удалить ВСЕ вопросы?')) return;
-    const data = await adminPost({ action: 'clearAll' });
-    if (data.ok) { showToast('Всё удалено'); lastSeenCount = 0; await refresh(); }
+    const snap = await getDocs(collection(db, 'questions'));
+    const batch = writeBatch(db);
+    snap.docs.forEach(d => batch.delete(d.ref));
+    await batch.commit();
+    showToast('Всё удалено');
   }
+  window.clearHidden = clearHidden; window.clearAll = clearAll; window.gotoSlide = gotoSlide; window.tryLogin = tryLogin; window.logout = logout;
 
-  async function exportCsv() {
-    const data = await adminPost({ action: 'exportCsv' });
-    if (!data.ok) { showToast('Ошибка', true); return; }
-    const blob = new Blob([data.csv], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = 'voprosy-' + new Date().toISOString().slice(0,10) + '.csv';
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    showToast('CSV скачан');
-  }
-
-  async function changeMyPassword() {
-    const p = prompt('Новый пароль (минимум 4 символа):');
-    if (!p || p.length < 4) return;
-    const data = await adminPost({ action: 'changePassword', newPassword: p });
-    if (data.ok) showToast('Пароль изменён');
-    else showToast('Ошибка: ' + data.error, true);
-  }
-
-  function toggleEmployees() {
-    const p = document.getElementById('employeesPanel');
-    if (p.style.display === 'none') { p.style.display = 'block'; loadEmployees(); }
-    else p.style.display = 'none';
-  }
-
-  function toggleLog() {
-    const p = document.getElementById('logPanel');
-    if (p.style.display === 'none') { p.style.display = 'block'; loadLog(); }
-    else p.style.display = 'none';
-  }
-
-  async function loadEmployees() {
-    const data = await adminPost({ action: 'listEmployees' });
-    if (!data.ok) { document.getElementById('employeesList').innerHTML = '<div style="color:#ff006e;font-size:12px;">Доступ запрещён</div>'; return; }
-    const el = document.getElementById('employeesList');
-    if (!data.employees.length) { el.innerHTML = '<div style="color:#7e8b9b;font-size:12px;">Пусто</div>'; return; }
-    el.innerHTML = data.employees.map(e => `
-      <div class="emp-row ${e.active ? '' : 'inactive'}">
-        <span class="name">${escapeHtml(e.name)}</span>
-        <span class="login">@${escapeHtml(e.login)}</span>
-        <span class="role-tag ${e.role}">${e.role}</span>
-        <div class="actions">
-          <button onclick="changeRole('${e.id}')">Роль</button>
-          <button onclick="toggleEmp('${e.id}')">${e.active ? 'Откл.' : 'Вкл.'}</button>
-          <button onclick="removeEmp('${e.id}')">Удалить</button>
-        </div>
-      </div>
-    `).join('');
-  }
-
-  async function addEmployee() {
-    const name = document.getElementById('newEmpName').value.trim();
-    const login = document.getElementById('newEmpLogin').value.trim();
-    const password = document.getElementById('newEmpPassword').value;
-    const role = document.getElementById('newEmpRole').value;
-    if (!login || !password) { showToast('Логин и пароль обязательны', true); return; }
-    const data = await adminPost({ action: 'addEmployee', name, login, password, role });
-    if (data.ok) { showToast('Добавлен'); loadEmployees(); }
-    else showToast('Ошибка: ' + data.error, true);
-  }
-
-  async function removeEmp(id) {
-    if (!confirm('Удалить сотрудника?')) return;
-    const data = await adminPost({ action: 'removeEmployee', id });
-    if (data.ok) { showToast('Удалён'); loadEmployees(); }
-    else showToast('Ошибка: ' + data.error, true);
-  }
-
-  async function toggleEmp(id) { const d = await adminPost({ action: 'toggleEmployee', id }); if (d.ok) loadEmployees(); }
-
-  async function changeRole(id) {
-    const role = prompt('Роль (admin / moderator / viewer):');
-    if (!role) return;
-    const data = await adminPost({ action: 'changeRole', id, role });
-    if (data.ok) { showToast('Роль изменена'); loadEmployees(); }
-  }
-
-  async function loadLog() {
-    const data = await adminPost({ action: 'getLog' });
-    if (!data.ok) { document.getElementById('logList').innerHTML = '<div style="color:#ff006e;font-size:12px;">Доступ запрещён</div>'; return; }
-    const el = document.getElementById('logList');
-    if (!data.log.length) { el.innerHTML = '<div style="color:#7e8b9b;font-size:12px;">Пусто</div>'; return; }
-    el.innerHTML = data.log.map(l => `
-      <div class="log-row">
-        <span class="when">${fmtTime(l.time)}</span>
-        <span class="who">${escapeHtml(l.login)}</span>
-        <span class="what">${escapeHtml(l.action)}</span>
-        ${l.object ? '<span>→ ' + escapeHtml(l.object) + '</span>' : ''}
-      </div>
-    `).join('');
+  function loadQuestions() {
+    const q = query(collection(db, 'questions'), orderBy('createdAt', 'asc'));
+    onSnapshot(q, (snap) => {
+      allQuestions = snap.docs.map(d => ({ id: d.id, ...d.data() })).filter(q => q.text);
+      renderQuestions();
+    });
   }
 
   document.querySelectorAll('.filters button').forEach(btn => {
@@ -574,31 +309,8 @@
     });
   });
 
-  const urlParams = new URLSearchParams(location.search);
-  const codeFromUrl = urlParams.get('code');
-  if (codeFromUrl) {
-    document.getElementById('codeInput').value = codeFromUrl.toUpperCase();
-    loginByCode();
-    history.replaceState(null, '', location.pathname);
-  }
-
-  const savedToken = localStorage.getItem('vld_token');
-  const savedEmp = localStorage.getItem('vld_emp');
-  if (savedToken && savedEmp) {
-    fetch(ADMIN_URL, {
-      method: 'POST',
-      body: JSON.stringify({ action: 'loginByToken', token: savedToken }),
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-    }).then(r => r.json()).then(d => {
-      if (d.ok) {
-        currentEmp = d.employee;
-        currentToken = d.token;
-        enterPanel();
-      } else {
-        localStorage.removeItem('vld_token');
-        localStorage.removeItem('vld_emp');
-      }
-    }).catch(() => {});
+  if (sessionStorage.getItem('vld_admin_ok') === '1') {
+    enterPanel();
   }
 </script>
 </body>
