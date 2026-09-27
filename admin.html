@@ -258,6 +258,7 @@
       <div class="qitem ${q.hidden ? 'hidden' : ''} ${q.answered ? 'answered' : ''}">
         <div class="qitem-head">
           <span>${escapeHtml(q.name || 'Аноним')}</span>
+          ${q.telegram ? `<a href="https://t.me/${escapeHtml(q.telegram)}" target="_blank" rel="noopener" style="color:#00d2ff;text-decoration:none;font-weight:900;margin-left:6px;">@${escapeHtml(q.telegram)}</a>` : ''}
           <span class="meta">${fmtTime(q.createdAt)} · слайд ${q.slide ?? '—'}</span>
         </div>
         <div class="qitem-body">${escapeHtml(q.text || '')}</div>
