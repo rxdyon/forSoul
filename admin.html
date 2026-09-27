@@ -56,6 +56,29 @@
   .user-bar .role { padding: 3px 10px; border-radius: 12px; background: rgba(255,0,110,.15); color: #ff006e; }
   .user-bar a { color: #ff006e; cursor: pointer; font-weight: 900; text-decoration: none; }
   .user-bar a:hover { color: #fff; }
+
+  .emp-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; padding: 12px 14px; background: rgba(5,7,15,.6); border: 1px solid rgba(255,255,255,.06); border-left: 3px solid #00d2ff; border-radius: 0 12px 12px 0; margin-bottom: 8px; font-size: 13px; }
+  .emp-row.inactive { opacity: .45; }
+  .emp-row .name { font-weight: 900; color: #fff; }
+  .emp-row .login { color: #7e8b9b; font-size: 11px; }
+  .emp-row .role-tag { padding: 2px 10px; border-radius: 12px; font-size: 10px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; }
+  .role-tag.admin { background: rgba(255,0,110,.15); color: #ff006e; }
+  .role-tag.moderator { background: rgba(255,177,0,.15); color: #ffb100; }
+  .role-tag.viewer { background: rgba(126,139,155,.2); color: #b0b7c6; }
+  .emp-row .actions { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
+  .emp-row .actions button { background: transparent; border: 1px solid rgba(255,255,255,.15); color: #b0b7c6; padding: 5px 10px; border-radius: 8px; font-family: inherit; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; }
+  .emp-row .actions button:hover { color: #fff; border-color: #00d2ff; }
+
+  .add-form { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+  .add-form input, .add-form select { width: 100%; padding: 10px 14px; background: rgba(5,7,15,.75); border: 1px solid rgba(0,210,255,.25); border-radius: 10px; color: #fff; font-family: inherit; font-size: 13px; outline: none; }
+  .add-form input:focus, .add-form select:focus { border-color: #00d2ff; }
+  .add-form button { grid-column: span 2; padding: 12px; border: none; border-radius: 10px; background: linear-gradient(135deg, #00d2ff, #8338ec); color: #fff; font-family: inherit; font-size: 12px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; }
+
+  .log-row { padding: 8px 12px; background: rgba(5,7,15,.6); border-left: 3px solid #8338ec; border-radius: 0 8px 8px 0; font-size: 12px; margin-bottom: 6px; display: flex; gap: 8px; flex-wrap: wrap; align-items: baseline; }
+  .log-row .who { color: #00d2ff; font-weight: 900; }
+  .log-row .what { color: #ff006e; font-weight: 700; }
+  .log-row .when { color: #7e8b9b; font-size: 10px; margin-left: auto; }
+  .log-row .obj { color: #b0b7c6; font-size: 11px; }
 </style>
 </head>
 <body>
@@ -63,7 +86,7 @@
 <div class="login-view" id="loginView">
   <div class="login-card">
     <h2>Вход в админку</h2>
-    <div class="hint">Логин и пароль администратора</div>
+    <div class="hint">Логин и пароль сотрудника</div>
     <input type="text" id="loginInput" placeholder="Логин" value="admin">
     <input type="password" id="passInput" placeholder="Пароль" value="1234">
     <button onclick="tryLogin()">Войти</button>
@@ -71,7 +94,11 @@
 </div>
 
 <div id="mainView" style="display:none;">
-  <div class="user-bar"><span id="userName">—</span><span class="role">admin</span><a onclick="logout()">Выйти</a></div>
+  <div class="user-bar">
+    <span id="userName">—</span>
+    <span class="role" id="userRole">—</span>
+    <a onclick="logout()">Выйти</a>
+  </div>
   <h1>Админ-панель</h1>
   <div class="sub">Управление презентацией</div>
 
@@ -88,13 +115,18 @@
   <div class="panel">
     <h2>Управление слайдами</h2>
     <div class="slider-ctrl">
-      <button onclick="gotoSlide(currentSlide - 1)">← Назад</button>
+      <button onclick="gotoSlidePrev()">← Назад</button>
       <select id="slideSelect">
-        <option value="0">00 · Спойлер</option><option value="1">01 · Визитка</option><option value="2">02 · Мосты</option>
-        <option value="3">03 · Крепость</option><option value="4">04 · Природа</option><option value="5">05 · Погружение</option>
-        <option value="6">06 · Опрос</option><option value="7">07 · Контакты</option>
+        <option value="0">00 · Спойлер</option>
+        <option value="1">01 · Визитка</option>
+        <option value="2">02 · Мосты</option>
+        <option value="3">03 · Крепость</option>
+        <option value="4">04 · Природа</option>
+        <option value="5">05 · Погружение</option>
+        <option value="6">06 · Опрос</option>
+        <option value="7">07 · Контакты</option>
       </select>
-      <button onclick="gotoSlide(currentSlide + 1)">Вперёд →</button>
+      <button onclick="gotoSlideNext()">Вперёд →</button>
     </div>
   </div>
 
@@ -114,7 +146,30 @@
     <div class="danger-buttons">
       <button class="btn-warn" onclick="clearHidden()">🧹 Удалить скрытые</button>
       <button class="btn-danger" onclick="clearAll()">🗑 Удалить все</button>
+      <button class="btn-info" onclick="toggleEmployees()">👥 Сотрудники</button>
+      <button class="btn-info" onclick="toggleLog()">📜 Лог действий</button>
     </div>
+  </div>
+
+  <div class="panel" id="employeesPanel" style="display:none;">
+    <h2>Сотрудники</h2>
+    <div id="employeesList"></div>
+    <div class="add-form">
+      <input type="text" id="newEmpName" placeholder="Имя (например, Редько Роман)">
+      <input type="text" id="newEmpLogin" placeholder="Логин (латиница, без пробелов)">
+      <input type="password" id="newEmpPass" placeholder="Пароль">
+      <select id="newEmpRole">
+        <option value="viewer">viewer — только смотрит</option>
+        <option value="moderator" selected>moderator — модерирует</option>
+        <option value="admin">admin — полный доступ</option>
+      </select>
+      <button onclick="addEmployee()">Добавить сотрудника</button>
+    </div>
+  </div>
+
+  <div class="panel" id="logPanel" style="display:none;">
+    <h2>Лог действий</h2>
+    <div id="logList"></div>
   </div>
 </div>
 
@@ -122,7 +177,7 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, query, orderBy, onSnapshot, doc, updateDoc, deleteDoc, setDoc, getDoc, writeBatch, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getFirestore, collection, query, orderBy, onSnapshot, doc, updateDoc, deleteDoc, setDoc, getDoc, getDocs, writeBatch, serverTimestamp, limit } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyAdU701ut5TxNUrGK-xodPxYynT5eu1RZc",
@@ -136,6 +191,7 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
+  let currentEmp = null;
   let currentSlide = 0;
   let currentFilter = 'all';
   let allQuestions = [];
@@ -155,8 +211,22 @@
     return Array.from(new Uint8Array(h)).map(b => b.toString(16).padStart(2, '0')).join('');
   }
 
+  async function writeLog(action, object, details) {
+    if (!currentEmp) return;
+    try {
+      await setDoc(doc(collection(db, 'log')), {
+        user: currentEmp.login,
+        name: currentEmp.name || currentEmp.login,
+        action: action,
+        object: object || '',
+        details: details || '',
+        createdAt: serverTimestamp()
+      });
+    } catch (e) {}
+  }
+
   async function tryLogin() {
-    const login = document.getElementById('loginInput').value.trim();
+    const login = document.getElementById('loginInput').value.trim().toLowerCase();
     const password = document.getElementById('passInput').value;
     if (!login || !password) return;
 
@@ -168,7 +238,9 @@
         if (login === 'admin' && password === '1234') {
           const hash = await sha256Hex(password);
           await setDoc(empRef, { name: 'Главный админ', login: 'admin', passHash: hash, role: 'admin', active: true, createdAt: serverTimestamp() });
-          sessionStorage.setItem('vld_admin_ok', '1');
+          currentEmp = { name: 'Главный админ', login: 'admin', role: 'admin' };
+          sessionStorage.setItem('vld_admin_ok', JSON.stringify(currentEmp));
+          await writeLog('login', '', 'первый вход');
           enterPanel();
           return;
         }
@@ -181,32 +253,56 @@
       const hash = await sha256Hex(password);
       if (hash !== data.passHash) { showToast('Неверный пароль', true); return; }
 
-      sessionStorage.setItem('vld_admin_ok', '1');
+      currentEmp = { name: data.name, login: data.login, role: data.role };
+      sessionStorage.setItem('vld_admin_ok', JSON.stringify(currentEmp));
+      await writeLog('login', '', '');
       enterPanel();
     } catch (err) {
       showToast('Ошибка входа: ' + err.message, true);
     }
   }
 
-  function logout() { sessionStorage.removeItem('vld_admin_ok'); location.reload(); }
+  function logout() {
+    if (currentEmp) writeLog('logout', '', '');
+    sessionStorage.removeItem('vld_admin_ok');
+    location.reload();
+  }
 
   function enterPanel() {
     document.getElementById('loginView').classList.add('hidden');
     document.getElementById('mainView').style.display = 'block';
+    document.getElementById('userName').textContent = currentEmp.name || currentEmp.login;
+    document.getElementById('userRole').textContent = currentEmp.role;
+
+    if (currentEmp.role === 'viewer') {
+      document.querySelectorAll('.qitem-actions button, .slider-ctrl button, .slider-ctrl select, .danger-buttons button').forEach(b => b.disabled = true);
+    }
+    if (currentEmp.role !== 'admin') {
+      // скрываем кнопки, доступные только админу
+      document.querySelectorAll('.btn-warn, .btn-danger').forEach(b => b.style.display = 'none');
+      const empBtn = document.querySelector('[onclick="toggleEmployees()"]');
+      if (empBtn) empBtn.style.display = 'none';
+    }
+
     loadQuestions();
     loadSlide();
     setInterval(loadSlide, 3000);
   }
 
   async function gotoSlide(n) {
+    if (currentEmp && currentEmp.role === 'viewer') return;
     if (n < 0) n = 7;
     if (n > 7) n = 0;
     currentSlide = n;
     document.getElementById('slideSelect').value = String(n);
     try {
       await setDoc(doc(db, 'config', 'currentSlide'), { value: n }, { merge: true });
-    } catch (err) {}
+      await writeLog('slide', String(n), '');
+    } catch (err) { showToast('Ошибка: ' + err.message, true); }
   }
+
+  function gotoSlidePrev() { gotoSlide(currentSlide - 1); }
+  function gotoSlideNext() { gotoSlide(currentSlide + 1); }
 
   document.getElementById('slideSelect').addEventListener('change', e => {
     gotoSlide(parseInt(e.target.value, 10));
@@ -232,6 +328,13 @@
       return d.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
     } catch (e) { return ''; }
   }
+  function fmtDateTime(ts) {
+    if (!ts) return '';
+    try {
+      const d = ts.toDate ? ts.toDate() : new Date(ts);
+      return d.toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+    } catch (e) { return ''; }
+  }
 
   function escapeHtml(s) {
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
@@ -254,6 +357,7 @@
       list.innerHTML = '<div style="color:#7e8b9b;font-size:12px;text-align:center;padding:20px;">Пусто</div>';
       return;
     }
+    const canMod = currentEmp && (currentEmp.role === 'admin' || currentEmp.role === 'moderator');
     list.innerHTML = items.map(q => `
       <div class="qitem ${q.hidden ? 'hidden' : ''} ${q.answered ? 'answered' : ''}">
         <div class="qitem-head">
@@ -262,36 +366,171 @@
           <span class="meta">${fmtTime(q.createdAt)} · слайд ${q.slide ?? '—'}</span>
         </div>
         <div class="qitem-body">${escapeHtml(q.text || '')}</div>
+        ${canMod ? `
         <div class="qitem-actions">
           ${q.answered ? `<button onclick="unanswerQ('${q.id}')">↺ Снять</button>` : `<button onclick="answerQ('${q.id}')">✓ Ответил</button>`}
           ${q.hidden ? `<button onclick="unhideQ('${q.id}')">↺ Показать</button>` : `<button onclick="hideQ('${q.id}')">✕ Скрыть</button>`}
-        </div>
+        </div>` : ''}
       </div>
     `).join('');
   }
 
-  async function hideQ(id) { await updateDoc(doc(db, 'questions', id), { hidden: true }); }
-  async function unhideQ(id) { await updateDoc(doc(db, 'questions', id), { hidden: false }); }
-  async function answerQ(id) { await updateDoc(doc(db, 'questions', id), { answered: true }); }
-  async function unanswerQ(id) { await updateDoc(doc(db, 'questions', id), { answered: false }); }
-  window.hideQ = hideQ; window.unhideQ = unhideQ; window.answerQ = answerQ; window.unanswerQ = unanswerQ;
+  async function hideQ(id) {
+    if (!currentEmp || currentEmp.role === 'viewer') return;
+    await updateDoc(doc(db, 'questions', id), { hidden: true });
+    await writeLog('hide', id, '');
+  }
+  async function unhideQ(id) {
+    if (!currentEmp || currentEmp.role === 'viewer') return;
+    await updateDoc(doc(db, 'questions', id), { hidden: false });
+    await writeLog('unhide', id, '');
+  }
+  async function answerQ(id) {
+    if (!currentEmp || currentEmp.role === 'viewer') return;
+    await updateDoc(doc(db, 'questions', id), { answered: true });
+    await writeLog('answer', id, '');
+  }
+  async function unanswerQ(id) {
+    if (!currentEmp || currentEmp.role === 'viewer') return;
+    await updateDoc(doc(db, 'questions', id), { answered: false });
+    await writeLog('unanswer', id, '');
+  }
 
   async function clearHidden() {
+    if (!currentEmp || currentEmp.role !== 'admin') return showToast('Только для админа', true);
     if (!confirm('Удалить все скрытые?')) return;
     const batch = writeBatch(db);
     allQuestions.filter(q => q.hidden).forEach(q => batch.delete(doc(db, 'questions', q.id)));
     await batch.commit();
+    await writeLog('clearHidden', '', 'удалено ' + allQuestions.filter(q => q.hidden).length);
     showToast('Удалено');
   }
   async function clearAll() {
+    if (!currentEmp || currentEmp.role !== 'admin') return showToast('Только для админа', true);
     if (!confirm('Удалить ВСЕ вопросы?')) return;
     const snap = await getDocs(collection(db, 'questions'));
     const batch = writeBatch(db);
     snap.docs.forEach(d => batch.delete(d.ref));
     await batch.commit();
+    await writeLog('clearAll', '', '');
     showToast('Всё удалено');
   }
-  window.clearHidden = clearHidden; window.clearAll = clearAll; window.gotoSlide = gotoSlide; window.tryLogin = tryLogin; window.logout = logout;
+
+  async function addEmployee() {
+    if (!currentEmp || currentEmp.role !== 'admin') return showToast('Только для админа', true);
+    const name = document.getElementById('newEmpName').value.trim();
+    const login = document.getElementById('newEmpLogin').value.trim().toLowerCase();
+    const pass = document.getElementById('newEmpPass').value;
+    const role = document.getElementById('newEmpRole').value;
+    if (!login || !pass) return showToast('Логин и пароль обязательны', true);
+    if (!/^[a-z0-9_]+$/.test(login)) return showToast('Логин: только латиница, цифры, _', true);
+
+    const ref = doc(db, 'employees', login);
+    const exists = await getDoc(ref);
+    if (exists.exists()) return showToast('Такой логин уже есть', true);
+
+    const hash = await sha256Hex(pass);
+    await setDoc(ref, { name: name || login, login: login, passHash: hash, role: role, active: true, createdAt: serverTimestamp() });
+    await writeLog('addEmployee', login, 'роль: ' + role);
+    document.getElementById('newEmpName').value = '';
+    document.getElementById('newEmpLogin').value = '';
+    document.getElementById('newEmpPass').value = '';
+    showToast('Добавлен: ' + login);
+    loadEmployees();
+  }
+
+  async function removeEmployee(login) {
+    if (!currentEmp || currentEmp.role !== 'admin') return;
+    if (login === currentEmp.login) return showToast('Нельзя удалить себя', true);
+    if (!confirm('Удалить ' + login + '?')) return;
+    await deleteDoc(doc(db, 'employees', login));
+    await writeLog('removeEmployee', login, '');
+    loadEmployees();
+  }
+
+  async function toggleEmployee(login) {
+    if (!currentEmp || currentEmp.role !== 'admin') return;
+    if (login === currentEmp.login) return showToast('Нельзя отключить себя', true);
+    const snap = await getDoc(doc(db, 'employees', login));
+    if (!snap.exists()) return;
+    const next = !snap.data().active;
+    await updateDoc(doc(db, 'employees', login), { active: next });
+    await writeLog('toggleEmployee', login, next ? 'включён' : 'отключён');
+    loadEmployees();
+  }
+
+  async function changeRole(login) {
+    if (!currentEmp || currentEmp.role !== 'admin') return;
+    const role = prompt('Роль для ' + login + ' (admin / moderator / viewer):');
+    if (!role || ['admin','moderator','viewer'].indexOf(role) === -1) return;
+    await updateDoc(doc(db, 'employees', login), { role: role });
+    await writeLog('changeRole', login, role);
+    loadEmployees();
+  }
+
+  async function loadEmployees() {
+    const el = document.getElementById('employeesList');
+    el.innerHTML = '<div style="color:#7e8b9b;font-size:12px;">Загрузка...</div>';
+    const snap = await getDocs(collection(db, 'employees'));
+    if (snap.empty) { el.innerHTML = '<div style="color:#7e8b9b;font-size:12px;">Пусто</div>'; return; }
+    el.innerHTML = snap.docs.map(d => {
+      const e = d.data();
+      const inactive = !e.active;
+      return `
+        <div class="emp-row ${inactive ? 'inactive' : ''}">
+          <span class="name">${escapeHtml(e.name || e.login)}</span>
+          <span class="login">@${escapeHtml(e.login)}</span>
+          <span class="role-tag ${e.role}">${e.role}</span>
+          <div class="actions">
+            <button onclick="changeRole('${e.login}')">Роль</button>
+            <button onclick="toggleEmployee('${e.login}')">${e.active ? 'Откл.' : 'Вкл.'}</button>
+            <button onclick="removeEmployee('${e.login}')">Удалить</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  async function loadLog() {
+    const el = document.getElementById('logList');
+    el.innerHTML = '<div style="color:#7e8b9b;font-size:12px;">Загрузка...</div>';
+    const q = query(collection(db, 'log'), orderBy('createdAt', 'desc'), limit(200));
+    const snap = await getDocs(q);
+    if (snap.empty) { el.innerHTML = '<div style="color:#7e8b9b;font-size:12px;">Пусто</div>'; return; }
+    const actionLabels = {
+      login: 'вошёл', logout: 'вышел', slide: 'сменил слайд', hide: 'скрыл вопрос',
+      unhide: 'показал вопрос', answer: 'отметил ответ', unanswer: 'снял отметку',
+      clearHidden: 'удалил скрытые', clearAll: 'удалил все', addEmployee: 'добавил сотрудника',
+      removeEmployee: 'удалил сотрудника', toggleEmployee: 'переключил сотрудника',
+      changeRole: 'сменил роль'
+    };
+    el.innerHTML = snap.docs.map(d => {
+      const l = d.data();
+      const act = actionLabels[l.action] || l.action;
+      const det = [];
+      if (l.object) det.push('→ ' + l.object);
+      if (l.details) det.push('(' + l.details + ')');
+      return `
+        <div class="log-row">
+          <span class="when">${fmtDateTime(l.createdAt)}</span>
+          <span class="who">${escapeHtml(l.user || '—')}</span>
+          <span class="what">${escapeHtml(act)}</span>
+          ${det.length ? '<span class="obj">' + escapeHtml(det.join(' ')) + '</span>' : ''}
+        </div>
+      `;
+    }).join('');
+  }
+
+  function toggleEmployees() {
+    const p = document.getElementById('employeesPanel');
+    if (p.style.display === 'none') { p.style.display = 'block'; loadEmployees(); }
+    else p.style.display = 'none';
+  }
+  function toggleLog() {
+    const p = document.getElementById('logPanel');
+    if (p.style.display === 'none') { p.style.display = 'block'; loadLog(); }
+    else p.style.display = 'none';
+  }
 
   function loadQuestions() {
     const q = query(collection(db, 'questions'), orderBy('createdAt', 'asc'));
@@ -310,8 +549,31 @@
     });
   });
 
-  if (sessionStorage.getItem('vld_admin_ok') === '1') {
-    enterPanel();
+  // window-привязки для onclick
+  window.tryLogin = tryLogin;
+  window.logout = logout;
+  window.gotoSlide = gotoSlide;
+  window.gotoSlidePrev = gotoSlidePrev;
+  window.gotoSlideNext = gotoSlideNext;
+  window.hideQ = hideQ;
+  window.unhideQ = unhideQ;
+  window.answerQ = answerQ;
+  window.unanswerQ = unanswerQ;
+  window.clearHidden = clearHidden;
+  window.clearAll = clearAll;
+  window.addEmployee = addEmployee;
+  window.removeEmployee = removeEmployee;
+  window.toggleEmployee = toggleEmployee;
+  window.changeRole = changeRole;
+  window.toggleEmployees = toggleEmployees;
+  window.toggleLog = toggleLog;
+
+  const saved = sessionStorage.getItem('vld_admin_ok');
+  if (saved) {
+    try {
+      currentEmp = JSON.parse(saved);
+      enterPanel();
+    } catch (e) { sessionStorage.removeItem('vld_admin_ok'); }
   }
 </script>
 </body>
