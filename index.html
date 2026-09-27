@@ -841,55 +841,29 @@
   .ask-success p { font-size: 13px; color: #b0b7c6; }
 
   @media (min-width: 901px) {
-    .slide {
-      justify-content: center;
-    }
-    .slide-content {
-      flex: 0 1 auto;
-      overflow-y: visible;
-      max-height: none;
-    }
+    .slide { justify-content: center; }
+    .slide-content { flex: 0 1 auto; overflow-y: visible; max-height: none; }
     .slide[data-index="5"] .slide-content,
     .slide[data-index="6"] .slide-content,
     .slide[data-index="7"] .slide-content {
-      overflow-y: auto;
-      max-height: calc(100dvh - 130px);
-      scrollbar-width: none;
+      overflow-y: auto; max-height: calc(100dvh - 130px); scrollbar-width: none;
     }
     .slide[data-index="5"] .slide-content::-webkit-scrollbar,
     .slide[data-index="6"] .slide-content::-webkit-scrollbar,
-    .slide[data-index="7"] .slide-content::-webkit-scrollbar {
-      display: none;
-    }
+    .slide[data-index="7"] .slide-content::-webkit-scrollbar { display: none; }
   }
 
   @media (min-width: 901px) {
-    .presentation-footer {
-      transform: translateY(100%);
-      opacity: 0;
-    }
-    .presentation-footer.visible {
-      transform: translateY(0);
-      opacity: 1;
-    }
+    .presentation-footer { transform: translateY(100%); opacity: 0; }
+    .presentation-footer.visible { transform: translateY(0); opacity: 1; }
   }
 
   @media (hover: none), (max-width: 900px) {
-    .presentation-footer {
-      transform: translateY(0);
-      opacity: 1;
-      pointer-events: auto;
-    }
+    .presentation-footer { transform: translateY(0); opacity: 1; pointer-events: auto; }
     .controls-hover-zone { display: none; }
 
-    .slide {
-      justify-content: flex-start;
-      padding: 0 14px 140px;
-    }
-    .slide-content {
-      padding: 70px 0 16px 0;
-      overflow-y: auto;
-    }
+    .slide { justify-content: flex-start; padding: 0 14px 140px; }
+    .slide-content { padding: 70px 0 16px 0; overflow-y: auto; }
     .tag { font-size: 10px; letter-spacing: 2px; margin-bottom: 8px; }
     h1 { font-size: clamp(20px, 6vw, 28px); margin-bottom: 10px; line-height: 1.15; }
     p { font-size: 13px; margin-bottom: 12px; line-height: 1.45; max-width: 100%; }
@@ -900,26 +874,12 @@
     .stat-box p, .info-card p { font-size: 12.5px; line-height: 1.45; }
     .info-card h3 { font-size: 15px; margin-bottom: 6px; }
 
-    .slide-emblem {
-      right: 12px;
-      bottom: auto;
-      top: 12px;
-      width: 50px;
-      height: 50px;
-      opacity: 0.06;
-    }
+    .slide-emblem { right: 12px; bottom: auto; top: 12px; width: 50px; height: 50px; opacity: 0.06; }
     .slide-emblem.left { left: 12px; right: auto; }
     .slide-emblem.top { top: 12px; bottom: auto; }
 
-    .hud-side-links {
-      margin-top: 12px;
-      gap: 8px;
-    }
-    .hud-side-link {
-      padding: 8px 14px;
-      font-size: 10px;
-      letter-spacing: 1.5px;
-    }
+    .hud-side-links { margin-top: 12px; gap: 8px; }
+    .hud-side-link { padding: 8px 14px; font-size: 10px; letter-spacing: 1.5px; }
 
     .hud-corner { width: 14px; height: 18px; opacity: .5; }
     .hc-tl { top: 8px; left: 8px; }
@@ -939,34 +899,14 @@
     .qr-card h3 { font-size: 14px; margin-bottom: 4px; }
     .qr-link-btn { padding: 8px 14px; font-size: 11px; }
 
-    .poll-layout {
-      flex-direction: column;
-      gap: 14px;
-      margin-top: 10px;
-      text-align: center;
-    }
-    .poll-text {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
+    .poll-layout { flex-direction: column; gap: 14px; margin-top: 10px; text-align: center; }
+    .poll-text { display: flex; flex-direction: column; align-items: center; text-align: center; }
     .poll-text h2 { font-size: 17px; margin-bottom: 6px; }
     .poll-text p { font-size: 12px; margin-bottom: 8px; text-align: center; }
     .poll-text ul { gap: 5px; margin-bottom: 10px; align-items: flex-start; text-align: left; }
     .poll-text ul li { font-size: 12px; }
-    .poll-qr-frame,
-    .poll-qr-caption {
-      display: none;
-    }
-    .poll-qr-btn {
-      padding: 14px 20px;
-      font-size: 12px;
-      margin-top: 12px;
-      width: 100%;
-      text-align: center;
-      box-sizing: border-box;
-    }
+    .poll-qr-frame, .poll-qr-caption { display: none; }
+    .poll-qr-btn { padding: 14px 20px; font-size: 12px; margin-top: 12px; width: 100%; text-align: center; box-sizing: border-box; }
 
     .spoiler-grid { grid-template-columns: 1fr; gap: 10px; margin-top: 14px; }
     .spoiler-card { padding: 14px 16px; }
@@ -974,11 +914,7 @@
     .spoiler-card p { font-size: 12px; }
     .spoiler-tagline { font-size: 13px; margin-top: 16px; }
 
-    .controls {
-      bottom: 48px;
-      gap: 6px;
-      padding: 6px 10px;
-    }
+    .controls { bottom: 48px; gap: 6px; padding: 6px 10px; }
     .btn { width: 36px; height: 36px; }
     .btn svg { width: 14px; height: 14px; }
     .progress-dots { gap: 5px; }
@@ -992,54 +928,24 @@
     .swipe-hint { bottom: 110px; font-size: 10px; padding: 6px 12px; }
 
     .presentation-footer .footer-inner {
-      max-width: 100%;
-      padding: 8px 12px;
-      gap: 10px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
+      max-width: 100%; padding: 8px 12px; gap: 10px;
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
     }
-    .presentation-footer .footer-brand {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-shrink: 0;
-    }
-    .presentation-footer .footer-brand-mark {
-      width: 26px; height: 26px; font-size: 11px; border-radius: 7px;
-    }
+    .presentation-footer .footer-brand { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .presentation-footer .footer-brand-mark { width: 26px; height: 26px; font-size: 11px; border-radius: 7px; }
     .presentation-footer .footer-brand-name { font-size: 10.5px; line-height: 1.1; }
     .presentation-footer .footer-brand-sub { font-size: 7px; letter-spacing: 1px; }
-
-    .presentation-footer .footer-block {
-      display: none;
-    }
-
-    .presentation-footer .footer-links {
-      display: flex;
-      gap: 10px;
-      margin-left: auto;
-      align-items: center;
-    }
+    .presentation-footer .footer-block { display: none; }
+    .presentation-footer .footer-links { display: flex; gap: 10px; margin-left: auto; align-items: center; }
     .presentation-footer .footer-links a { font-size: 10px; }
-    .presentation-footer .footer-maestro {
-      padding: 3px 8px;
-      font-size: 8.5px;
-    }
+    .presentation-footer .footer-maestro { padding: 3px 8px; font-size: 8.5px; }
     .presentation-footer .footer-maestro .vk-icon { width: 10px; height: 10px; }
 
     .qa-widget {
-      top: auto; bottom: 95px; right: 10px; left: 10px;
-      width: auto;
-      max-height: 45vh;
-      transform: translateY(20px);
-      opacity: 0;
+      top: auto; bottom: 95px; right: 10px; left: 10px; width: auto;
+      max-height: 45vh; transform: translateY(20px); opacity: 0;
     }
-    .qa-widget.visible {
-      transform: translateY(0);
-      opacity: 1;
-    }
+    .qa-widget.visible { transform: translateY(0); opacity: 1; }
   }
 
   @media (max-width: 480px) {
@@ -1125,7 +1031,6 @@
 </div>
 
 <div class="slider-container" id="slider">
-
   <section class="slide" data-index="0">
     <div class="slide-emblem top">
       <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" fill="none">
@@ -1357,7 +1262,6 @@
       </div>
     </div>
   </section>
-
 </div>
 
 <div class="swipe-hint" id="swipeHint">← листай →</div>
@@ -1446,8 +1350,7 @@
     'мраз',
     'твар',
     'ссат','ссыкл','ссыкун',
-    'хер',
-    'херн',
+    'хер','херн',
     'нахуй','нахуя','нахуяч',
     'похуй','похуя','похуи','похую',
     'охуе','охуи','охуя','ахуе','ахуи','ахуя',
@@ -1472,17 +1375,10 @@
   function normalizeForFilter(str) {
     return String(str || '')
       .toLowerCase()
-      .replace(/@/g, 'а')
-      .replace(/4/g, 'а')
-      .replace(/0/g, 'о')
-      .replace(/3/g, 'е')
-      .replace(/\$/g, 'с')
-      .replace(/[!|1]/g, 'и')
-      .replace(/6/g, 'б')
-      .replace(/\*/g, '')
-      .replace(/[.\-_]+/g, '')
-      .replace(/\s+/g, ' ')
-      .trim();
+      .replace(/@/g, 'а').replace(/4/g, 'а').replace(/0/g, 'о')
+      .replace(/3/g, 'е').replace(/\$/g, 'с').replace(/[!|1]/g, 'и')
+      .replace(/6/g, 'б').replace(/\*/g, '').replace(/[.\-_]+/g, '')
+      .replace(/\s+/g, ' ').trim();
   }
 
   function containsBadWords(str) {
@@ -1515,37 +1411,23 @@
     const LS_LAST = 'vladivostok_ask_last_sent';
     const LS_HISTORY = 'vladivostok_ask_history';
 
-    function getLastSent() {
-      return parseInt(localStorage.getItem(LS_LAST) || '0', 10);
-    }
-
-    function getHistory() {
-      try {
-        return JSON.parse(localStorage.getItem(LS_HISTORY) || '[]');
-      } catch (e) {
-        return [];
-      }
-    }
+    function getLastSent() { return parseInt(localStorage.getItem(LS_LAST) || '0', 10); }
+    function getHistory() { try { return JSON.parse(localStorage.getItem(LS_HISTORY) || '[]'); } catch (e) { return []; } }
 
     function pushHistory(entry) {
       const h = getHistory();
       h.push(entry);
       const cutoff = Date.now() - 24 * 60 * 60 * 1000;
-      const fresh = h.filter(x => x.ts >= cutoff);
-      localStorage.setItem(LS_HISTORY, JSON.stringify(fresh));
+      localStorage.setItem(LS_HISTORY, JSON.stringify(h.filter(x => x.ts >= cutoff)));
     }
 
     function simpleHash(str) {
       let h = 0;
-      for (let i = 0; i < str.length; i++) {
-        h = ((h << 5) - h) + str.charCodeAt(i);
-        h = h | 0;
-      }
+      for (let i = 0; i < str.length; i++) { h = ((h << 5) - h) + str.charCodeAt(i); h = h | 0; }
       return h.toString(36);
     }
 
     let cooldownTimer = null;
-
     function startCooldownUI(until) {
       clearInterval(cooldownTimer);
       const tick = () => {
@@ -1581,22 +1463,9 @@
       const name = askName.value.trim() || 'Аноним';
       const text = askText.value.trim();
 
-      if (!text) {
-        askText.focus();
-        return;
-      }
-
-      if (text.length < MIN_LEN) {
-        alert('Вопрос слишком короткий. Минимум ' + MIN_LEN + ' символов.');
-        askText.focus();
-        return;
-      }
-
-      if (text.length > MAX_LEN) {
-        alert('Вопрос слишком длинный. Максимум ' + MAX_LEN + ' символов.');
-        askText.focus();
-        return;
-      }
+      if (!text) { askText.focus(); return; }
+      if (text.length < MIN_LEN) { alert('Вопрос слишком короткий. Минимум ' + MIN_LEN + ' символов.'); askText.focus(); return; }
+      if (text.length > MAX_LEN) { alert('Вопрос слишком длинный. Максимум ' + MAX_LEN + ' символов.'); askText.focus(); return; }
 
       if (containsBadWords(text) || containsBadWords(name)) {
         alert('Пожалуйста, переформулируйте вопрос без нецензурной лексики.');
@@ -1606,18 +1475,13 @@
       const now = Date.now();
       const lastSent = getLastSent();
       if (lastSent && now - lastSent < COOLDOWN_MS) {
-        const left = COOLDOWN_MS - (now - lastSent);
-        startCooldownUI(now + left);
+        startCooldownUI(now + (COOLDOWN_MS - (now - lastSent)));
         return;
       }
 
       const hash = simpleHash(text.toLowerCase());
-      const history = getHistory();
-      const dup = history.find(x => x.hash === hash && now - x.ts < DUP_WINDOW_MS);
-      if (dup) {
-        alert('Такой вопрос уже отправляли недавно. Подождите немного или измените формулировку.');
-        return;
-      }
+      const dup = getHistory().find(x => x.hash === hash && now - x.ts < DUP_WINDOW_MS);
+      if (dup) { alert('Такой вопрос уже отправляли недавно. Подождите немного или измените формулировку.'); return; }
 
       askSend.disabled = true;
       askSend.textContent = 'Отправляем...';
@@ -1626,21 +1490,16 @@
         const res = await fetch(SHEET_URL, {
           method: 'POST',
           body: JSON.stringify({
-            name: name,
-            text: text,
-            slide: currentSlide,
+            name: name, text: text, slide: currentSlide,
             device: /Mobi/.test(navigator.userAgent) ? 'mobile' : 'desktop',
-            hash: hash,
-            ua: navigator.userAgent.slice(0, 100)
+            hash: hash, ua: navigator.userAgent.slice(0, 100)
           }),
           headers: { 'Content-Type': 'text/plain;charset=utf-8' }
         });
-
         if (!res.ok) throw new Error('HTTP ' + res.status);
 
         localStorage.setItem(LS_LAST, String(Date.now()));
         pushHistory({ ts: Date.now(), hash: hash });
-
         askCard.style.display = 'none';
         askSuccess.classList.add('show');
       } catch (err) {
@@ -1689,12 +1548,8 @@
   slider.addEventListener('scroll', () => {
     clearTimeout(scrollTimeout);
     scrollTimeout = setTimeout(() => {
-      const w = slider.clientWidth;
-      const idx = Math.round(slider.scrollLeft / w);
-      if (idx !== currentSlide) {
-        currentSlide = idx;
-        updateActiveState();
-      }
+      const idx = Math.round(slider.scrollLeft / slider.clientWidth);
+      if (idx !== currentSlide) { currentSlide = idx; updateActiveState(); }
     }, 80);
   }, { passive: true });
 
@@ -1709,10 +1564,7 @@
       localVideo.play().catch(() => {});
       resetTeleprompter();
     } else {
-      if (!localVideo.paused) {
-        localVideo.pause();
-        localVideo.currentTime = 0;
-      }
+      if (!localVideo.paused) { localVideo.pause(); localVideo.currentTime = 0; }
       stopTeleprompter();
     }
   }
@@ -1751,15 +1603,9 @@
 
   if (window.matchMedia('(hover: none)').matches) {
     document.querySelectorAll('.glow-card').forEach(card => {
-      card.addEventListener('touchstart', () => {
-        card.classList.add('pressed');
-      }, { passive: true });
-      card.addEventListener('touchend', () => {
-        setTimeout(() => card.classList.remove('pressed'), 400);
-      }, { passive: true });
-      card.addEventListener('touchcancel', () => {
-        card.classList.remove('pressed');
-      }, { passive: true });
+      card.addEventListener('touchstart', () => card.classList.add('pressed'), { passive: true });
+      card.addEventListener('touchend', () => setTimeout(() => card.classList.remove('pressed'), 400), { passive: true });
+      card.addEventListener('touchcancel', () => card.classList.remove('pressed'), { passive: true });
     });
   }
 
@@ -1842,11 +1688,8 @@
 
   function qaEscape(s) {
     return String(s)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
 
   function qaAddItem(name, text) {
@@ -1868,9 +1711,7 @@
 
     qaWidget.classList.add('visible');
     clearTimeout(qaWidget._hideTimer);
-    qaWidget._hideTimer = setTimeout(() => {
-      qaWidget.classList.remove('visible');
-    }, 15000);
+    qaWidget._hideTimer = setTimeout(() => qaWidget.classList.remove('visible'), 15000);
   }
 
   async function pollQuestions() {
@@ -1879,17 +1720,34 @@
       if (!res.ok) return;
       const data = await res.json();
       if (!Array.isArray(data)) return;
-      if (data.length > lastSeenCount) {
-        for (let i = lastSeenCount; i < data.length; i++) {
-          qaAddItem(data[i].name, data[i].text);
+
+      const visible = data.filter(q => !q.hidden && q.text);
+      if (visible.length > lastSeenCount) {
+        for (let i = lastSeenCount; i < visible.length; i++) {
+          qaAddItem(visible[i].name, visible[i].text);
         }
-        lastSeenCount = data.length;
       }
+      lastSeenCount = visible.length;
     } catch (err) {}
   }
 
   pollQuestions();
   setInterval(pollQuestions, 4000);
+
+  async function pollAdminSlide() {
+    try {
+      const res = await fetch(SHEET_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'getSlide' }),
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+      });
+      const data = await res.json();
+      if (data.ok && typeof data.slide === 'number' && data.slide !== currentSlide) {
+        goTo(data.slide);
+      }
+    } catch (err) {}
+  }
+  setInterval(pollAdminSlide, 4000);
 </script>
 </body>
 </html>
