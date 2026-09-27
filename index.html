@@ -1063,6 +1063,7 @@
     <input type="text" id="askName" placeholder="Ваше имя (или пусто)" maxlength="30" autocomplete="off">
     <textarea id="askText" placeholder="Ваш вопрос спикерам..." maxlength="200"></textarea>
     <button id="askSend">Отправить вопрос</button>
+    <div id="askMeta" style="margin-top:10px;font-size:11px;color:#7e8b9b;text-align:center;letter-spacing:1px;"></div>
   </div>
   <div class="ask-card ask-success" id="askSuccess">
     <div class="ask-success-icon">✓</div>
@@ -1438,13 +1439,117 @@
     const askText = document.getElementById('askText');
     const askCard = document.getElementById('askCard');
     const askSuccess = document.getElementById('askSuccess');
+    const askMeta = document.getElementById('askMeta');
+
+    const COOLDOWN_MS = 30 * 1000;
+    const DUP_WINDOW_MS = 5 * 60 * 1000;
+    const MIN_LEN = 10;
+    const MAX_LEN = 200;
+    const LS_LAST = 'vladivostok_ask_last_sent';
+    const LS_HISTORY = 'vladivostok_ask_history';
+
+    function getLastSent() {
+      return parseInt(localStorage.getItem(LS_LAST) || '0', 10);
+    }
+
+    function getHistory() {
+      try {
+        return JSON.parse(localStorage.getItem(LS_HISTORY) || '[]');
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function pushHistory(entry) {
+      const h = getHistory();
+      h.push(entry);
+      const cutoff = Date.now() - 24 * 60 * 60 * 1000;
+      const fresh = h.filter(x => x.ts >= cutoff);
+      localStorage.setItem(LS_HISTORY, JSON.stringify(fresh));
+    }
+
+    function simpleHash(str) {
+      let h = 0;
+      for (let i = 0; i < str.length; i++) {
+        h = ((h << 5) - h) + str.charCodeAt(i);
+        h = h | 0;
+      }
+      return h.toString(36);
+    }
+
+    let cooldownTimer = null;
+
+    function startCooldownUI(until) {
+      clearInterval(cooldownTimer);
+      const tick = () => {
+        const left = until - Date.now();
+        if (left <= 0) {
+          clearInterval(cooldownTimer);
+          askSend.disabled = false;
+          askSend.textContent = 'Отправить вопрос';
+          return;
+        }
+        askSend.disabled = true;
+        askSend.textContent = 'Подождите ' + Math.ceil(left / 1000) + ' сек.';
+      };
+      tick();
+      cooldownTimer = setInterval(tick, 500);
+    }
+
+    function renderMeta() {
+      const h = getHistory();
+      const today = h.filter(x => Date.now() - x.ts < 24 * 60 * 60 * 1000).length;
+      askMeta.textContent = 'Отправлено сегодня с этого устройства: ' + today + ' · Лимит: 1 вопрос в 30 сек.';
+    }
+
+    const last = getLastSent();
+    if (last) {
+      const until = last + COOLDOWN_MS;
+      if (until > Date.now()) startCooldownUI(until);
+    }
+    renderMeta();
+    setInterval(renderMeta, 5000);
 
     askSend.addEventListener('click', async () => {
       const name = askName.value.trim() || 'Аноним';
       const text = askText.value.trim();
-      if (!text) { askText.focus(); return; }
+
+      if (!text) {
+        askText.focus();
+        return;
+      }
+
+      if (text.length < MIN_LEN) {
+        alert('Вопрос слишком короткий. Минимум ' + MIN_LEN + ' символов.');
+        askText.focus();
+        return;
+      }
+
+      if (text.length > MAX_LEN) {
+        alert('Вопрос слишком длинный. Максимум ' + MAX_LEN + ' символов.');
+        askText.focus();
+        return;
+      }
+
+      const now = Date.now();
+      const lastSent = getLastSent();
+      if (lastSent && now - lastSent < COOLDOWN_MS) {
+        const left = COOLDOWN_MS - (now - lastSent);
+        startCooldownUI(now + left);
+        return;
+      }
+
+      const hash = simpleHash(text.toLowerCase());
+      const history = getHistory();
+      const dup = history.find(x => x.hash === hash && now - x.ts < DUP_WINDOW_MS);
+      if (dup) {
+        alert('Такой вопрос уже отправляли недавно. Подождите немного или измените формулировку.');
+        return;
+      }
+
       askSend.disabled = true;
       askSend.textContent = 'Отправляем...';
+
       try {
         const res = await fetch(SHEET_URL, {
           method: 'POST',
@@ -1452,11 +1557,18 @@
             name: name,
             text: text,
             slide: currentSlide,
-            device: /Mobi/.test(navigator.userAgent) ? 'mobile' : 'desktop'
+            device: /Mobi/.test(navigator.userAgent) ? 'mobile' : 'desktop',
+            hash: hash,
+            ua: navigator.userAgent.slice(0, 100)
           }),
           headers: { 'Content-Type': 'text/plain;charset=utf-8' }
         });
+
         if (!res.ok) throw new Error('HTTP ' + res.status);
+
+        localStorage.setItem(LS_LAST, String(Date.now()));
+        pushHistory({ ts: Date.now(), hash: hash });
+
         askCard.style.display = 'none';
         askSuccess.classList.add('show');
       } catch (err) {
