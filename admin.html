@@ -125,6 +125,11 @@
       <button onclick="sendBroadcast()">Отправить</button>
     </div>
     <div class="broadcast-list" id="broadcastList"></div>
+    <div style="margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap;">
+      <button class="btn-danger" onclick="clearBroadcast()" style="padding: 10px 18px; border-radius: 12px; font-family: inherit; font-size: 11px; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; border: 1px solid rgba(255,0,110,.4); color: #ff006e; background: transparent;">🗑 Очистить эфир</button>
+      <button class="btn-info" onclick="spamBroadcast(20)" style="padding: 10px 18px; border-radius: 12px; font-family: inherit; font-size: 11px; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; border: 1px solid rgba(0,210,255,.4); color: #00d2ff; background: transparent;">🎲 Спам-тест (20)</button>
+      <button class="btn-warn" onclick="spamBroadcast(50)" style="padding: 10px 18px; border-radius: 12px; font-family: inherit; font-size: 11px; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; border: 1px solid rgba(255,177,0,.35); color: #ffb100; background: transparent;">💥 Спам x50</button>
+    </div>
   </div>
 
   <div class="panel">
@@ -341,7 +346,9 @@
       document.querySelectorAll('.qitem-actions button, .slider-ctrl button, .slider-ctrl select, .danger-buttons button, .broadcast-form button').forEach(b => b.disabled = true);
     }
     if (currentEmp.role !== 'admin') {
-      document.querySelectorAll('.btn-warn, .btn-danger').forEach(b => b.style.display = 'none');
+      document.querySelectorAll('.btn-danger').forEach(b => {
+        if (b.getAttribute('onclick') === 'clearAll()') b.style.display = 'none';
+      });
       const empBtn = document.querySelector('[onclick="toggleEmployees()"]');
       if (empBtn) empBtn.style.display = 'none';
     }
@@ -367,6 +374,78 @@
       await writeLog('эфир', '', text.slice(0, 60));
       inp.value = '';
       showToast('Отправлено в эфир');
+    } catch (err) {
+      showToast('Ошибка: ' + err.message, true);
+    }
+  }
+
+  async function clearBroadcast() {
+    if (!currentEmp || currentEmp.role === 'viewer') return showToast('Только для админа или модератора', true);
+    if (!confirm('Удалить все сообщения из эфира?')) return;
+    try {
+      const snap = await getDocs(collection(db, 'broadcast'));
+      const batch = writeBatch(db);
+      snap.docs.forEach(d => batch.delete(d.ref));
+      await batch.commit();
+      await writeLog('очистил эфир', '', '');
+      showToast('Эфир очищен');
+    } catch (err) {
+      showToast('Ошибка: ' + err.message, true);
+    }
+  }
+
+  const SPAM_PHRASES = [
+    'Привет из Владивостока!',
+    'Как вам презентация?',
+    'Не забудьте про опрос → слайд 06',
+    'Спасибо, что пришли!',
+    'Сегодня говорим про море и сопки',
+    'А знали, что до Москвы 9288 км?',
+    'Транссиб — самая длинная ж/д в мире',
+    'Русский мост — 1104 метра',
+    'Мы идём по слайдам, не торопите',
+    'Вопросы пишите в ?ask',
+    'Ваш вопрос увидят на экране',
+    'Готовимся к финальному опросу',
+    'Владивосток — портовый город',
+    'Тут живут амурские тигры',
+    'Камчатский краб — наше всё',
+    'Оцените наше выступление!',
+    'Жмите ❤️ если нравится',
+    'Ещё 5 минут и закончим',
+    'Кто хочет вопрос — пишите',
+    'Подписывайтесь на @helperrunner_bot',
+    'Море, сопки, мосты — вот наш город',
+    'Форт №7 — старейшая крепость',
+    'Приехали из МГУ им. Невельского',
+    'Наша команда: Суслов, Редько, Яковлева',
+    'Скоро финальный слайд'
+  ];
+
+  function randomSpam() {
+    const base = SPAM_PHRASES[Math.floor(Math.random() * SPAM_PHRASES.length)];
+    const tails = [' #' + Math.floor(Math.random() * 999), ' (' + Math.floor(Math.random() * 99) + '%)', ' — ' + new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }), ''];
+    return base + tails[Math.floor(Math.random() * tails.length)];
+  }
+
+  async function spamBroadcast(count) {
+    if (!currentEmp || currentEmp.role === 'viewer') return showToast('Только для админа или модератора', true);
+    const n = typeof count === 'number' ? count : 20;
+    if (!confirm('Отправить ' + n + ' сообщений в эфир?')) return;
+    try {
+      const batch = writeBatch(db);
+      for (let i = 0; i < n; i++) {
+        const ref = doc(collection(db, 'broadcast'));
+        batch.set(ref, {
+          text: randomSpam(),
+          author: currentEmp.name || currentEmp.login,
+          user: currentEmp.login,
+          createdAt: serverTimestamp()
+        });
+      }
+      await batch.commit();
+      await writeLog('спам-тест', '', n + ' сообщений');
+      showToast('Отправлено: ' + n);
     } catch (err) {
       showToast('Ошибка: ' + err.message, true);
     }
@@ -772,6 +851,8 @@
   window.closeAnswerModal = closeAnswerModal;
   window.submitAnswer = submitAnswer;
   window.sendBroadcast = sendBroadcast;
+  window.clearBroadcast = clearBroadcast;
+  window.spamBroadcast = spamBroadcast;
 
   const saved = sessionStorage.getItem('vld_admin_ok');
   if (saved) {
