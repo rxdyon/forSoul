@@ -810,7 +810,7 @@
 
   @media (max-width: 900px) {
     .qa-widget {
-      top: auto; bottom: 250px; right: 12px; left: 12px;
+      top: auto; bottom: 260px; right: 12px; left: 12px;
       width: auto;
       max-height: 40vh;
       transform: translateY(20px);
@@ -822,41 +822,44 @@
     }
 
     .slide {
-      padding: 0 14px;
+      padding: 0 12px;
       align-items: flex-start;
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
     }
     .slide-content {
       width: 100%;
       max-width: 100%;
-      margin-top: 18px;
-      padding-bottom: 200px;
-      max-height: 100dvh;
-      overflow-y: auto;
+      margin-top: 16px;
+      padding-bottom: 220px;
+      max-height: none;
+      overflow: visible;
       padding-right: 0;
     }
     .tag { font-size: 10px; letter-spacing: 2px; margin-bottom: 8px; }
-    h1 { font-size: clamp(22px, 6.5vw, 32px); margin-bottom: 12px; line-height: 1.15; }
-    p { font-size: 13px; margin-bottom: 14px; line-height: 1.5; max-width: 100%; }
+    h1 { font-size: clamp(20px, 6vw, 28px); margin-bottom: 10px; line-height: 1.15; }
+    p { font-size: 13px; margin-bottom: 12px; line-height: 1.45; max-width: 100%; }
 
-    .grid-stats, .grid-two { grid-template-columns: 1fr; gap: 12px; margin-top: 14px; }
+    .grid-stats, .grid-two { grid-template-columns: 1fr; gap: 10px; margin-top: 12px; }
     .stat-box, .info-card { padding: 14px 16px; border-left-width: 3px; }
-    .stat-box h2 { font-size: 30px; margin-bottom: 4px; }
-    .stat-box p, .info-card p { font-size: 12.5px; line-height: 1.5; }
+    .stat-box h2 { font-size: 28px; margin-bottom: 4px; }
+    .stat-box p, .info-card p { font-size: 12.5px; line-height: 1.45; }
     .info-card h3 { font-size: 15px; margin-bottom: 6px; }
 
     .slide-emblem {
       right: 12px;
       bottom: auto;
       top: 12px;
-      width: 70px;
-      height: 70px;
-      opacity: 0.10;
+      width: 60px;
+      height: 60px;
+      opacity: 0.08;
     }
     .slide-emblem.left { left: 12px; right: auto; }
     .slide-emblem.top { top: 12px; bottom: auto; }
 
     .hud-side-link {
-      top: auto; bottom: 210px;
+      top: auto; bottom: 220px;
       transform: none;
       writing-mode: horizontal-tb;
       padding: 8px 14px;
@@ -868,94 +871,102 @@
     .link-left  { left: 12px; border-left: none; border-top: 3px solid #00d2ff; border-radius: 0 20px 20px 0; }
     .link-right { right: 12px; border-right: none; border-top: 3px solid #ff006e; border-radius: 20px 0 0 20px; }
 
-    .hud-corner { width: 16px; height: 20px; opacity: .55; }
-    .hc-tl { top: 10px; left: 10px; }
-    .hc-tr { top: 10px; right: 10px; }
-    .hc-bl { bottom: auto; top: 50px; left: 10px; }
-    .hc-br { bottom: auto; top: 50px; right: 10px; }
+    .hud-corner { width: 14px; height: 18px; opacity: .5; }
+    .hc-tl { top: 8px; left: 8px; }
+    .hc-tr { top: 8px; right: 8px; }
+    .hc-bl { bottom: auto; top: 42px; left: 8px; }
+    .hc-br { bottom: auto; top: 42px; right: 8px; }
 
     .video-container-tray { margin-top: 10px; border-radius: 14px; padding: 4px; }
-    .teleprompter { padding: 10px 12px; min-height: 56px; margin-top: 10px; }
-    .teleprompter .line { font-size: 13px; }
+    .teleprompter { padding: 10px 12px; min-height: 50px; margin-top: 10px; }
+    .teleprompter .line { font-size: 12px; }
     .teleprompter .meta { font-size: 9px; letter-spacing: 2px; margin-top: 4px; }
     .btn-mini { padding: 8px 12px; font-size: 10px; }
 
-    .qr-grid { grid-template-columns: 1fr; gap: 14px; margin-top: 14px; }
-    .qr-card { padding: 16px; }
-    .qr-color-frame { max-width: 170px; }
-    .qr-card h3 { font-size: 15px; }
-    .qr-link-btn { padding: 9px 16px; font-size: 12px; }
+    .qr-grid { grid-template-columns: 1fr; gap: 12px; margin-top: 14px; }
+    .qr-card { padding: 14px; }
+    .qr-color-frame { max-width: 150px; padding: 4px; }
+    .qr-card h3 { font-size: 14px; margin-bottom: 4px; }
+    .qr-link-btn { padding: 8px 14px; font-size: 11px; }
 
-    .poll-layout { flex-direction: column; gap: 18px; margin-top: 16px; }
-    .poll-text h2 { font-size: 20px; margin-bottom: 10px; }
-    .poll-text p { font-size: 13px; }
-    .poll-text ul li { font-size: 12.5px; }
-    .poll-qr-inner { width: 220px; height: 220px; }
-    .poll-qr-btn { padding: 12px 22px; font-size: 11px; }
+    .poll-layout {
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 12px;
+    }
+    .poll-text h2 { font-size: 18px; margin-bottom: 8px; }
+    .poll-text p { font-size: 12px; margin-bottom: 10px; }
+    .poll-text ul { gap: 6px; }
+    .poll-text ul li { font-size: 12px; }
+    .poll-qr-frame { padding: 5px; border-radius: 16px; }
+    .poll-qr-inner { width: 180px; height: 180px; padding: 8px; border-radius: 12px; }
+    .poll-qr-caption { font-size: 9px; margin-top: 8px; }
+    .poll-qr-btn { padding: 12px 20px; font-size: 11px; margin-top: 12px; }
 
     .spoiler-grid { grid-template-columns: 1fr; gap: 10px; margin-top: 14px; }
     .spoiler-card { padding: 14px 16px; }
     .spoiler-card h3 { font-size: 15px; }
     .spoiler-card p { font-size: 12px; }
-    .spoiler-tagline { font-size: 14px; margin-top: 18px; }
+    .spoiler-tagline { font-size: 13px; margin-top: 16px; }
 
     .controls {
-      bottom: 170px;
-      gap: 8px;
-      padding: 6px 12px;
+      bottom: 200px;
+      gap: 6px;
+      padding: 6px 10px;
     }
-    .btn { width: 42px; height: 42px; }
-    .btn svg { width: 16px; height: 16px; }
-    .progress-dots { gap: 6px; }
-    .dot { width: 7px; height: 7px; }
-    .slide-counter { min-width: 48px; padding: 0 4px; }
-    .counter-current { font-size: 15px; }
-    .counter-total { font-size: 11px; }
+    .btn { width: 38px; height: 38px; }
+    .btn svg { width: 14px; height: 14px; }
+    .progress-dots { gap: 5px; }
+    .dot { width: 6px; height: 6px; }
+    .slide-counter { min-width: 44px; padding: 0 4px; }
+    .counter-current { font-size: 14px; }
+    .counter-sep { font-size: 11px; }
+    .counter-total { font-size: 10px; }
     .slide-label { display: none; }
 
-    .swipe-hint { bottom: 240px; font-size: 10px; padding: 8px 14px; }
+    .swipe-hint { bottom: 260px; font-size: 10px; padding: 6px 12px; }
 
     .footer-inner {
-      padding: 8px 14px;
-      gap: 12px;
+      padding: 8px 12px;
+      gap: 10px;
       display: grid;
       grid-template-columns: 1fr 1fr;
     }
     .footer-brand { grid-column: 1 / -1; }
-    .footer-block-label { font-size: 8.5px; }
-    .footer-block-value { font-size: 10.5px; }
+    .footer-block-label { font-size: 8px; }
+    .footer-block-value { font-size: 10px; }
     .footer-links {
       grid-column: 1 / -1;
       margin-left: 0;
       gap: 10px;
     }
-    .footer-links a { font-size: 10.5px; }
-    .footer-brand-mark { width: 26px; height: 26px; font-size: 11px; border-radius: 7px; }
-    .footer-brand-name { font-size: 11.5px; }
-    .footer-brand-sub { font-size: 8px; letter-spacing: 1px; }
+    .footer-links a { font-size: 10px; }
+    .footer-brand-mark { width: 24px; height: 24px; font-size: 10px; border-radius: 6px; }
+    .footer-brand-name { font-size: 11px; }
+    .footer-brand-sub { font-size: 7.5px; letter-spacing: 1px; }
 
     .footer-copy {
-      padding: 6px 14px 8px;
-      font-size: 9.5px;
+      padding: 6px 12px 8px;
+      font-size: 9px;
       flex-direction: column;
       align-items: flex-start;
-      gap: 6px;
+      gap: 5px;
     }
-    .footer-maestro { padding: 4px 10px; font-size: 9.5px; }
+    .footer-maestro { padding: 4px 10px; font-size: 9px; }
   }
 
   @media (max-width: 480px) {
-    h1 { font-size: 20px; }
-    .slide-content { margin-top: 14px; padding-bottom: 200px; }
-    .slide-emblem { width: 60px; height: 60px; }
-    .poll-qr-inner { width: 190px; height: 190px; }
-    .qr-color-frame { max-width: 150px; }
+    h1 { font-size: 18px; }
+    .slide-content { margin-top: 12px; padding-bottom: 230px; }
+    .slide-emblem { width: 50px; height: 50px; }
+    .poll-qr-inner { width: 160px; height: 160px; }
+    .qr-color-frame { max-width: 130px; }
     .poll-qr-btn { width: 100%; text-align: center; }
-    .controls { bottom: 160px; }
-    .swipe-hint { bottom: 225px; }
-    .hud-side-link { bottom: 200px; }
-    .footer-inner { grid-template-columns: 1fr 1fr; gap: 10px; }
-    .qa-widget { bottom: 220px; }
+    .controls { bottom: 190px; }
+    .swipe-hint { bottom: 245px; }
+    .hud-side-link { bottom: 210px; }
+    .footer-inner { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .qa-widget { bottom: 230px; }
   }
 </style>
 </head>
