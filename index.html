@@ -76,19 +76,19 @@
     height: 100dvh;
     scroll-snap-align: center;
     scroll-snap-stop: always;
-    display: flex; align-items: center; justify-content: center;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
     padding: 0 20px;
     z-index: 3;
   }
 
   .slide-content {
     position: relative; z-index: 4; width: 100%; max-width: 1200px;
-    padding-bottom: 200px;
-    max-height: 100dvh;
+    flex: 1 1 auto;
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
-    padding-right: 6px;
+    padding: 90px 6px 20px 0;
     scrollbar-width: thin;
   }
   .slide-content::-webkit-scrollbar { width: 6px; }
@@ -520,13 +520,8 @@
     pointer-events: auto;
   }
 
-  @media (hover: none), (max-width: 900px) {
-    .presentation-footer {
-      transform: translateY(0);
-      opacity: 1;
-      pointer-events: auto;
-    }
-    .controls-hover-zone { display: none; }
+  .mobile-footer {
+    display: none;
   }
 
   .footer-inner {
@@ -810,9 +805,9 @@
 
   @media (max-width: 900px) {
     .qa-widget {
-      top: auto; bottom: 260px; right: 12px; left: 12px;
+      top: auto; bottom: 12px; right: 12px; left: 12px;
       width: auto;
-      max-height: 40vh;
+      max-height: 45vh;
       transform: translateY(20px);
       opacity: 0;
     }
@@ -823,19 +818,16 @@
 
     .slide {
       padding: 0 12px;
-      align-items: flex-start;
-      overflow-y: auto;
-      overflow-x: hidden;
-      -webkit-overflow-scrolling: touch;
+      align-items: stretch;
+      justify-content: flex-start;
     }
     .slide-content {
       width: 100%;
       max-width: 100%;
-      margin-top: 16px;
-      padding-bottom: 220px;
+      padding: 80px 0 12px 0;
+      overflow-y: auto;
       max-height: none;
-      overflow: visible;
-      padding-right: 0;
+      flex: 1 1 auto;
     }
     .tag { font-size: 10px; letter-spacing: 2px; margin-bottom: 8px; }
     h1 { font-size: clamp(20px, 6vw, 28px); margin-bottom: 10px; line-height: 1.15; }
@@ -859,13 +851,14 @@
     .slide-emblem.top { top: 12px; bottom: auto; }
 
     .hud-side-link {
-      top: auto; bottom: 220px;
+      top: auto; bottom: 90px;
       transform: none;
       writing-mode: horizontal-tb;
-      padding: 8px 14px;
-      font-size: 10px;
+      padding: 6px 12px;
+      font-size: 9px;
       letter-spacing: 2px;
       border-radius: 20px;
+      z-index: 7;
     }
     .hud-side-link:hover { transform: scale(1.05); }
     .link-left  { left: 12px; border-left: none; border-top: 3px solid #00d2ff; border-radius: 0 20px 20px 0; }
@@ -909,64 +902,86 @@
     .spoiler-card p { font-size: 12px; }
     .spoiler-tagline { font-size: 13px; margin-top: 16px; }
 
-    .controls {
-      bottom: 200px;
-      gap: 6px;
-      padding: 6px 10px;
+    .presentation-footer {
+      position: static;
+      transform: none;
+      opacity: 1;
+      pointer-events: auto;
+      background: transparent;
+      backdrop-filter: none;
+      border-top: none;
+      padding: 0;
+      margin-top: auto;
+      flex-shrink: 0;
+      width: 100%;
+      max-width: 100%;
     }
-    .btn { width: 38px; height: 38px; }
-    .btn svg { width: 14px; height: 14px; }
-    .progress-dots { gap: 5px; }
-    .dot { width: 6px; height: 6px; }
-    .slide-counter { min-width: 44px; padding: 0 4px; }
-    .counter-current { font-size: 14px; }
-    .counter-sep { font-size: 11px; }
-    .counter-total { font-size: 10px; }
-    .slide-label { display: none; }
-
-    .swipe-hint { bottom: 260px; font-size: 10px; padding: 6px 12px; }
-
-    .footer-inner {
-      padding: 8px 12px;
-      gap: 10px;
+    .presentation-footer .footer-inner,
+    .presentation-footer .footer-copy {
+      max-width: 100%;
+      padding: 8px 4px 4px;
+    }
+    .presentation-footer .footer-inner {
+      gap: 8px;
       display: grid;
       grid-template-columns: 1fr 1fr;
+      border-top: 1px solid rgba(255,255,255,.05);
+      padding-top: 10px;
     }
-    .footer-brand { grid-column: 1 / -1; }
-    .footer-block-label { font-size: 8px; }
-    .footer-block-value { font-size: 10px; }
-    .footer-links {
+    .presentation-footer .footer-brand { grid-column: 1 / -1; }
+    .presentation-footer .footer-block-label { font-size: 8px; }
+    .presentation-footer .footer-block-value { font-size: 10px; }
+    .presentation-footer .footer-links {
       grid-column: 1 / -1;
       margin-left: 0;
       gap: 10px;
     }
-    .footer-links a { font-size: 10px; }
-    .footer-brand-mark { width: 24px; height: 24px; font-size: 10px; border-radius: 6px; }
-    .footer-brand-name { font-size: 11px; }
-    .footer-brand-sub { font-size: 7.5px; letter-spacing: 1px; }
+    .presentation-footer .footer-links a { font-size: 10px; }
+    .presentation-footer .footer-brand-mark { width: 22px; height: 22px; font-size: 10px; border-radius: 6px; }
+    .presentation-footer .footer-brand-name { font-size: 10.5px; }
+    .presentation-footer .footer-brand-sub { font-size: 7px; letter-spacing: 1px; }
 
-    .footer-copy {
-      padding: 6px 12px 8px;
-      font-size: 9px;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 5px;
+    .presentation-footer .footer-copy {
+      padding: 4px 4px 6px;
+      font-size: 8.5px;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      flex-wrap: wrap;
     }
-    .footer-maestro { padding: 4px 10px; font-size: 9px; }
+    .presentation-footer .footer-maestro { padding: 3px 8px; font-size: 8.5px; }
+
+    .controls-hover-zone { display: none; }
+
+    .controls {
+      bottom: 12px;
+      gap: 6px;
+      padding: 6px 10px;
+      background: rgba(5,7,15,.92);
+    }
+    .btn { width: 36px; height: 36px; }
+    .btn svg { width: 14px; height: 14px; }
+    .progress-dots { gap: 5px; }
+    .dot { width: 6px; height: 6px; }
+    .slide-counter { min-width: 40px; padding: 0 4px; }
+    .counter-current { font-size: 13px; }
+    .counter-sep { font-size: 10px; }
+    .counter-total { font-size: 9px; }
+    .slide-label { display: none; }
+
+    .swipe-hint { bottom: 70px; font-size: 10px; padding: 6px 12px; }
   }
 
   @media (max-width: 480px) {
     h1 { font-size: 18px; }
-    .slide-content { margin-top: 12px; padding-bottom: 230px; }
+    .slide-content { padding: 76px 0 8px 0; }
     .slide-emblem { width: 50px; height: 50px; }
     .poll-qr-inner { width: 160px; height: 160px; }
     .qr-color-frame { max-width: 130px; }
     .poll-qr-btn { width: 100%; text-align: center; }
-    .controls { bottom: 190px; }
-    .swipe-hint { bottom: 245px; }
-    .hud-side-link { bottom: 210px; }
-    .footer-inner { grid-template-columns: 1fr 1fr; gap: 8px; }
-    .qa-widget { bottom: 230px; }
+    .hud-side-link { bottom: 80px; }
+    .qa-widget { bottom: 8px; }
   }
 </style>
 </head>
@@ -1066,6 +1081,7 @@
       </div>
       <div class="spoiler-tagline">Владивосток — это город, в который влюбляются навсегда.</div>
     </div>
+    <div class="mobile-footer"></div>
   </section>
 
   <section class="slide" data-index="1">
@@ -1084,6 +1100,7 @@
         <div class="stat-box"><h2>9288</h2><p>Километров до Москвы. Финальная точка легендарного Транссиба.</p></div>
       </div>
     </div>
+    <div class="mobile-footer"></div>
   </section>
 
   <section class="slide" data-index="2">
@@ -1110,6 +1127,7 @@
         <div class="info-card"><h3>Русский мост</h3><p>Один из крупнейших вантовых мостов планеты с пролётом 1104 метра. Изображён на банкноте 2000 рублей.</p></div>
       </div>
     </div>
+    <div class="mobile-footer"></div>
   </section>
 
   <section class="slide" data-index="3">
@@ -1132,6 +1150,7 @@
         <div class="info-card"><h3>Тихоокеанский флот (ТОФ)</h3><p>Штаб-квартира Тихоокеанского флота России. Защита морских границ на Дальнем Востоке.</p></div>
       </div>
     </div>
+    <div class="mobile-footer"></div>
   </section>
 
   <section class="slide" data-index="4">
@@ -1153,6 +1172,7 @@
         <div class="info-card"><h3>Гастроморская кухня</h3><p>Свежий камчатский краб, дикий гребешок и уникальные изыски таёжной кухни.</p></div>
       </div>
     </div>
+    <div class="mobile-footer"></div>
   </section>
 
   <section class="slide" data-index="5">
@@ -1182,6 +1202,7 @@
         <button class="btn-mini" id="toggleTeleprompter">Скрыть суфлёр</button>
       </div>
     </div>
+    <div class="mobile-footer"></div>
   </section>
 
   <section class="slide" data-index="6">
@@ -1219,6 +1240,7 @@
         </div>
       </div>
     </div>
+    <div class="mobile-footer"></div>
   </section>
 
   <section class="slide" data-index="7">
@@ -1269,6 +1291,7 @@
         </div>
       </div>
     </div>
+    <div class="mobile-footer"></div>
   </section>
 
 </div>
@@ -1391,6 +1414,28 @@
   let currentSlide = 0;
   let scrollTimeout = null;
   let hintTimeout = null;
+
+  const isMobile = window.matchMedia('(max-width: 900px)').matches;
+
+  if (isMobile) {
+    const footerClone = footer.cloneNode(true);
+    footerClone.classList.add('mobile-footer-clone');
+    footerClone.style.position = 'static';
+    footerClone.style.transform = 'none';
+    footerClone.style.opacity = '1';
+    footerClone.style.pointerEvents = 'auto';
+    footerClone.style.background = 'transparent';
+    footerClone.style.backdropFilter = 'none';
+    footerClone.style.borderTop = 'none';
+    footerClone.style.width = '100%';
+    footerClone.style.maxWidth = '100%';
+
+    document.querySelectorAll('.mobile-footer').forEach(slot => {
+      slot.appendChild(footerClone.cloneNode(true));
+    });
+
+    footer.style.display = 'none';
+  }
 
   const SLIDE_LABELS = ['Спойлер','Визитка','Мосты','Крепость','Природа','Погружение','Опрос','Контакты'];
 
