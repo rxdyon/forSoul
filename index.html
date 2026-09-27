@@ -853,13 +853,7 @@
     .slide[data-index="6"] .slide-content,
     .slide[data-index="7"] .slide-content {
       overflow-y: auto;
-      max-height: calc(100dvh - 130px);
-      scrollbar-width: none;
-    }
-    .slide[data-index="5"] .slide-content::-webkit-scrollbar,
-    .slide[data-index="6"] .slide-content::-webkit-scrollbar,
-    .slide[data-index="7"] .slide-content::-webkit-scrollbar {
-      display: none;
+      max-height: calc(100dvh - 260px);
     }
   }
 
@@ -1324,12 +1318,12 @@
         <div class="qr-card glow-card">
           <div class="qr-color-frame">
             <div class="qr-image-wrapper">
-              <img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=0&data=https%3A%2F%2Ft.me%2Fr0wa_RED_8002" alt="QR @r0wa_RED_8002">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=0&data=https%3A%2F%2Ft.me%2FROWA_RED_8002" alt="QR @ROWA_RED_8002">
               <div class="qr-tg-badge"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg></div>
             </div>
           </div>
           <h3>Редько Роман</h3>
-          <a href="https://t.me/r0wa_RED_8002" target="_blank" rel="noopener" class="qr-link-btn">@r0wa_RED_8002</a>
+          <a href="https://t.me/ROWA_RED_8002" target="_blank" rel="noopener" class="qr-link-btn">@ROWA_RED_8002</a>
         </div>
 
         <div class="qr-card glow-card">
@@ -1492,8 +1486,8 @@
   if (counterTotal) counterTotal.textContent = String(total).padStart(2, '0');
 
   function goTo(index) {
-    if (index < 0) index = total - 1;
-    if (index >= total) index = 0;
+    if (index < 0) index = 0;
+    if (index >= total) index = total - 1;
     slider.scrollTo({ left: index * slider.clientWidth, behavior: 'smooth' });
   }
 
