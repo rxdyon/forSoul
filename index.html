@@ -77,9 +77,10 @@
     scroll-snap-align: center;
     scroll-snap-stop: always;
     display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    padding: 0 20px;
+    align-items: center; justify-content: flex-start;
+    padding: 0 20px 200px;
     z-index: 3;
+    overflow: hidden;
   }
 
   .slide-content {
@@ -88,7 +89,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
-    padding: 90px 6px 20px 0;
+    padding: 30px 6px 30px 0;
     scrollbar-width: thin;
   }
   .slide-content::-webkit-scrollbar { width: 6px; }
@@ -178,19 +179,34 @@
   }
   .btn-mini:hover { background: #00d2ff; color: #05070f; }
 
-  .hud-side-link {
-    position: absolute; top: 50%; transform: translateY(-50%); z-index: 6;
-    padding: 16px 10px; background: rgba(10,14,28,.6);
-    border: 1px solid rgba(0,210,255,.2); border-radius: 12px;
-    color: #00d2ff; text-decoration: none; font-size: 10px; font-weight: 900;
-    letter-spacing: 3px; text-transform: uppercase;
-    writing-mode: vertical-lr; cursor: pointer;
-    transition: all .3s ease; backdrop-filter: blur(15px);
-    box-shadow: 0 10px 30px rgba(0,0,0,.5);
+  .hud-side-links {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    width: 100%;
+    max-width: 860px;
+    margin-top: 16px;
+    flex-wrap: wrap;
   }
-  .hud-side-link:hover { transform: translateY(-50%) scale(1.05); background: rgba(10,14,28,.9); }
-  .link-left  { left: 20px;  border-left: 3px solid #00d2ff; }
-  .link-right { right: 20px; border-right: 3px solid #ff006e; color: #ff006e; border-color: rgba(255,0,110,.2); }
+  .hud-side-link {
+    padding: 10px 18px;
+    background: rgba(10,14,28,.7);
+    border: 1px solid rgba(0,210,255,.25);
+    border-radius: 24px;
+    color: #00d2ff;
+    text-decoration: none;
+    font-size: 11px; font-weight: 900;
+    letter-spacing: 2px; text-transform: uppercase;
+    cursor: pointer;
+    transition: all .3s ease;
+    backdrop-filter: blur(15px);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .hud-side-link:hover { background: rgba(10,14,28,.95); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,210,255,.25); }
+  .hud-side-link.right { color: #ff006e; border-color: rgba(255,0,110,.3); }
+  .hud-side-link.right:hover { box-shadow: 0 8px 20px rgba(255,0,110,.25); }
 
   .slide-emblem {
     position: absolute;
@@ -397,7 +413,7 @@
 
   .controls {
     position: fixed;
-    bottom: 130px;
+    bottom: 78px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 100;
@@ -406,7 +422,7 @@
     align-items: center;
     padding: 10px 18px;
     border-radius: 40px;
-    background: rgba(5,7,15,.85);
+    background: rgba(5,7,15,.9);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(0,210,255,.25);
     box-shadow: 0 15px 40px rgba(0,0,0,.6);
@@ -482,13 +498,13 @@
 
   .swipe-hint {
     position: fixed;
-    bottom: 200px;
+    bottom: 150px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 99;
     padding: 10px 20px;
     border-radius: 30px;
-    background: rgba(5,7,15,.8);
+    background: rgba(5,7,15,.85);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(0,210,255,.3);
     color: #00d2ff;
@@ -504,9 +520,9 @@
 
   .presentation-footer {
     position: fixed; bottom: 0; left: 0; width: 100%;
-    background: rgba(5,7,15,.96); backdrop-filter: blur(14px);
+    background: rgba(5,7,15,.98); backdrop-filter: blur(14px);
     border-top: 1px solid rgba(255,255,255,.07);
-    z-index: 90;
+    z-index: 95;
     padding-bottom: env(safe-area-inset-bottom);
     transform: translateY(100%);
     opacity: 0;
@@ -518,10 +534,6 @@
     transform: translateY(0);
     opacity: 1;
     pointer-events: auto;
-  }
-
-  .mobile-footer {
-    display: none;
   }
 
   .footer-inner {
@@ -601,17 +613,7 @@
   .footer-links a:hover { color: #00d2ff; }
 
   .footer-copy {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 6px 32px 8px;
-    border-top: 1px solid rgba(255,255,255,.05);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 10.5px;
-    color: #7e8b9b;
-    gap: 12px;
-    flex-wrap: wrap;
+    display: none;
   }
 
   .footer-maestro {
@@ -803,31 +805,31 @@
   .ask-success h2 { font-size: 18px; margin-bottom: 8px; }
   .ask-success p { font-size: 13px; color: #b0b7c6; }
 
-  @media (max-width: 900px) {
-    .qa-widget {
-      top: auto; bottom: 12px; right: 12px; left: 12px;
-      width: auto;
-      max-height: 45vh;
-      transform: translateY(20px);
+  @media (min-width: 901px) {
+    .presentation-footer {
+      transform: translateY(100%);
       opacity: 0;
     }
-    .qa-widget.visible {
+    .presentation-footer.visible {
       transform: translateY(0);
       opacity: 1;
     }
+  }
+
+  @media (hover: none), (max-width: 900px) {
+    .presentation-footer {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .controls-hover-zone { display: none; }
 
     .slide {
-      padding: 0 12px;
-      align-items: stretch;
-      justify-content: flex-start;
+      padding: 0 14px 140px;
     }
     .slide-content {
-      width: 100%;
-      max-width: 100%;
-      padding: 80px 0 12px 0;
+      padding: 70px 0 16px 0;
       overflow-y: auto;
-      max-height: none;
-      flex: 1 1 auto;
     }
     .tag { font-size: 10px; letter-spacing: 2px; margin-bottom: 8px; }
     h1 { font-size: clamp(20px, 6vw, 28px); margin-bottom: 10px; line-height: 1.15; }
@@ -843,32 +845,28 @@
       right: 12px;
       bottom: auto;
       top: 12px;
-      width: 60px;
-      height: 60px;
-      opacity: 0.08;
+      width: 50px;
+      height: 50px;
+      opacity: 0.06;
     }
     .slide-emblem.left { left: 12px; right: auto; }
     .slide-emblem.top { top: 12px; bottom: auto; }
 
-    .hud-side-link {
-      top: auto; bottom: 90px;
-      transform: none;
-      writing-mode: horizontal-tb;
-      padding: 6px 12px;
-      font-size: 9px;
-      letter-spacing: 2px;
-      border-radius: 20px;
-      z-index: 7;
+    .hud-side-links {
+      margin-top: 12px;
+      gap: 8px;
     }
-    .hud-side-link:hover { transform: scale(1.05); }
-    .link-left  { left: 12px; border-left: none; border-top: 3px solid #00d2ff; border-radius: 0 20px 20px 0; }
-    .link-right { right: 12px; border-right: none; border-top: 3px solid #ff006e; border-radius: 20px 0 0 20px; }
+    .hud-side-link {
+      padding: 8px 14px;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+    }
 
     .hud-corner { width: 14px; height: 18px; opacity: .5; }
     .hc-tl { top: 8px; left: 8px; }
     .hc-tr { top: 8px; right: 8px; }
-    .hc-bl { bottom: auto; top: 42px; left: 8px; }
-    .hc-br { bottom: auto; top: 42px; right: 8px; }
+    .hc-bl { bottom: 140px; left: 8px; }
+    .hc-br { bottom: 140px; right: 8px; }
 
     .video-container-tray { margin-top: 10px; border-radius: 14px; padding: 4px; }
     .teleprompter { padding: 10px 12px; min-height: 50px; margin-top: 10px; }
@@ -878,7 +876,7 @@
 
     .qr-grid { grid-template-columns: 1fr; gap: 12px; margin-top: 14px; }
     .qr-card { padding: 14px; }
-    .qr-color-frame { max-width: 150px; padding: 4px; }
+    .qr-color-frame { max-width: 140px; padding: 4px; }
     .qr-card h3 { font-size: 14px; margin-bottom: 4px; }
     .qr-link-btn { padding: 8px 14px; font-size: 11px; }
 
@@ -892,9 +890,9 @@
     .poll-text ul { gap: 6px; }
     .poll-text ul li { font-size: 12px; }
     .poll-qr-frame { padding: 5px; border-radius: 16px; }
-    .poll-qr-inner { width: 180px; height: 180px; padding: 8px; border-radius: 12px; }
+    .poll-qr-inner { width: 160px; height: 160px; padding: 8px; border-radius: 12px; }
     .poll-qr-caption { font-size: 9px; margin-top: 8px; }
-    .poll-qr-btn { padding: 12px 20px; font-size: 11px; margin-top: 12px; }
+    .poll-qr-btn { padding: 12px 20px; font-size: 11px; margin-top: 12px; width: 100%; text-align: center; box-sizing: border-box; }
 
     .spoiler-grid { grid-template-columns: 1fr; gap: 10px; margin-top: 14px; }
     .spoiler-card { padding: 14px 16px; }
@@ -902,63 +900,10 @@
     .spoiler-card p { font-size: 12px; }
     .spoiler-tagline { font-size: 13px; margin-top: 16px; }
 
-    .presentation-footer {
-      position: static;
-      transform: none;
-      opacity: 1;
-      pointer-events: auto;
-      background: transparent;
-      backdrop-filter: none;
-      border-top: none;
-      padding: 0;
-      margin-top: auto;
-      flex-shrink: 0;
-      width: 100%;
-      max-width: 100%;
-    }
-    .presentation-footer .footer-inner,
-    .presentation-footer .footer-copy {
-      max-width: 100%;
-      padding: 8px 4px 4px;
-    }
-    .presentation-footer .footer-inner {
-      gap: 8px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      border-top: 1px solid rgba(255,255,255,.05);
-      padding-top: 10px;
-    }
-    .presentation-footer .footer-brand { grid-column: 1 / -1; }
-    .presentation-footer .footer-block-label { font-size: 8px; }
-    .presentation-footer .footer-block-value { font-size: 10px; }
-    .presentation-footer .footer-links {
-      grid-column: 1 / -1;
-      margin-left: 0;
-      gap: 10px;
-    }
-    .presentation-footer .footer-links a { font-size: 10px; }
-    .presentation-footer .footer-brand-mark { width: 22px; height: 22px; font-size: 10px; border-radius: 6px; }
-    .presentation-footer .footer-brand-name { font-size: 10.5px; }
-    .presentation-footer .footer-brand-sub { font-size: 7px; letter-spacing: 1px; }
-
-    .presentation-footer .footer-copy {
-      padding: 4px 4px 6px;
-      font-size: 8.5px;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-    .presentation-footer .footer-maestro { padding: 3px 8px; font-size: 8.5px; }
-
-    .controls-hover-zone { display: none; }
-
     .controls {
-      bottom: 12px;
+      bottom: 48px;
       gap: 6px;
       padding: 6px 10px;
-      background: rgba(5,7,15,.92);
     }
     .btn { width: 36px; height: 36px; }
     .btn svg { width: 14px; height: 14px; }
@@ -970,18 +915,69 @@
     .counter-total { font-size: 9px; }
     .slide-label { display: none; }
 
-    .swipe-hint { bottom: 70px; font-size: 10px; padding: 6px 12px; }
+    .swipe-hint { bottom: 110px; font-size: 10px; padding: 6px 12px; }
+
+    .presentation-footer .footer-inner {
+      max-width: 100%;
+      padding: 8px 12px;
+      gap: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .presentation-footer .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .presentation-footer .footer-brand-mark {
+      width: 26px; height: 26px; font-size: 11px; border-radius: 7px;
+    }
+    .presentation-footer .footer-brand-name { font-size: 10.5px; line-height: 1.1; }
+    .presentation-footer .footer-brand-sub { font-size: 7px; letter-spacing: 1px; }
+
+    .presentation-footer .footer-block {
+      display: none;
+    }
+
+    .presentation-footer .footer-links {
+      display: flex;
+      gap: 10px;
+      margin-left: auto;
+      align-items: center;
+    }
+    .presentation-footer .footer-links a { font-size: 10px; }
+    .presentation-footer .footer-maestro {
+      padding: 3px 8px;
+      font-size: 8.5px;
+    }
+    .presentation-footer .footer-maestro .vk-icon { width: 10px; height: 10px; }
+
+    .qa-widget {
+      top: auto; bottom: 95px; right: 10px; left: 10px;
+      width: auto;
+      max-height: 45vh;
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    .qa-widget.visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
   }
 
   @media (max-width: 480px) {
     h1 { font-size: 18px; }
-    .slide-content { padding: 76px 0 8px 0; }
-    .slide-emblem { width: 50px; height: 50px; }
-    .poll-qr-inner { width: 160px; height: 160px; }
-    .qr-color-frame { max-width: 130px; }
-    .poll-qr-btn { width: 100%; text-align: center; }
-    .hud-side-link { bottom: 80px; }
-    .qa-widget { bottom: 8px; }
+    .slide-content { padding: 66px 0 14px 0; }
+    .slide-emblem { width: 40px; height: 40px; }
+    .poll-qr-inner { width: 150px; height: 150px; }
+    .qr-color-frame { max-width: 120px; }
+    .controls { bottom: 46px; }
+    .swipe-hint { bottom: 105px; }
+    .qa-widget { bottom: 92px; }
+    .presentation-footer .footer-inner { padding: 6px 10px; gap: 8px; }
   }
 </style>
 </head>
@@ -1081,7 +1077,6 @@
       </div>
       <div class="spoiler-tagline">Владивосток — это город, в который влюбляются навсегда.</div>
     </div>
-    <div class="mobile-footer"></div>
   </section>
 
   <section class="slide" data-index="1">
@@ -1100,7 +1095,6 @@
         <div class="stat-box"><h2>9288</h2><p>Километров до Москвы. Финальная точка легендарного Транссиба.</p></div>
       </div>
     </div>
-    <div class="mobile-footer"></div>
   </section>
 
   <section class="slide" data-index="2">
@@ -1127,7 +1121,6 @@
         <div class="info-card"><h3>Русский мост</h3><p>Один из крупнейших вантовых мостов планеты с пролётом 1104 метра. Изображён на банкноте 2000 рублей.</p></div>
       </div>
     </div>
-    <div class="mobile-footer"></div>
   </section>
 
   <section class="slide" data-index="3">
@@ -1150,7 +1143,6 @@
         <div class="info-card"><h3>Тихоокеанский флот (ТОФ)</h3><p>Штаб-квартира Тихоокеанского флота России. Защита морских границ на Дальнем Востоке.</p></div>
       </div>
     </div>
-    <div class="mobile-footer"></div>
   </section>
 
   <section class="slide" data-index="4">
@@ -1172,16 +1164,12 @@
         <div class="info-card"><h3>Гастроморская кухня</h3><p>Свежий камчатский краб, дикий гребешок и уникальные изыски таёжной кухни.</p></div>
       </div>
     </div>
-    <div class="mobile-footer"></div>
   </section>
 
   <section class="slide" data-index="5">
     <video class="video-blur-bg" autoplay loop muted playsinline><source src="vlc.mp4" type="video/mp4"></video>
     <div class="hud-corner hc-tl"></div><div class="hud-corner hc-tr"></div>
     <div class="hud-corner hc-bl"></div><div class="hud-corner hc-br"></div>
-
-    <div class="hud-side-link link-left"  onclick="goTo(6)">👉 опрос</div>
-    <div class="hud-side-link link-right" onclick="goTo(7)">👉 связь</div>
 
     <div class="slide-content slide-content-video">
       <span class="tag" style="background: linear-gradient(90deg,#00d2ff,#ff006e); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent; font-size: clamp(11px, 1.1vw, 15px);">05 / Атмосфера Города</span>
@@ -1201,8 +1189,12 @@
       <div class="tray-controls">
         <button class="btn-mini" id="toggleTeleprompter">Скрыть суфлёр</button>
       </div>
+
+      <div class="hud-side-links">
+        <div class="hud-side-link" onclick="goTo(6)">👉 опрос</div>
+        <div class="hud-side-link right" onclick="goTo(7)">👉 связь</div>
+      </div>
     </div>
-    <div class="mobile-footer"></div>
   </section>
 
   <section class="slide" data-index="6">
@@ -1240,7 +1232,6 @@
         </div>
       </div>
     </div>
-    <div class="mobile-footer"></div>
   </section>
 
   <section class="slide" data-index="7">
@@ -1291,7 +1282,6 @@
         </div>
       </div>
     </div>
-    <div class="mobile-footer"></div>
   </section>
 
 </div>
@@ -1316,7 +1306,7 @@
   </button>
 </div>
 
-<footer class="presentation-footer">
+<footer class="presentation-footer" id="presentationFooter">
   <div class="footer-inner">
     <div class="footer-brand">
       <div class="footer-brand-mark">В</div>
@@ -1339,19 +1329,15 @@
     <div class="footer-links">
       <a href="https://t.me/RXDYON" target="_blank" rel="noopener">Telegram</a>
       <a href="https://forms.yandex.ru/u/6ab8b42102848ff720020c35" target="_blank" rel="noopener">Опрос</a>
+      <a class="footer-maestro"
+         href="https://vk.ru/maectpodes?trackcode=c9ab8543MbsSYwgJiExEaE3CXzOM4RElC5bczpuXqbYdzcMW8qD10J2B8xLsP0hkZtFWP47QCCgbp_XTiZz_sBais4g4cT-78g&from=groups"
+         target="_blank" rel="noopener">
+        <svg class="vk-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15.925 2H8.074C3.615 2 2 5.615 2 10.074v3.852C2 18.385 3.615 22 8.074 22h3.852c4.459 0 6.074-3.615 6.074-8.074v-3.852C18 5.615 16.385 2 15.925 2zM14.62 14.5c.577-.11 1.258.46 1.637.893.385.438.718.91 1.143 1.26.4.327.818.423 1.343.423h1.343c.15 0 .346-.02.434-.144.1-.14.07-.375-.022-.533-.314-.544-.817-1.12-1.222-1.634a6.52 6.52 0 0 1-.68-.97c-.237-.417-.18-.6.04-.972.18-.306.84-.96 1.246-1.503.493-.66.862-1.3.738-1.74-.067-.234-.343-.343-.607-.343h-2.12c-.44 0-.616.236-.78.58-.456.953-1.077 2.012-1.528 2.378-.45.367-.655.45-.88.45s-.336-.083-.496-.45c-.32-.733-.352-2.1-.064-2.716.143-.306.4-.442.67-.487.114-.02.046-.14-.047-.14h-3.41c-.432 0-.825.045-1.096.384-.224.283-.01.295.223.364.532.158.742.61.742 1.314v2.09c0 .484-.112.784-.575.784-.45 0-1.157-.552-1.76-1.53-.456-.74-.833-1.685-1.066-2.528-.088-.316-.27-.514-.627-.514H5.343c-.42 0-.58.172-.58.465 0 .445.456 1.83 1.543 3.328.983 1.353 2.32 2.37 3.99 2.37h1.168c.517 0 .694-.233.694-.784v-1.11c0-.466.242-.614.542-.614z"/>
+        </svg>
+        Maestro
+      </a>
     </div>
-  </div>
-
-  <div class="footer-copy">
-    <div>© 2026 Владивосток — Моя малая родина. Учебный проект.</div>
-    <a class="footer-maestro"
-       href="https://vk.ru/maectpodes?trackcode=c9ab8543MbsSYwgJiExEaE3CXzOM4RElC5bczpuXqbYdzcMW8qD10J2B8xLsP0hkZtFWP47QCCgbp_XTiZz_sBais4g4cT-78g&from=groups"
-       target="_blank" rel="noopener">
-      <svg class="vk-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15.925 2H8.074C3.615 2 2 5.615 2 10.074v3.852C2 18.385 3.615 22 8.074 22h3.852c4.459 0 6.074-3.615 6.074-8.074v-3.852C18 5.615 16.385 2 15.925 2zM14.62 14.5c.577-.11 1.258.46 1.637.893.385.438.718.91 1.143 1.26.4.327.818.423 1.343.423h1.343c.15 0 .346-.02.434-.144.1-.14.07-.375-.022-.533-.314-.544-.817-1.12-1.222-1.634a6.52 6.52 0 0 1-.68-.97c-.237-.417-.18-.6.04-.972.18-.306.84-.96 1.246-1.503.493-.66.862-1.3.738-1.74-.067-.234-.343-.343-.607-.343h-2.12c-.44 0-.616.236-.78.58-.456.953-1.077 2.012-1.528 2.378-.45.367-.655.45-.88.45s-.336-.083-.496-.45c-.32-.733-.352-2.1-.064-2.716.143-.306.4-.442.67-.487.114-.02.046-.14-.047-.14h-3.41c-.432 0-.825.045-1.096.384-.224.283-.01.295.223.364.532.158.742.61.742 1.314v2.09c0 .484-.112.784-.575.784-.45 0-1.157-.552-1.76-1.53-.456-.74-.833-1.685-1.066-2.528-.088-.316-.27-.514-.627-.514H5.343c-.42 0-.58.172-.58.465 0 .445.456 1.83 1.543 3.328.983 1.353 2.32 2.37 3.99 2.37h1.168c.517 0 .694-.233.694-.784v-1.11c0-.466.242-.614.542-.614z"/>
-      </svg>
-      Вёрстка: Maestro Studio
-    </a>
   </div>
 </footer>
 
@@ -1408,34 +1394,12 @@
   const bgPatterns = document.querySelectorAll('.bg-pattern');
   const swipeHint = document.getElementById('swipeHint');
   const localVideo = document.getElementById('localVideo');
-  const footer = document.querySelector('.presentation-footer');
+  const footer = document.getElementById('presentationFooter');
   const hoverZone = document.querySelector('.controls-hover-zone');
   const total = slides.length;
   let currentSlide = 0;
   let scrollTimeout = null;
   let hintTimeout = null;
-
-  const isMobile = window.matchMedia('(max-width: 900px)').matches;
-
-  if (isMobile) {
-    const footerClone = footer.cloneNode(true);
-    footerClone.classList.add('mobile-footer-clone');
-    footerClone.style.position = 'static';
-    footerClone.style.transform = 'none';
-    footerClone.style.opacity = '1';
-    footerClone.style.pointerEvents = 'auto';
-    footerClone.style.background = 'transparent';
-    footerClone.style.backdropFilter = 'none';
-    footerClone.style.borderTop = 'none';
-    footerClone.style.width = '100%';
-    footerClone.style.maxWidth = '100%';
-
-    document.querySelectorAll('.mobile-footer').forEach(slot => {
-      slot.appendChild(footerClone.cloneNode(true));
-    });
-
-    footer.style.display = 'none';
-  }
 
   const SLIDE_LABELS = ['Спойлер','Визитка','Мосты','Крепость','Природа','Погружение','Опрос','Контакты'];
 
