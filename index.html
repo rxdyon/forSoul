@@ -9,6 +9,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  .border-glow {
+    position: relative;
+    border: 1px solid transparent !important;
+    background:
+      linear-gradient(rgba(10,14,28,.85), rgba(10,14,28,.85)) padding-box,
+      linear-gradient(135deg, #00d2ff 0%, #8338ec 50%, #ff006e 100%) border-box !important;
+  }
+
   html, body {
     height: 100%; width: 100%;
     font-family: 'Montserrat', sans-serif;
@@ -110,13 +119,15 @@
   }
 
   .grid-stats, .grid-two { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+
   .stat-box, .info-card {
-    background: rgba(10,14,28,.75); padding: 26px;
-    border-left: 4px solid #00d2ff; border-radius: 0 12px 12px 0;
-    backdrop-filter: blur(20px); box-shadow: 0 20px 40px rgba(0,0,0,.5);
-    border-top: 1px solid rgba(255,255,255,.03);
-    border-right: 1px solid rgba(255,255,255,.03);
+    padding: 26px;
+    border-radius: 0 12px 12px 0;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 20px 40px rgba(0,0,0,.5);
+    position: relative;
   }
+
   .stat-box h2 { font-size: clamp(34px, 4vw, 52px); font-weight: 900; color: #fff; margin-bottom: 8px; line-height: 1; }
   .stat-box p  { font-size: 15px; color: #b0b7c6; }
   .info-card h3 { font-size: 20px; margin-bottom: 12px; color: #fff; font-weight: 700; }
@@ -158,9 +169,9 @@
 
   .teleprompter {
     margin-top: 16px; width: 100%; max-width: 860px;
-    background: rgba(10,14,28,.85); border: 1px solid rgba(0,210,255,.25);
     border-radius: 14px; padding: 14px 18px; text-align: center;
-    backdrop-filter: blur(20px); box-shadow: 0 15px 35px rgba(0,0,0,.5);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 15px 35px rgba(0,0,0,.5);
     min-height: 68px; display: flex; flex-direction: column; justify-content: center;
     transition: opacity .3s ease;
   }
@@ -172,7 +183,8 @@
   .teleprompter .meta { font-size: 11px; color: #7e8b9b; letter-spacing: 3px; text-transform: uppercase; margin-top: 6px; }
   .tray-controls { display: flex; justify-content: flex-end; width: 100%; max-width: 860px; margin-top: 10px; }
   .btn-mini {
-    background: rgba(10,14,28,.6); border: 1px solid rgba(0,210,255,.25);
+    background: rgba(10,14,28,.6);
+    border: 1px solid rgba(0,210,255,.25);
     color: #00d2ff; padding: 8px 16px; border-radius: 20px;
     font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
     cursor: pointer; transition: all .3s ease;
@@ -225,14 +237,12 @@
 
   .qr-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 24px; width: 100%; position: relative; z-index: 4; }
   .qr-card {
-    background: rgba(10,14,28,.85); border: 1px solid rgba(255,255,255,.04);
     border-radius: 16px; padding: 22px; text-align: center;
     backdrop-filter: blur(20px); box-shadow: 0 15px 35px rgba(0,0,0,.4);
     transition: transform .4s ease, border-color .4s ease, box-shadow .4s ease;
   }
   .qr-card:hover {
     transform: translateY(-8px);
-    border-color: #00d2ff;
     box-shadow: 0 20px 40px rgba(0,210,255,.25);
   }
   .qr-color-frame {
@@ -366,13 +376,11 @@
     position: relative; z-index: 4;
   }
   .spoiler-card {
-    background: rgba(10,14,28,.85);
-    border: 1px solid rgba(255,255,255,.05);
     border-radius: 14px;
     padding: 20px 22px;
     backdrop-filter: blur(20px);
     box-shadow: 0 15px 35px rgba(0,0,0,.45);
-    transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease;
+    transition: transform .35s ease, box-shadow .35s ease;
     position: relative;
     overflow: hidden;
   }
@@ -386,7 +394,6 @@
   .spoiler-card:hover::before { transform: scaleX(1); }
   .spoiler-card:hover {
     transform: translateY(-6px);
-    border-color: rgba(0,210,255,.35);
     box-shadow: 0 20px 45px rgba(0,210,255,.2);
   }
   .spoiler-num { font-size: 11px; font-weight: 900; letter-spacing: 3px; color: #00d2ff; margin-bottom: 8px; display: block; }
@@ -832,7 +839,7 @@
     p { font-size: 13px; margin-bottom: 12px; line-height: 1.45; max-width: 100%; }
 
     .grid-stats, .grid-two { grid-template-columns: 1fr; gap: 10px; margin-top: 12px; }
-    .stat-box, .info-card { padding: 14px 16px; border-left-width: 3px; }
+    .stat-box, .info-card { padding: 14px 16px; }
     .stat-box h2 { font-size: 28px; margin-bottom: 4px; }
     .stat-box p, .info-card p { font-size: 12.5px; line-height: 1.45; }
     .info-card h3 { font-size: 15px; margin-bottom: 6px; }
@@ -885,26 +892,14 @@
     .poll-text p { font-size: 12px; margin-bottom: 8px; }
     .poll-text ul { gap: 5px; margin-bottom: 10px; }
     .poll-text ul li { font-size: 12px; }
-    .poll-qr-frame {
-      padding: 4px;
-      border-radius: 14px;
-      max-width: 180px;
-      margin: 0 auto;
-    }
-    .poll-qr-inner {
-      width: 140px; height: 140px;
-      padding: 8px;
-      border-radius: 12px;
-    }
+    .poll-qr-frame,
     .poll-qr-caption {
-      font-size: 9px;
-      margin-top: 6px;
-      letter-spacing: 1.5px;
+      display: none;
     }
     .poll-qr-btn {
-      padding: 12px 20px;
-      font-size: 11px;
-      margin-top: 10px;
+      padding: 14px 20px;
+      font-size: 12px;
+      margin-top: 12px;
       width: 100%;
       text-align: center;
       box-sizing: border-box;
@@ -988,9 +983,7 @@
     h1 { font-size: 18px; }
     .slide-content { padding: 66px 0 14px 0; }
     .slide-emblem { width: 40px; height: 40px; }
-    .poll-qr-inner { width: 130px; height: 130px; }
     .qr-color-frame { max-width: 110px; }
-    .poll-qr-frame { max-width: 160px; }
     .controls { bottom: 46px; }
     .swipe-hint { bottom: 105px; }
     .qa-widget { bottom: 92px; }
@@ -1085,12 +1078,12 @@
       <h1>Что вас ждёт<br><span style="color:#00d2ff; font-size: clamp(16px, 1.8vw, 30px); font-weight:400; letter-spacing:2px; text-transform:none;">короткий спойлер за 30 секунд</span></h1>
       <p>7 слайдов о Владивостоке — городе на сопках и у моря, о его истории, мостах, природе и людях. Вот что вы увидите дальше.</p>
       <div class="spoiler-grid">
-        <div class="spoiler-card"><span class="spoiler-num">01</span><h3>Визитная карточка</h3><p>1860 год основания и 9288 км до Москвы — финальная точка Транссиба.</p></div>
-        <div class="spoiler-card"><span class="spoiler-num">02</span><h3>Вантовые мосты</h3><p>Золотой и Русский мост — «русский Сан-Франциско» с пролётом 1104 м.</p></div>
-        <div class="spoiler-card"><span class="spoiler-num">03</span><h3>Хранитель рубежей</h3><p>Владивостокская крепость и штаб Тихоокеанского флота.</p></div>
-        <div class="spoiler-card"><span class="spoiler-num">04</span><h3>Характер и природа</h3><p>Кампус ДВФУ, тайга, амурский тигр и гастроморская кухня.</p></div>
-        <div class="spoiler-card"><span class="spoiler-num">05</span><h3>Погружение</h3><p>Видео-атмосфера города с живым суфлёром.</p></div>
-        <div class="spoiler-card"><span class="spoiler-num">06–07</span><h3>Опрос и контакты</h3><p>QR-код на опрос и Telegram-контакты команды.</p></div>
+        <div class="spoiler-card border-glow"><span class="spoiler-num">01</span><h3>Визитная карточка</h3><p>1860 год основания и 9288 км до Москвы — финальная точка Транссиба.</p></div>
+        <div class="spoiler-card border-glow"><span class="spoiler-num">02</span><h3>Вантовые мосты</h3><p>Золотой и Русский мост — «русский Сан-Франциско» с пролётом 1104 м.</p></div>
+        <div class="spoiler-card border-glow"><span class="spoiler-num">03</span><h3>Хранитель рубежей</h3><p>Владивостокская крепость и штаб Тихоокеанского флота.</p></div>
+        <div class="spoiler-card border-glow"><span class="spoiler-num">04</span><h3>Характер и природа</h3><p>Кампус ДВФУ, тайга, амурский тигр и гастроморская кухня.</p></div>
+        <div class="spoiler-card border-glow"><span class="spoiler-num">05</span><h3>Погружение</h3><p>Видео-атмосфера города с живым суфлёром.</p></div>
+        <div class="spoiler-card border-glow"><span class="spoiler-num">06–07</span><h3>Опрос и контакты</h3><p>QR-код на опрос и Telegram-контакты команды.</p></div>
       </div>
       <div class="spoiler-tagline">Владивосток — это город, в который влюбляются навсегда.</div>
     </div>
@@ -1108,8 +1101,8 @@
       <span class="tag">01 / Визитная карточка</span>
       <h1>Владивосток<br><span style="color:#00d2ff; font-size: clamp(16px, 1.8vw, 32px); font-weight:400; letter-spacing:2px; text-transform:none;">Город на сопках и у моря</span></h1>
       <div class="grid-stats">
-        <div class="stat-box"><h2>1860</h2><p>Год основания. Основан как военный пост. Сегодня — главный стратегический центр на Дальнем Востоке.</p></div>
-        <div class="stat-box"><h2>9288</h2><p>Километров до Москвы. Финальная точка легендарного Транссиба.</p></div>
+        <div class="stat-box border-glow"><h2>1860</h2><p>Год основания. Основан как военный пост. Сегодня — главный стратегический центр на Дальнем Востоке.</p></div>
+        <div class="stat-box border-glow"><h2>9288</h2><p>Километров до Москвы. Финальная точка легендарного Транссиба.</p></div>
       </div>
     </div>
   </section>
@@ -1134,8 +1127,8 @@
       <h1>Вантовые мосты</h1>
       <p>Постоянные перепады высот и величественные вантовые мосты создают уникальные панорамы, из-за которых город часто называют русским Сан-Франциско.</p>
       <div class="grid-two">
-        <div class="info-card"><h3>Золотой мост</h3><p>Проложен через бухту Золотой Рог. Сократил время в пути между районами с двух часов до пяти минут.</p></div>
-        <div class="info-card"><h3>Русский мост</h3><p>Один из крупнейших вантовых мостов планеты с пролётом 1104 метра. Изображён на банкноте 2000 рублей.</p></div>
+        <div class="info-card border-glow"><h3>Золотой мост</h3><p>Проложен через бухту Золотой Рог. Сократил время в пути между районами с двух часов до пяти минут.</p></div>
+        <div class="info-card border-glow"><h3>Русский мост</h3><p>Один из крупнейших вантовых мостов планеты с пролётом 1104 метра. Изображён на банкноте 2000 рублей.</p></div>
       </div>
     </div>
   </section>
@@ -1156,8 +1149,8 @@
       <h1>Хранитель рубежей</h1>
       <p>Город с богатым военным прошлым, неразрывно связанный с морем, строгими офицерскими традициями и боевыми кораблями на рейде.</p>
       <div class="grid-two">
-        <div class="info-card"><h3>Владивостокская крепость</h3><p>Уникальный комплекс фортификации XX века. Мощнейшая береговая оборона своего времени.</p></div>
-        <div class="info-card"><h3>Тихоокеанский флот (ТОФ)</h3><p>Штаб-квартира Тихоокеанского флота России. Защита морских границ на Дальнем Востоке.</p></div>
+        <div class="info-card border-glow"><h3>Владивостокская крепость</h3><p>Уникальный комплекс фортификации XX века. Мощнейшая береговая оборона своего времени.</p></div>
+        <div class="info-card border-glow"><h3>Тихоокеанский флот (ТОФ)</h3><p>Штаб-квартира Тихоокеанского флота России. Защита морских границ на Дальнем Востоке.</p></div>
       </div>
     </div>
   </section>
@@ -1177,8 +1170,8 @@
       <h1>Характер, вкус и природа</h1>
       <p>Удивительное место встречи первозданной приморской тайги и бескрайнего океана, где в часе езды от мегаполиса обитают амурский тигр и леопард.</p>
       <div class="grid-two">
-        <div class="info-card"><h3>Кампус ДВФУ на о. Русский</h3><p>Крупнейший и самый современный студенческий кампус в России.</p></div>
-        <div class="info-card"><h3>Гастроморская кухня</h3><p>Свежий камчатский краб, дикий гребешок и уникальные изыски таёжной кухни.</p></div>
+        <div class="info-card border-glow"><h3>Кампус ДВФУ на о. Русский</h3><p>Крупнейший и самый современный студенческий кампус в России.</p></div>
+        <div class="info-card border-glow"><h3>Гастроморская кухня</h3><p>Свежий камчатский краб, дикий гребешок и уникальные изыски таёжной кухни.</p></div>
       </div>
     </div>
   </section>
@@ -1198,7 +1191,7 @@
         </div>
       </div>
 
-      <div class="teleprompter" id="teleprompter">
+      <div class="teleprompter border-glow" id="teleprompter">
         <div class="line active" id="teleprompterLine">С запада на восток пересекает нашу страну Великая Транссибирская магистраль.</div>
         <div class="meta" id="teleprompterMeta">00:00 / 00:00</div>
       </div>
@@ -1265,7 +1258,7 @@
       <h1>Связь с командой</h1>
       <p>Наведите камеру телефона на QR-код или кликните по кнопке — и вы попадёте прямо в Telegram.</p>
       <div class="qr-grid">
-        <div class="qr-card">
+        <div class="qr-card border-glow">
           <div class="qr-color-frame">
             <div class="qr-image-wrapper">
               <img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=0&data=https%3A%2F%2Ft.me%2FROWA_RED_8002" alt="QR @ROWA_RED_8002">
@@ -1276,7 +1269,7 @@
           <a href="https://t.me/ROWA_RED_8002" target="_blank" rel="noopener" class="qr-link-btn">@ROWA_RED_8002</a>
         </div>
 
-        <div class="qr-card">
+        <div class="qr-card border-glow">
           <div class="qr-color-frame">
             <div class="qr-image-wrapper">
               <img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=0&data=https%3A%2F%2Ft.me%2FMANDARRINKS" alt="QR @MANDARRINKS">
@@ -1287,7 +1280,7 @@
           <a href="https://t.me/MANDARRINKS" target="_blank" rel="noopener" class="qr-link-btn">@MANDARRINKS</a>
         </div>
 
-        <div class="qr-card">
+        <div class="qr-card border-glow">
           <div class="qr-color-frame">
             <div class="qr-image-wrapper">
               <img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=0&data=https%3A%2F%2Ft.me%2FRXDYON" alt="QR @RXDYON">
@@ -1307,7 +1300,7 @@
 
 <div class="controls-hover-zone"></div>
 
-<div class="controls" id="controls">
+<div class="controls border-glow" id="controls">
   <button class="btn" id="prevBtn" aria-label="Назад">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
   </button>
