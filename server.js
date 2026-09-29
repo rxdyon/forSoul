@@ -1,0 +1,680 @@
+const express = require('express');
+const path = require('path');
+const sqlite3 = require('sqlite3').verbose();
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
+const { OAuth2Client } = require('google-auth-library');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+const SESSION_SECRET = 'fgasdcxggibxfvogyyaritcpaufddgjiygypxltm';
+const GOOGLE_CLIENT_ID = '64293786154-201bo94245nlpp5iv7ed8978hm2mltfd.apps.googleusercontent.com';
+
+const GMAIL_USER = 'me.rxdyon@gmail.com';
+const GMAIL_APP_PASSWORD = 'bqgxizxycpkbvvmm';
+
+const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID);
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: { user: GMAIL_USER, pass: GMAIL_APP_PASSWORD }
+});
+
+const dbPath = path.join(__dirname, 'forsoul.db');
+const db = new sqlite3.Database(dbPath, (err) => {
+    if (err) return console.error('Ошибка БД:', err.message);
+    console.log('SQLite подключена');
+});
+
+db.serialize(() => {
+    db.run(`CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        provider TEXT NOT NULL,
+        provider_id TEXT NOT NULL,
+        username TEXT,
+        password_hash TEXT,
+        avatar_url TEXT,
+        email TEXT,
+        role TEXT DEFAULT 'user',
+        email_verified INTEGER DEFAULT 0,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE(provider, provider_id)
+    )`);
+    db.run(`CREATE TABLE IF NOT EXISTS sessions (
+        token TEXT PRIMARY KEY,
+        user_id INTEGER,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY(user_id) REFERENCES users(id)
+    )`);
+    db.run(`CREATE TABLE IF NOT EXISTS email_codes (
+        email TEXT PRIMARY KEY,
+        code TEXT,
+        provider TEXT,
+        provider_id TEXT,
+        name TEXT,
+        avatar TEXT,
+        expires_at INTEGER,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )`);
+    db.run(`CREATE TABLE IF NOT EXISTS messages (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER,
+        username TEXT,
+        text TEXT,
+        device TEXT,
+        role TEXT,
+        provider TEXT,
+        parent_id INTEGER,
+        answer TEXT,
+        answered_by INTEGER,
+        hidden INTEGER DEFAULT 0,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )`);
+    db.run(`CREATE TABLE IF NOT EXISTS broadcasts (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER,
+        username TEXT,
+        text TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )`);
+    db.run(`CREATE TABLE IF NOT EXISTS survey_questions (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        type TEXT NOT NULL,
+        title TEXT NOT NULL,
+        options TEXT,
+        required INTEGER DEFAULT 0,
+        active INTEGER DEFAULT 1,
+        sort INTEGER DEFAULT 0
+    )`);
+    db.run(`CREATE TABLE IF NOT EXISTS survey_answers (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        question_id INTEGER NOT NULL,
+        value TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE(user_id, question_id)
+    )`);
+    db.run(`CREATE TABLE IF NOT EXISTS survey_submissions (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL UNIQUE,
+        submitted_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )`);
+
+    db.all("PRAGMA table_info(users)", (err, rows) => {
+        if (err || !rows) return;
+        const cols = rows.map(r => r.name);
+        if (!cols.includes('role')) db.run("ALTER TABLE users ADD COLUMN role TEXT DEFAULT 'user'");
+        if (!cols.includes('email')) db.run("ALTER TABLE users ADD COLUMN email TEXT");
+        if (!cols.includes('email_verified')) db.run("ALTER TABLE users ADD COLUMN email_verified INTEGER DEFAULT 0");
+        if (!cols.includes('password_hash')) db.run("ALTER TABLE users ADD COLUMN password_hash TEXT");
+    });
+    db.all("PRAGMA table_info(survey_questions)", (err, rows) => {
+        if (err || !rows) return;
+        const cols = rows.map(r => r.name);
+        if (!cols.includes('active')) db.run("ALTER TABLE survey_questions ADD COLUMN active INTEGER DEFAULT 1");
+    });
+
+    db.get('SELECT COUNT(*) AS c FROM survey_questions', (err, row) => {
+        if (err || !row || row.c > 0) return;
+        const stmt = db.prepare('INSERT INTO survey_questions (type, title, options, required, active, sort) VALUES (?, ?, ?, ?, 1, ?)');
+        stmt.run('single', 'Чья речь понравилась вам больше всего?',
+            JSON.stringify(['Редько Роман','Яковлева Дарина','Суслов Дмитрий','Все выступили одинаково хорошо','Затрудняюсь ответить']), 1, 1);
+        stmt.run('single', 'Как вы оцениваете выступление спикеров?',
+            JSON.stringify(['Отлично — все выступили чётко и уверенно','Хорошо — в целом понравилось','Нормально — можно было лучше','Плохо — было трудно слушать','Затрудняюсь ответить']), 1, 2);
+        stmt.run('rating', 'Насколько понятно спикеры доносили материал?',
+            JSON.stringify([0,25,50,75,100]), 1, 3);
+        stmt.run('multi', 'Что можно улучшить в выступлении спикеров?',
+            JSON.stringify(['Больше зрительного контакта с залом','Уверенность и отсутствие слов-паразитов','Структура рассказа (логика, переходы)','Темп речи (быстро / медленно)','Больше примеров и историй']), 1, 4);
+        stmt.run('text', 'Что бы вы улучшили в выступлении?', null, 0, 5);
+        stmt.finalize();
+        console.log('Опрос по спикерам создан (5 вопросов)');
+    });
+});
+
+app.use(express.json({ limit: '256kb' }));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname));
+app.use((req, res, next) => {
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+    next();
+});
+
+function makeToken() { return crypto.randomBytes(32).toString('hex'); }
+function makeCode() { return String(Math.floor(100000 + Math.random() * 900000)); }
+
+function authMiddleware(req, res, next) {
+    const token = req.headers['x-session-token'] || req.query.token;
+    if (!token) return res.status(401).json({ error: 'Нет сессии' });
+    db.get('SELECT u.* FROM sessions s JOIN users u ON u.id = s.user_id WHERE s.token = ?', [token], (err, user) => {
+        if (err || !user) return res.status(401).json({ error: 'Сессия не найдена' });
+        req.user = user;
+        next();
+    });
+}
+
+function requireRole(...roles) {
+    return (req, res, next) => {
+        if (!req.user) return res.status(401).json({ error: 'Нет сессии' });
+        if (!roles.includes(req.user.role)) return res.status(403).json({ error: 'Нет доступа' });
+        next();
+    };
+}
+
+function maskEmail(email) {
+    if (!email) return 'email';
+    const [user, domain] = email.split('@');
+    if (!domain) return email;
+    return user.slice(0, 2) + '*'.repeat(Math.max(1, user.length - 2)) + '@' + domain;
+}
+
+function escapeHtml(s) {
+    return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+async function sendVerificationEmail(to, code, name) {
+    const digits = String(code).split('').map(d => '<td style="padding:0 4px;"><div style="width:44px;height:60px;line-height:60px;background:#0f1420;border:2px solid #00d2ff;border-radius:12px;color:#ffffff;font-size:26px;font-weight:900;text-align:center;font-family:Consolas,Menlo,monospace;">' + d + '</div></td>').join('');
+    const html = '<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>'
+        + '<body style="margin:0;padding:0;background:#05070f;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">'
+        + '<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#05070f;background-image:radial-gradient(circle at 15% 10%,rgba(0,210,255,0.12) 0%,transparent 55%),radial-gradient(circle at 85% 90%,rgba(131,56,236,0.12) 0%,transparent 55%);"><tr><td align="center" style="padding:40px 16px;">'
+        + '<table width="560" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;width:100%;background:linear-gradient(180deg,#0a0e1c,#05070f);border:1px solid rgba(0,210,255,0.28);border-radius:24px;box-shadow:0 40px 100px rgba(0,0,0,0.8),0 0 60px rgba(0,210,255,0.15);overflow:hidden;">'
+        + '<tr><td align="center" style="padding:40px 32px 20px;">'
+        + '<div style="width:72px;height:72px;line-height:72px;border-radius:20px;background:linear-gradient(135deg,#00d2ff,#8338ec,#ff006e);color:#ffffff;font-size:30px;font-weight:900;text-align:center;box-shadow:0 16px 40px rgba(131,56,236,0.5);display:inline-block;">В</div>'
+        + '<h1 style="color:#ffffff;font-size:26px;font-weight:900;letter-spacing:3px;margin:22px 0 6px;text-transform:uppercase;">Владивосток</h1>'
+        + '<p style="color:#7e8b9b;font-size:11px;letter-spacing:4px;margin:0;text-transform:uppercase;font-weight:700;">моя малая родина</p>'
+        + '</td></tr>'
+        + '<tr><td style="padding:6px 32px 0;"><div style="height:1px;background:linear-gradient(90deg,transparent,rgba(0,210,255,0.4),rgba(131,56,236,0.4),transparent);"></div></td></tr>'
+        + '<tr><td align="center" style="padding:28px 32px 8px;">'
+        + '<p style="color:#b0b7c6;font-size:15px;line-height:1.6;margin:0 0 8px;">Привет, <strong style="color:#ffffff;font-weight:800;">' + escapeHtml(name) + '</strong>!</p>'
+        + '<p style="color:#7e8b9b;font-size:13px;line-height:1.6;margin:0 0 26px;">Введите этот код на сайте, чтобы подтвердить вход.</p>'
+        + '</td></tr>'
+        + '<tr><td align="center" style="padding:0 32px 24px;">'
+        + '<table cellpadding="0" cellspacing="0" border="0" style="display:inline-block;padding:18px 16px;background:rgba(0,210,255,0.05);border:1px solid rgba(0,210,255,0.28);border-radius:18px;"><tr>'
+        + digits
+        + '</tr></table>'
+        + '</td></tr>'
+        + '<tr><td align="center" style="padding:8px 32px 32px;">'
+        + '<p style="color:#7e8b9b;font-size:12px;line-height:1.6;margin:0 0 6px;">Код действует <strong style="color:#00d2ff;font-weight:900;">10 минут</strong>.</p>'
+        + '<p style="color:#4a4a52;font-size:11px;line-height:1.6;margin:0;">Если вы не входили — просто проигнорируйте это письмо.</p>'
+        + '</td></tr>'
+        + '<tr><td align="center" style="padding:18px 32px;background:#080a12;border-top:1px solid rgba(255,255,255,0.06);">'
+        + '<p style="color:#4a4a52;font-size:10px;letter-spacing:2.5px;margin:0;text-transform:uppercase;">forSoul · МГУ им. адм. Г. И. Невельского · 2026</p>'
+        + '</td></tr>'
+        + '</table>'
+        + '<p style="color:#4a4a52;font-size:10px;margin:20px 0 0;letter-spacing:1px;">Это автоматическое письмо, отвечать на него не нужно.</p>'
+        + '</td></tr></table></body></html>';
+    await transporter.sendMail({
+        from: '"forSoul" <' + GMAIL_USER + '>',
+        to: to,
+        subject: 'Код подтверждения · forSoul',
+        html: html
+    });
+    console.log('Письмо на', to, '· код:', code);
+}
+
+app.post('/api/auth/google', async (req, res) => {
+    try {
+        const { credential } = req.body;
+        if (!credential) return res.status(400).json({ error: 'Нет токена' });
+        const ticket = await googleClient.verifyIdToken({ idToken: credential, audience: GOOGLE_CLIENT_ID });
+        const payload = ticket.getPayload();
+        const providerId = payload.sub;
+        const name = payload.name || payload.email || 'Пользователь';
+        const avatar = payload.picture || null;
+        const email = payload.email;
+        if (!email) return res.status(400).json({ error: 'Google не передал email' });
+
+        db.get('SELECT * FROM users WHERE provider = ? AND provider_id = ?', ['google', providerId], (err, user) => {
+            if (err) return res.status(500).json({ error: 'Ошибка БД' });
+            if (user && user.email_verified) {
+                const token = makeToken();
+                const needEmailFix = !user.email && email;
+                const finalEmail = needEmailFix ? email : user.email;
+                const sendToken = () => {
+                    db.run('INSERT INTO sessions (token, user_id) VALUES (?, ?)', [token, user.id], (err2) => {
+                        if (err2) return res.status(500).json({ error: 'Ошибка сессии' });
+                        res.json({ success: true, verified: true, token, user: { id: user.id, name: user.username, avatar: user.avatar_url, role: user.role || 'user', email: finalEmail } });
+                    });
+                };
+                if (needEmailFix) db.run('UPDATE users SET email = ?, email_verified = 1 WHERE id = ?', [email, user.id], () => sendToken());
+                else sendToken();
+                return;
+            }
+            const code = makeCode();
+            const expiresAt = Date.now() + 10 * 60 * 1000;
+            db.run('DELETE FROM email_codes WHERE email = ?', [email]);
+            db.run('INSERT INTO email_codes (email, code, provider, provider_id, name, avatar, expires_at) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                [email, code, 'google', providerId, name, avatar, expiresAt],
+                async (err2) => {
+                    if (err2) return res.status(500).json({ error: 'Ошибка БД' });
+                    try {
+                        await sendVerificationEmail(email, code, name);
+                        res.json({ success: true, verified: false, email, emailMask: maskEmail(email) });
+                    } catch (mailErr) {
+                        res.status(500).json({ error: 'Не удалось отправить письмо' });
+                    }
+                });
+        });
+    } catch (e) {
+        res.status(401).json({ error: 'Неверный токен Google' });
+    }
+});
+
+app.post('/api/auth/verify-code', (req, res) => {
+    const { email, code } = req.body;
+    if (!email || !code) return res.status(400).json({ error: 'Нет email или кода' });
+    db.get('SELECT * FROM email_codes WHERE email = ?', [email], (err, row) => {
+        if (err) return res.status(500).json({ error: 'Ошибка БД' });
+        if (!row) return res.status(400).json({ error: 'Код не найден' });
+        if (Date.now() > row.expires_at) return res.status(400).json({ error: 'Код истёк' });
+        if (row.code !== String(code).trim()) return res.status(400).json({ error: 'Неверный код' });
+
+        db.get('SELECT * FROM users WHERE provider = ? AND provider_id = ?', [row.provider, row.provider_id], (err2, user) => {
+            if (err2) return res.status(500).json({ error: 'Ошибка БД' });
+            const finishLogin = (userId, userName, userAvatar, userRole) => {
+                db.run('DELETE FROM email_codes WHERE email = ?', [email]);
+                const token = makeToken();
+                db.run('INSERT INTO sessions (token, user_id) VALUES (?, ?)', [token, userId], (err3) => {
+                    if (err3) return res.status(500).json({ error: 'Ошибка сессии' });
+                    res.json({ success: true, token, user: { id: userId, name: userName, avatar: userAvatar, role: userRole, email } });
+                });
+            };
+            if (user) {
+                db.run('UPDATE users SET email_verified = 1, email = ? WHERE id = ?', [email, user.id], () => {
+                    finishLogin(user.id, user.username, user.avatar_url, user.role || 'user');
+                });
+            } else {
+                db.run('INSERT INTO users (provider, provider_id, username, avatar_url, email, role, email_verified) VALUES (?, ?, ?, ?, ?, ?, 1)',
+                    [row.provider, row.provider_id, row.name, row.avatar, email, 'user'],
+                    function(err3) {
+                        if (err3) return res.status(500).json({ error: 'Ошибка регистрации' });
+                        finishLogin(this.lastID, row.name, row.avatar, 'user');
+                    });
+            }
+        });
+    });
+});
+
+app.post('/api/auth/resend-code', (req, res) => {
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ error: 'Нет email' });
+    db.get('SELECT * FROM email_codes WHERE email = ?', [email], async (err, row) => {
+        if (err) return res.status(500).json({ error: 'Ошибка БД' });
+        if (!row) return res.status(400).json({ error: 'Заявка не найдена' });
+        const code = makeCode();
+        const expiresAt = Date.now() + 10 * 60 * 1000;
+        db.run('UPDATE email_codes SET code = ?, expires_at = ? WHERE email = ?', [code, expiresAt, email], async (err2) => {
+            if (err2) return res.status(500).json({ error: 'Ошибка БД' });
+            try {
+                await sendVerificationEmail(email, code, row.name);
+                res.json({ success: true, emailMask: maskEmail(email) });
+            } catch (e) {
+                res.status(500).json({ error: 'Не удалось отправить письмо' });
+            }
+        });
+    });
+});
+
+app.get('/api/me', authMiddleware, (req, res) => {
+    res.json({ user: { id: req.user.id, name: req.user.username, avatar: req.user.avatar_url, email: req.user.email, role: req.user.role || 'user', hasPassword: !!req.user.password_hash } });
+});
+
+app.post('/api/logout', authMiddleware, (req, res) => {
+    const token = req.headers['x-session-token'];
+    db.run('DELETE FROM sessions WHERE token = ?', [token], () => res.json({ success: true }));
+});
+
+app.post('/api/messages', authMiddleware, (req, res) => {
+    const { text, device } = req.body;
+    if (!text || text.length < 10 || text.length > 200) return res.status(400).json({ error: 'Сообщение от 10 до 200 символов' });
+    let finalAuthor = req.user.username;
+    if (req.user.role === 'admin') finalAuthor = '[admin] ' + finalAuthor;
+    else if (req.user.role === 'speaker') finalAuthor = '[speaker] ' + finalAuthor;
+    finalAuthor += (device === 'mobile' ? ' (mobile)' : ' (pc)');
+    db.run('INSERT INTO messages (user_id, username, text, device, role, provider) VALUES (?, ?, ?, ?, ?, ?)',
+        [req.user.id, finalAuthor, text, device || 'pc', req.user.role || 'user', req.user.provider],
+        function(err) {
+            if (err) return res.status(500).json({ error: 'Ошибка записи' });
+            res.json({ success: true, id: this.lastID });
+        });
+});
+
+app.get('/api/messages', (req, res) => {
+    db.all('SELECT * FROM messages WHERE hidden = 0 ORDER BY id ASC LIMIT 200', [], (err, rows) => {
+        if (err) return res.status(500).json({ error: 'Ошибка чтения' });
+        res.json(rows.map(row => ({
+            id: row.id, author: row.username, text: row.text, answer: row.answer || null,
+            role: row.role, device: row.device,
+            time: new Date(row.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        })));
+    });
+});
+
+app.post('/api/messages/:id/answer', authMiddleware, requireRole('speaker', 'admin'), (req, res) => {
+    const { answer } = req.body;
+    if (!answer || answer.length < 3 || answer.length > 500) return res.status(400).json({ error: 'Ответ от 3 до 500 символов' });
+    db.run('UPDATE messages SET answer = ?, answered_by = ? WHERE id = ?', [answer, req.user.id, req.params.id], (err) => {
+        if (err) return res.status(500).json({ error: 'Ошибка' });
+        res.json({ success: true });
+    });
+});
+
+app.post('/api/messages/:id/hide', authMiddleware, requireRole('admin'), (req, res) => {
+    db.run('UPDATE messages SET hidden = 1 WHERE id = ?', [req.params.id], (err) => {
+        if (err) return res.status(500).json({ error: 'Ошибка' });
+        res.json({ success: true });
+    });
+});
+
+app.post('/api/messages/:id/delete', authMiddleware, requireRole('admin'), (req, res) => {
+    db.run('DELETE FROM messages WHERE id = ?', [req.params.id], (err) => {
+        if (err) return res.status(500).json({ error: 'Ошибка' });
+        res.json({ success: true });
+    });
+});
+
+app.post('/api/broadcast', authMiddleware, requireRole('admin'), (req, res) => {
+    const { text } = req.body;
+    if (!text || text.length < 3 || text.length > 300) return res.status(400).json({ error: 'От 3 до 300 символов' });
+    db.run('INSERT INTO broadcasts (user_id, username, text) VALUES (?, ?, ?)',
+        [req.user.id, req.user.username, text],
+        function(err) {
+            if (err) return res.status(500).json({ error: 'Ошибка' });
+            res.json({ success: true, id: this.lastID });
+        });
+});
+
+app.get('/api/broadcast', (req, res) => {
+    db.all('SELECT * FROM broadcasts ORDER BY id DESC LIMIT 20', [], (err, rows) => {
+        if (err) return res.status(500).json({ error: 'Ошибка' });
+        res.json(rows.map(row => ({
+            id: row.id, author: row.username, text: row.text,
+            time: new Date(row.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        })));
+    });
+});
+
+app.post('/api/broadcast/:id/delete', authMiddleware, requireRole('admin'), (req, res) => {
+    db.run('DELETE FROM broadcasts WHERE id = ?', [req.params.id], (err) => {
+        if (err) return res.status(500).json({ error: 'Ошибка' });
+        res.json({ success: true });
+    });
+});
+
+app.post('/api/user/update', authMiddleware, (req, res) => {
+    const { name } = req.body;
+    if (!name || name.length > 40) return res.status(400).json({ error: 'Неверное имя' });
+    db.run('UPDATE users SET username = ? WHERE id = ?', [name, req.user.id], (err) => {
+        if (err) return res.status(500).json({ error: 'Ошибка БД' });
+        res.json({ success: true });
+    });
+});
+
+const passwordCodes = {};
+
+app.post('/api/user/request-password-code', authMiddleware, async (req, res) => {
+    if (!req.user.email) return res.status(400).json({ error: 'У аккаунта нет email. Войдите заново через Google.' });
+    const code = makeCode();
+    passwordCodes[req.user.id] = { code, expires: Date.now() + 10 * 60 * 1000 };
+    try {
+        await sendVerificationEmail(req.user.email, code, req.user.username || 'Пользователь');
+        res.json({ success: true });
+    } catch (e) {
+        res.status(500).json({ error: 'Не удалось отправить письмо' });
+    }
+});
+
+app.post('/api/user/set-password', authMiddleware, (req, res) => {
+    const { code, password } = req.body;
+    if (!code || !password || password.length < 6) return res.status(400).json({ error: 'Неверные данные' });
+    const entry = passwordCodes[req.user.id];
+    if (!entry) return res.status(400).json({ error: 'Код не запрошен' });
+    if (Date.now() > entry.expires) return res.status(400).json({ error: 'Код истёк' });
+    if (entry.code !== String(code).trim()) return res.status(400).json({ error: 'Неверный код' });
+    delete passwordCodes[req.user.id];
+    const hash = crypto.createHash('sha256').update(password).digest('hex');
+    db.run('UPDATE users SET password_hash = ? WHERE id = ?', [hash, req.user.id], (err) => {
+        if (err) return res.status(500).json({ error: 'Ошибка БД' });
+        res.json({ success: true });
+    });
+});
+
+function isUserSubmitted(userId, cb) {
+    db.get('SELECT id FROM survey_submissions WHERE user_id = ?', [userId], (err, row) => {
+        cb(!!row);
+    });
+}
+
+app.get('/api/survey/questions', (req, res) => {
+    db.all('SELECT id, type, title, options, required, active, sort FROM survey_questions WHERE active = 1 ORDER BY sort ASC, id ASC', [], (err, rows) => {
+        if (err) return res.status(500).json({ error: 'Ошибка' });
+        res.json(rows.map(r => ({
+            id: r.id, type: r.type, title: r.title,
+            options: r.options ? JSON.parse(r.options) : null,
+            required: !!r.required, sort: r.sort
+        })));
+    });
+});
+
+app.get('/api/survey/all-questions', authMiddleware, requireRole('admin'), (req, res) => {
+    db.all('SELECT * FROM survey_questions ORDER BY sort ASC, id ASC', [], (err, rows) => {
+        if (err) return res.status(500).json({ error: 'Ошибка' });
+        res.json(rows.map(r => ({
+            id: r.id, type: r.type, title: r.title,
+            options: r.options ? JSON.parse(r.options) : null,
+            required: !!r.required, active: !!r.active, sort: r.sort
+        })));
+    });
+});
+
+app.get('/api/survey/status', authMiddleware, (req, res) => {
+    isUserSubmitted(req.user.id, (submitted) => {
+        db.all('SELECT question_id, value FROM survey_answers WHERE user_id = ?', [req.user.id], (err, rows) => {
+            if (err) return res.status(500).json({ error: 'Ошибка' });
+            const map = {};
+            rows.forEach(r => { try { map[r.question_id] = JSON.parse(r.value); } catch(e) { map[r.question_id] = r.value; } });
+            res.json({ submitted, answers: map });
+        });
+    });
+});
+
+app.get('/api/survey/my-answers', authMiddleware, (req, res) => {
+    db.all('SELECT question_id, value FROM survey_answers WHERE user_id = ?', [req.user.id], (err, rows) => {
+        if (err) return res.status(500).json({ error: 'Ошибка' });
+        const map = {};
+        rows.forEach(r => { try { map[r.question_id] = JSON.parse(r.value); } catch(e) { map[r.question_id] = r.value; } });
+        res.json(map);
+    });
+});
+
+app.post('/api/survey/vote', authMiddleware, (req, res) => {
+    const { questionId, value } = req.body;
+    if (!questionId || value === undefined || value === null) return res.status(400).json({ error: 'Неверные данные' });
+
+    isUserSubmitted(req.user.id, (submitted) => {
+        if (submitted) return res.status(403).json({ error: 'Вы уже проголосовали. Изменение недоступно.' });
+
+        db.get('SELECT * FROM survey_questions WHERE id = ? AND active = 1', [questionId], (err, q) => {
+            if (err || !q) return res.status(404).json({ error: 'Вопрос не найден' });
+            db.run('INSERT OR REPLACE INTO survey_answers (user_id, question_id, value, created_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP)',
+                [req.user.id, questionId, JSON.stringify(value)],
+                (err2) => {
+                    if (err2) return res.status(500).json({ error: 'Ошибка' });
+                    res.json({ success: true });
+                });
+        });
+    });
+});
+
+app.post('/api/survey/submit-all', authMiddleware, (req, res) => {
+    const answers = req.body.answers || {};
+
+    isUserSubmitted(req.user.id, (submitted) => {
+        if (submitted) return res.status(403).json({ error: 'Вы уже отправили ответы. Повторная отправка недоступна.' });
+
+        db.all('SELECT id, required FROM survey_questions WHERE active = 1', [], (err, questions) => {
+            if (err) return res.status(500).json({ error: 'Ошибка' });
+            for (const q of questions) {
+                const val = answers[q.id];
+                if (q.required) {
+                    if (val === undefined || val === null || val === '' || (Array.isArray(val) && !val.length)) {
+                        return res.status(400).json({ error: 'Не все обязательные поля заполнены' });
+                    }
+                }
+            }
+            const stmt = db.prepare('INSERT OR REPLACE INTO survey_answers (user_id, question_id, value, created_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP)');
+            Object.keys(answers).forEach(qid => {
+                const val = answers[qid];
+                if (val === undefined || val === null) return;
+                stmt.run(req.user.id, qid, JSON.stringify(val));
+            });
+            stmt.finalize(() => {
+                db.run('INSERT INTO survey_submissions (user_id) VALUES (?)', [req.user.id], (err2) => {
+                    if (err2) return res.status(500).json({ error: 'Ошибка фиксации' });
+                    res.json({ success: true });
+                });
+            });
+        });
+    });
+});
+
+app.get('/api/survey/results', (req, res) => {
+    db.all('SELECT * FROM survey_questions WHERE active = 1 ORDER BY sort ASC, id ASC', [], (err, questions) => {
+        if (err) return res.status(500).json({ error: 'Ошибка' });
+        db.all('SELECT question_id, value FROM survey_answers', [], (err2, answers) => {
+            if (err2) return res.status(500).json({ error: 'Ошибка' });
+            const out = questions.map(q => {
+                const qAnswers = answers.filter(a => a.question_id === q.id);
+                const options = q.options ? JSON.parse(q.options) : null;
+                const base = { id: q.id, type: q.type, title: q.title, options, total: qAnswers.length };
+                if (q.type === 'single') {
+                    const counts = options.map(() => 0);
+                    qAnswers.forEach(a => {
+                        try { const idx = JSON.parse(a.value); if (typeof idx === 'number' && counts[idx] !== undefined) counts[idx]++; } catch(e){}
+                    });
+                    base.counts = counts;
+                } else if (q.type === 'multi') {
+                    const counts = options.map(() => 0);
+                    qAnswers.forEach(a => {
+                        try {
+                            const arr = JSON.parse(a.value);
+                            if (Array.isArray(arr)) arr.forEach(i => { if (counts[i] !== undefined) counts[i]++; });
+                        } catch(e){}
+                    });
+                    base.counts = counts;
+                } else if (q.type === 'rating') {
+                    const counts = options.map(() => 0);
+                    let sum = 0, n = 0;
+                    qAnswers.forEach(a => {
+                        try {
+                            const v = JSON.parse(a.value);
+                            const idx = options.indexOf(v);
+                            if (idx >= 0) { counts[idx]++; sum += v; n++; }
+                        } catch(e){}
+                    });
+                    base.counts = counts;
+                    base.average = n ? (sum / n).toFixed(2) : '0';
+                } else if (q.type === 'text') {
+                    base.texts = qAnswers.map(a => {
+                        try { return JSON.parse(a.value); } catch(e) { return a.value; }
+                    }).filter(Boolean).slice(0, 50);
+                }
+                return base;
+            });
+            res.json(out);
+        });
+    });
+});
+
+app.post('/api/survey/questions', authMiddleware, requireRole('admin'), (req, res) => {
+    const { type, title, options, required } = req.body;
+    if (!type || !title) return res.status(400).json({ error: 'Нет типа или заголовка' });
+    if (!['single', 'multi', 'rating', 'text'].includes(type)) return res.status(400).json({ error: 'Неверный тип' });
+
+    let opts = null;
+    if (type !== 'text') {
+        if (!Array.isArray(options) || options.length < 2) return res.status(400).json({ error: 'Минимум 2 варианта' });
+        opts = JSON.stringify(type === 'rating' ? options.map(v => parseFloat(v) || 0) : options);
+    }
+
+    db.get('SELECT MAX(sort) AS m FROM survey_questions', [], (err, row) => {
+        const nextSort = (row && row.m ? row.m : 0) + 1;
+        db.run('INSERT INTO survey_questions (type, title, options, required, active, sort) VALUES (?, ?, ?, ?, 1, ?)',
+            [type, title, opts, required ? 1 : 0, nextSort],
+            function(err2) {
+                if (err2) return res.status(500).json({ error: 'Ошибка' });
+                res.json({ success: true, id: this.lastID });
+            });
+    });
+});
+
+app.put('/api/survey/questions/:id', authMiddleware, requireRole('admin'), (req, res) => {
+    const id = parseInt(req.params.id, 10);
+    const { type, title, options, required, active, sort } = req.body;
+    if (!type || !title) return res.status(400).json({ error: 'Нет типа или заголовка' });
+    if (!['single', 'multi', 'rating', 'text'].includes(type)) return res.status(400).json({ error: 'Неверный тип' });
+
+    let opts = null;
+    if (type !== 'text') {
+        if (!Array.isArray(options) || options.length < 2) return res.status(400).json({ error: 'Минимум 2 варианта' });
+        opts = JSON.stringify(type === 'rating' ? options.map(v => parseFloat(v) || 0) : options);
+    }
+
+    const fields = ['type = ?', 'title = ?', 'options = ?', 'required = ?'];
+    const params = [type, title, opts, required ? 1 : 0];
+    if (active !== undefined) { fields.push('active = ?'); params.push(active ? 1 : 0); }
+    if (typeof sort === 'number') { fields.push('sort = ?'); params.push(sort); }
+    params.push(id);
+    db.run('UPDATE survey_questions SET ' + fields.join(', ') + ' WHERE id = ?', params, (err) => {
+        if (err) return res.status(500).json({ error: 'Ошибка' });
+        res.json({ success: true });
+    });
+});
+
+app.delete('/api/survey/questions/:id', authMiddleware, requireRole('admin'), (req, res) => {
+    const id = parseInt(req.params.id, 10);
+    db.run('DELETE FROM survey_answers WHERE question_id = ?', [id], () => {
+        db.run('DELETE FROM survey_questions WHERE id = ?', [id], (err) => {
+            if (err) return res.status(500).json({ error: 'Ошибка' });
+            res.json({ success: true });
+        });
+    });
+});
+
+app.post('/api/survey/questions/reorder', authMiddleware, requireRole('admin'), (req, res) => {
+    const order = req.body.order;
+    if (!Array.isArray(order)) return res.status(400).json({ error: 'Неверные данные' });
+    const stmt = db.prepare('UPDATE survey_questions SET sort = ? WHERE id = ?');
+    order.forEach((id, i) => stmt.run(i + 1, id));
+    stmt.finalize(() => res.json({ success: true }));
+});
+
+app.post('/api/survey/reset-votes', authMiddleware, requireRole('admin'), (req, res) => {
+    db.run('DELETE FROM survey_answers', [], () => {
+        db.run('DELETE FROM survey_submissions', [], (err) => {
+            if (err) return res.status(500).json({ error: 'Ошибка' });
+            res.json({ success: true });
+        });
+    });
+});
+
+app.get('/api/stats', (req, res) => {
+    const out = {};
+    db.get('SELECT COUNT(*) AS c FROM users', [], (err, r) => {
+        out.users = r ? r.c : 0;
+        db.get('SELECT COUNT(*) AS c FROM messages WHERE hidden = 0', [], (err2, r2) => {
+            out.messages = r2 ? r2.c : 0;
+            db.get('SELECT COUNT(*) AS c FROM survey_submissions', [], (err3, r3) => {
+                out.votes = r3 ? r3.c : 0;
+                db.get('SELECT COUNT(*) AS c FROM broadcasts', [], (err4, r4) => {
+                    out.broadcasts = r4 ? r4.c : 0;
+                    res.json(out);
+                });
+            });
+        });
+    });
+});
+
+app.listen(PORT, '0.0.0.0', () => {
+    console.log('Сервер: http://localhost:' + PORT);
+});

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+<title>Публичная оферта · forSoul</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--vh:1vh;--sat:env(safe-area-inset-top,0px);--sab:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{min-height:100%;background:#05070f;color:#fff;font-family:'Montserrat',sans-serif}
+body{padding:36px 20px calc(70px + var(--sab,0px));position:relative;overflow-x:hidden;line-height:1.75}
+.bg-glow{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(circle at 15% 10%,rgba(0,210,255,.08) 0%,transparent 55%),radial-gradient(circle at 85% 90%,rgba(131,56,236,.08) 0%,transparent 55%)}
+.bg-grid{position:fixed;inset:0;z-index:0;pointer-events:none;background:linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px) 0 0/48px 48px,linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px) 0 0/48px 48px;mask-image:radial-gradient(ellipse at center,#000 30%,transparent 80%);-webkit-mask-image:radial-gradient(ellipse at center,#000 30%,transparent 80%)}
+.sea-floats{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.sea-float{position:absolute;color:#00d2ff;opacity:.06}
+.sea-float svg{display:block;width:100%;height:100%}
+.sea-float.f1{top:8%;left:6%;width:110px;height:110px;animation:float1 28s linear infinite}
+.sea-float.f2{top:62%;left:82%;width:140px;height:140px;color:#8338ec;animation:float2 34s linear infinite}
+.sea-float.f3{top:35%;left:90%;width:80px;height:80px;animation:float3 24s linear infinite}
+.sea-float.f4{top:78%;left:12%;width:70px;height:70px;color:#ff006e;animation:float1 30s linear infinite reverse}
+.sea-float.f5{top:18%;left:70%;width:95px;height:95px;color:#8338ec;animation:float2 38s linear infinite reverse}
+.sea-float.f6{top:50%;left:3%;width:60px;height:60px;color:#00d2ff;animation:float3 26s linear infinite reverse}
+.sea-float.f7{top:88%;left:55%;width:90px;height:90px;color:#8338ec;animation:float1 32s linear infinite}
+@keyframes float1{0%,100%{transform:translate(0,0) rotate(0deg)}25%{transform:translate(24px,-32px) rotate(90deg)}50%{transform:translate(0,-60px) rotate(180deg)}75%{transform:translate(-24px,-32px) rotate(270deg)}}
+@keyframes float2{0%,100%{transform:translate(0,0) rotate(0deg) scale(1)}50%{transform:translate(-50px,30px) rotate(-180deg) scale(1.1)}}
+@keyframes float3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-20px,-50px) scale(1.15)}}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto;animation:pageIn .8s cubic-bezier(.2,1,.4,1)}
+@keyframes pageIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.back{display:inline-flex;align-items:center;gap:8px;margin-bottom:28px;padding:11px 20px;border-radius:100px;background:rgba(0,210,255,.08);border:1px solid rgba(0,210,255,.28);color:#00d2ff;text-decoration:none;font-size:11px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;transition:all .3s cubic-bezier(.25,1,.5,1);animation:fadeUp .6s .1s both;backdrop-filter:blur(20px)}
+.back:hover{background:rgba(0,210,255,.2);border-color:#00d2ff;transform:translateX(-4px);box-shadow:0 10px 26px rgba(0,210,255,.25)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.doc-head{border-bottom:1px solid rgba(0,210,255,.2);padding-bottom:28px;margin-bottom:36px;animation:fadeUp .6s .15s both;position:relative}
+.doc-head::after{content:'';position:absolute;bottom:-1px;left:0;width:100px;height:2px;background:linear-gradient(90deg,#00d2ff,#8338ec);border-radius:2px;box-shadow:0 0 12px rgba(0,210,255,.6)}
+.doc-head .brand{display:flex;align-items:center;gap:16px;margin-bottom:24px}
+.doc-head .brand-mark{width:60px;height:60px;border-radius:18px;background:linear-gradient(135deg,#00d2ff,#8338ec,#ff006e);background-size:200% 200%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:24px;color:#fff;box-shadow:0 16px 40px rgba(131,56,236,.55);flex-shrink:0;animation:markPulse 3s ease-in-out infinite,markShift 8s ease-in-out infinite;position:relative;overflow:hidden}
+.doc-head .brand-mark::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.35),transparent 55%);pointer-events:none}
+@keyframes markPulse{0%,100%{box-shadow:0 16px 40px rgba(131,56,236,.55)}50%{box-shadow:0 20px 50px rgba(131,56,236,.85),0 0 50px rgba(0,210,255,.4)}}
+@keyframes markShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.doc-head .brand-text h1{font-size:26px;font-weight:900;letter-spacing:1px;text-transform:uppercase;line-height:1.15;background:linear-gradient(135deg,#fff,#b0b7c6);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.doc-head .brand-text p{font-size:11px;color:#7e8b9b;letter-spacing:2.5px;text-transform:uppercase;margin-top:6px;font-weight:700}
+.doc-meta{display:grid;grid-template-columns:1fr 1fr;gap:14px 30px;margin-top:24px;font-size:12.5px;color:#7e8b9b}
+.doc-meta div{display:flex;gap:10px;align-items:baseline;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,.05)}
+.doc-meta span:first-child{color:#4a5568;min-width:110px;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-size:10px}
+.doc-meta span:last-child{color:#e5e7eb;font-weight:700}
+.preamble{background:linear-gradient(160deg,rgba(10,14,28,.85),rgba(5,7,15,.85));border:1px solid rgba(0,210,255,.22);border-radius:20px;padding:26px 28px;margin-bottom:34px;backdrop-filter:blur(20px);font-size:14.5px;color:#b0b7c6;position:relative;overflow:hidden;animation:fadeUp .6s .25s both;box-shadow:0 20px 50px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.05)}
+.preamble::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,#00d2ff,#8338ec);box-shadow:0 0 16px rgba(0,210,255,.55)}
+.preamble::after{content:'';position:absolute;top:-40%;right:-40%;width:80%;height:180%;background:radial-gradient(circle,rgba(0,210,255,.08),transparent 60%);pointer-events:none}
+.preamble strong{color:#fff;font-weight:800}
+.preamble p{margin-bottom:12px;position:relative;z-index:1}
+.preamble p:last-child{margin-bottom:0}
+h2{font-size:16.5px;font-weight:900;color:#fff;margin:38px 0 16px;letter-spacing:.4px;display:flex;align-items:flex-start;gap:14px;line-height:1.4;animation:fadeUp .6s both;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.05);position:relative}
+h2::after{content:'';position:absolute;bottom:-1px;left:0;width:60px;height:1.5px;background:linear-gradient(90deg,#00d2ff,#8338ec);border-radius:2px;box-shadow:0 0 10px rgba(0,210,255,.6)}
+h2 .num{color:#00d2ff;font-weight:900;flex-shrink:0;font-variant-numeric:tabular-nums;min-width:36px;text-shadow:0 0 16px rgba(0,210,255,.5)}
+h3{font-size:14px;font-weight:800;color:#e5e7eb;margin:22px 0 12px;letter-spacing:.4px;display:flex;align-items:center;gap:8px}
+h3::before{content:'';width:6px;height:6px;border-radius:50%;background:#00d2ff;box-shadow:0 0 10px rgba(0,210,255,.9);flex-shrink:0}
+p,li{font-size:14px;color:#b0b7c6;margin-bottom:12px}
+ul,ol{padding-left:26px;margin-bottom:16px}
+ul li,ol li{padding-left:4px;margin-bottom:10px;position:relative}
+ul li::marker{color:#00d2ff;font-weight:900}
+ol li::marker{color:#00d2ff;font-weight:900;font-variant-numeric:tabular-nums}
+a{color:#00d2ff;text-decoration:none;transition:color .2s ease;word-break:break-word;border-bottom:1px dashed rgba(0,210,255,.4)}
+a:hover{color:#7fe3ff;border-bottom-color:#7fe3ff}
+strong{color:#fff;font-weight:800}
+.req-highlight{background:linear-gradient(135deg,rgba(0,210,255,.1),rgba(131,56,236,.08));border:1px solid rgba(0,210,255,.32);border-left:4px solid #00d2ff;border-radius:0 16px 16px 0;padding:18px 22px;margin:16px 0 22px;position:relative;box-shadow:0 8px 24px rgba(0,210,255,.1)}
+.req-highlight::before{content:'';position:absolute;top:0;right:0;bottom:0;width:60px;background:linear-gradient(270deg,rgba(0,210,255,.08),transparent);pointer-events:none;border-radius:0 16px 16px 0}
+.req-highlight p{margin-bottom:6px;font-size:14px}
+.req-highlight p:last-child{margin-bottom:0}
+.req-highlight .phone{font-size:18px;font-weight:900;color:#fff;letter-spacing:1.2px;font-variant-numeric:tabular-nums;text-shadow:0 0 16px rgba(0,210,255,.4)}
+.team{margin:24px 0 12px;animation:fadeUp .6s both}
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px}
+.team-card{position:relative;background:linear-gradient(160deg,rgba(10,14,28,.9),rgba(5,7,15,.9));border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:22px 18px;text-align:center;overflow:hidden;transition:transform .4s cubic-bezier(.2,1,.4,1),border-color .4s ease,box-shadow .4s ease;backdrop-filter:blur(16px)}
+.team-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#00d2ff,#8338ec);box-shadow:0 0 14px rgba(0,210,255,.6)}
+.team-card::after{content:'';position:absolute;top:-40%;right:-40%;width:80%;height:180%;background:radial-gradient(circle,rgba(0,210,255,.1),transparent 60%);opacity:0;transition:opacity .4s ease;pointer-events:none}
+.team-card:hover{transform:translateY(-6px);border-color:rgba(0,210,255,.4);box-shadow:0 16px 40px rgba(0,210,255,.2),0 0 50px rgba(131,56,236,.15)}
+.team-card:hover::after{opacity:1}
+.team-avatar{width:60px;height:60px;border-radius:50%;margin:0 auto 14px;background:linear-gradient(135deg,#00d2ff,#8338ec);background-size:200% 200%;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;color:#fff;box-shadow:0 10px 28px rgba(0,210,255,.45),inset 0 2px 4px rgba(255,255,255,.3);animation:markShift 6s ease-in-out infinite}
+.team-name{font-size:14.5px;font-weight:800;color:#fff;line-height:1.3;margin-bottom:4px}
+.team-role{font-size:10.5px;color:#7e8b9b;letter-spacing:1.8px;text-transform:uppercase;font-weight:800;margin-bottom:12px}
+.team-tg{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:100px;background:rgba(0,210,255,.08);border:1px solid rgba(0,210,255,.28);color:#00d2ff;font-size:11px;font-weight:800;letter-spacing:.5px;text-decoration:none;transition:all .3s cubic-bezier(.25,1,.5,1);border-bottom:1px solid rgba(0,210,255,.28)}
+.team-tg:hover{background:rgba(0,210,255,.22);border-color:#00d2ff;color:#fff;text-decoration:none;border-bottom-color:#00d2ff;transform:translateY(-2px)}
+.team-tg svg{width:13px;height:13px;fill:currentColor}
+.requisites{margin-top:44px;padding-top:36px;border-top:1px solid rgba(0,210,255,.2);position:relative;animation:fadeUp .6s .3s both}
+.requisites::before{content:'';position:absolute;top:-1px;left:0;width:100px;height:2px;background:linear-gradient(90deg,#00d2ff,#8338ec);box-shadow:0 0 14px rgba(0,210,255,.7);border-radius:2px}
+.req-title{display:flex;align-items:center;gap:14px;margin-bottom:26px}
+.req-title-icon{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,rgba(0,210,255,.18),rgba(131,56,236,.12));border:1px solid rgba(0,210,255,.32);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#00d2ff;box-shadow:0 8px 24px rgba(0,210,255,.15)}
+.req-title-icon svg{width:22px;height:22px}
+.req-title h4{font-size:16px;color:#fff;letter-spacing:2.5px;text-transform:uppercase;font-weight:900;margin:0;background:linear-gradient(90deg,#00d2ff,#8338ec);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.req-title p{font-size:11.5px;color:#7e8b9b;letter-spacing:1px;margin:3px 0 0}
+.req-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.req-card{position:relative;background:linear-gradient(160deg,rgba(10,14,28,.9),rgba(5,7,15,.9));border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:20px 22px 20px 24px;overflow:hidden;transition:transform .4s cubic-bezier(.2,1,.4,1),border-color .4s ease,box-shadow .4s ease;backdrop-filter:blur(16px)}
+.req-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#00d2ff,#8338ec);box-shadow:0 0 12px rgba(0,210,255,.6)}
+.req-card::after{content:'';position:absolute;top:-40%;right:-40%;width:80%;height:180%;background:radial-gradient(circle,rgba(0,210,255,.08),transparent 60%);opacity:0;transition:opacity .4s ease;pointer-events:none}
+.req-card:hover{transform:translateY(-4px);border-color:rgba(0,210,255,.4);box-shadow:0 14px 34px rgba(0,210,255,.15),0 0 50px rgba(131,56,236,.1)}
+.req-card:hover::after{opacity:1}
+.req-card-label{font-size:10px;color:#7e8b9b;letter-spacing:2.2px;text-transform:uppercase;font-weight:900;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.req-card-label::before{content:'';width:6px;height:6px;border-radius:50%;background:#00d2ff;box-shadow:0 0 10px rgba(0,210,255,.9);flex-shrink:0}
+.req-card-value{font-size:15px;color:#fff;font-weight:800;line-height:1.35;letter-spacing:.3px;position:relative;z-index:1}
+.req-card-value a{color:#fff;border-bottom:1px dashed rgba(255,255,255,.15)}
+.req-card-value a:hover{color:#00d2ff;border-bottom-color:#00d2ff;text-decoration:none}
+.req-card-note{font-size:11.5px;color:#7e8b9b;margin-top:8px;line-height:1.5}
+.req-footnote{font-size:12.5px;color:#9aa5b6;line-height:1.7;margin-top:24px;padding:18px 22px;background:linear-gradient(135deg,rgba(0,210,255,.06),rgba(131,56,236,.04));border:1px dashed rgba(0,210,255,.3);border-radius:16px;display:flex;gap:14px;align-items:flex-start}
+.req-footnote .fn-ico{width:20px;height:20px;flex-shrink:0;color:#00d2ff;margin-top:2px}
+.req-footnote .fn-ico svg{width:100%;height:100%}
+.req-footnote strong{color:#e5e7eb;font-weight:800}
+.foot{margin-top:48px;padding-top:28px;border-top:1px solid rgba(255,255,255,.06);text-align:center;font-size:11px;color:#4a4a52;letter-spacing:2.5px;text-transform:uppercase;position:relative}
+.foot::before{content:'';position:absolute;top:-1px;left:50%;transform:translateX(-50%);width:80px;height:1.5px;background:linear-gradient(90deg,transparent,#00d2ff,#8338ec,transparent);box-shadow:0 0 12px rgba(0,210,255,.6)}
+.scroll-progress{position:fixed;top:0;left:0;height:3px;z-index:100;background:linear-gradient(90deg,#00d2ff,#8338ec,#ff006e);box-shadow:0 0 14px rgba(0,210,255,.7);width:0;transition:width .12s linear}
+@media(max-width:700px){.team-grid{grid-template-columns:1fr 1fr;gap:12px}.team-card{padding:18px 14px}.team-avatar{width:52px;height:52px;font-size:20px;margin-bottom:12px}.team-name{font-size:13.5px}}
+@media(max-width:600px){
+  body{padding:24px 16px calc(60px + var(--sab,0px));line-height:1.7}
+  .doc-head .brand-text h1{font-size:19px}
+  .doc-head .brand-mark{width:48px;height:48px;font-size:20px;border-radius:14px}
+  .doc-head .brand-text p{font-size:9.5px;letter-spacing:2px}
+  .doc-meta{grid-template-columns:1fr;gap:4px}
+  .doc-meta div{padding:8px 0}
+  .doc-meta span:first-child{min-width:100px}
+  h2{font-size:15px;margin:32px 0 12px;gap:10px}
+  h2 .num{min-width:30px}
+  h3{font-size:13px;margin:18px 0 10px}
+  p,li{font-size:13.5px}
+  .preamble{padding:20px 20px;font-size:13.5px;border-radius:16px}
+  .team-grid{grid-template-columns:1fr;gap:12px}
+  .team-card{border-radius:16px}
+  .req-grid{grid-template-columns:1fr;gap:12px}
+  .req-card{padding:16px 18px 16px 20px;border-radius:14px}
+  .req-card-value{font-size:14px}
+  .req-title h4{font-size:14px;letter-spacing:2px}
+  .req-title-icon{width:40px;height:40px;border-radius:12px}
+  .req-footnote{font-size:12px;padding:14px 16px;gap:12px;border-radius:14px}
+  .req-highlight{padding:16px 18px}
+  .req-highlight .phone{font-size:16px}
+  .sea-float{opacity:.05}
+  .sea-float.f1{width:70px;height:70px}.sea-float.f2{width:90px;height:90px}.sea-float.f3{width:55px;height:55px}
+  .sea-float.f4{width:50px;height:50px}.sea-float.f5{width:65px;height:65px}.sea-float.f6{width:45px;height:45px}.sea-float.f7{width:60px;height:60px}
+  .back{padding:9px 16px;font-size:10px;letter-spacing:1.5px}
+}
+</style>
+</head>
+<body>
+<div class="scroll-progress" id="scrollProgress"></div>
+<div class="bg-glow"></div>
+<div class="bg-grid"></div>
+
+<div class="sea-floats" aria-hidden="true">
+  <div class="sea-float f1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/><path d="M2 17c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/></svg></div>
+  <div class="sea-float f2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="5" r="2"/><line x1="12" y1="7" x2="12" y2="18"/><line x1="5" y1="12" x2="19" y2="12"/><path d="M5 12a7 7 0 0 0 14 0"/></svg></div>
+  <div class="sea-float f3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7z"/></svg></div>
+  <div class="sea-float f4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/></svg></div>
+  <div class="sea-float f5"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="5" r="2"/><line x1="12" y1="7" x2="12" y2="18"/><line x1="5" y1="12" x2="19" y2="12"/><path d="M5 12a7 7 0 0 0 14 0"/></svg></div>
+  <div class="sea-float f6"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7z"/></svg></div>
+  <div class="sea-float f7"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/><path d="M2 17c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/></svg></div>
+</div>
+
+<div class="wrap">
+  <a class="back" href="/">← Назад к презентации</a>
+
+  <div class="doc-head">
+    <div class="brand">
+      <div class="brand-mark">В</div>
+      <div class="brand-text">
+        <h1>Публичная оферта</h1>
+        <p>о добровольном целевом взносе на поддержку проекта</p>
+      </div>
+    </div>
+    <div class="doc-meta">
+      <div><span>Редакция</span><span>01 января 2026 г.</span></div>
+      <div><span>Вступает в силу</span><span>с момента публикации</span></div>
+      <div><span>Публикация</span><span>rxdyon.dev/offer</span></div>
+      <div><span>Тип</span><span>Публичная оферта</span></div>
+    </div>
+  </div>
+
+  <div class="preamble">
+    <p><strong>Настоящий документ</strong> является официальным предложением (публичной офертой) в соответствии со статьёй 437 Гражданского кодекса Российской Федерации и определяет условия предоставления добровольных целевых взносов физическими лицами в поддержку некоммерческого информационного проекта «Владивосток — моя малая родина».</p>
+    <p>Совершение Пользователем действий, указанных в разделе 3 настоящей Оферты, признаётся полным и безоговорочным акцептом (статья 438 ГК РФ) всех условий Оферты без каких-либо изъятий и ограничений.</p>
+  </div>
+
+  <h2><span class="num">1.</span>Термины и определения</h2>
+  <p>В настоящей Оферте нижеприведённые термины используются в следующих значениях:</p>
+  <ul>
+    <li><strong>«Проект»</strong> — некоммерческий информационно-просветительский проект «Владивосток — моя малая родина», реализуемый командой физических лиц (состав указан в разделе 11), доступный по адресу <a href="https://rxdyon.dev">rxdyon.dev</a>.</li>
+    <li><strong>«Оферта»</strong> — настоящий документ, размещённый в открытом доступе по адресу <a href="https://rxdyon.dev/offer">rxdyon.dev/offer</a>.</li>
+    <li><strong>«Пользователь»</strong> — дееспособное физическое лицо, достигшее 18 лет, совершающее акцепт Оферты.</li>
+    <li><strong>«Взнос»</strong> — добровольный целевой безвозмездный платёж, перечисляемый Пользователем в поддержку Проекта.</li>
+    <li><strong>«СБП»</strong> — Система быстрых платежей Банка России.</li>
+    <li><strong>«Администрация»</strong> — команда Проекта, действующая в лице представителей, указанных в разделе 11 настоящей Оферты.</li>
+  </ul>
+
+  <h2><span class="num">2.</span>Предмет Оферты</h2>
+  <p>2.1. Администрация предоставляет Пользователю возможность добровольно перечислить целевой взнос на поддержку Проекта.</p>
+  <p>2.2. Взнос носит <strong>добровольный, безвозмездный и целевой</strong> характер. Взнос не является оплатой товаров, работ или услуг, не является пожертвованием в смысле статьи 582 ГК РФ в пользу конкретного юридического лица, а также не создаёт встречных обязательств Администрации перед Пользователем.</p>
+  <p>2.3. Целевое назначение Взноса — покрытие расходов, связанных с реализацией и поддержкой Проекта, в том числе: оплата хостинга и доменного имени, приобретение оборудования для съёмки, оплата расходных материалов для оформления презентации, а также иные расходы, необходимые для функционирования Проекта.</p>
+  <p>2.4. Администрация вправе самостоятельно определять приоритетные направления расходования поступающих Взносов.</p>
+
+  <h2><span class="num">3.</span>Акцепт Оферты</h2>
+  <p>3.1. Акцептом Оферты признаётся совершение Пользователем следующих последовательных действий:</p>
+  <ol>
+    <li>открытие модального окна «Поддержать проект» на сайте Проекта;</li>
+    <li>ознакомление с текстом настоящей Оферты по ссылке, размещённой в модальном окне;</li>
+    <li>выбор суммы Взноса (не менее 10 рублей) или ввод индивидуальной суммы;</li>
+    <li>нажатие кнопки «Показать QR для оплаты»;</li>
+    <li>сканирование сгенерированного QR-кода либо копирование номера получателя;</li>
+    <li>подтверждение перевода в приложении банка Пользователя.</li>
+  </ol>
+  <p>3.2. Совершая указанные действия, Пользователь подтверждает, что:</p>
+  <ul>
+    <li>полностью ознакомлен с условиями Оферты и принимает их без оговорок;</li>
+    <li>действует добровольно, по своей воле и в своих интересах;</li>
+    <li>обладает необходимой дееспособностью и достиг возраста 18 лет;</li>
+    <li>распоряжается собственными денежными средствами законным способом.</li>
+  </ul>
+
+  <h2><span class="num">4.</span>Порядок и условия перечисления Взноса</h2>
+  <p>4.1. Минимальная сумма Взноса — <strong>10 (десять) рублей 00 копеек</strong>. Максимальная сумма не ограничена.</p>
+  <p>4.2. Перечисление Взноса осуществляется через Систему быстрых платежей (СБП) по номеру телефона получателя:</p>
+  <div class="req-highlight">
+    <p class="phone">+7 999 614-28-47</p>
+    <p>Получатель: <strong>Суслов Дмитрий Витальевич</strong> (самозанятый, ИНН 253813304625)</p>
+  </div>
+  <p>4.3. Также доступен альтернативный способ: сканирование QR-кода, сгенерированного автоматически на сайте Проекта при выборе суммы.</p>
+  <p>4.4. Взнос считается перечисленным с момента подтверждения перевода банком Пользователя. Зачисление средств на счёт получателя происходит в сроки, установленные правилами СБП и банка получателя.</p>
+  <p>4.5. Администрация не получает и не хранит сведения о банковских картах, счетах и иных платёжных реквизитах Пользователя. Все операции проходят между банками Пользователя и получателя напрямую.</p>
+  <p>4.6. Согласно Федеральному закону № 422-ФЗ от 27.11.2018, получатель применяет специальный налоговый режим «Налог на профессиональный доход» (самозанятый). Чек по каждому поступлению формируется в приложении «Мой налог» и направляется Пользователю по запросу.</p>
+
+  <h2><span class="num">5.</span>Права и обязанности сторон</h2>
+  <h3>5.1. Пользователь вправе:</h3>
+  <ul>
+    <li>самостоятельно определять сумму Взноса в пределах, установленных п. 4.1;</li>
+    <li>в любой момент отказаться от перечисления Взноса до момента подтверждения перевода банком;</li>
+    <li>запросить чек по факту перечисления через приложение «Мой налог» или по контактам Администрации;</li>
+    <li>обратиться к Администрации с вопросами по контактам, указанным в разделе 11.</li>
+  </ul>
+  <h3>5.2. Пользователь обязуется:</h3>
+  <ul>
+    <li>предоставлять достоверную информацию о себе, если это требуется для связи с Администрацией;</li>
+    <li>не использовать сервис для противоправных действий, в том числе легализации денежных средств, полученных преступным путём;</li>
+    <li>соблюдать законодательство Российской Федерации.</li>
+  </ul>
+  <h3>5.3. Администрация вправе:</h3>
+  <ul>
+    <li>самостоятельно определять порядок и приоритеты расходования поступивших Взносов;</li>
+    <li>приостановить приём Взносов в случае технической необходимости;</li>
+    <li>вносить изменения в текст Оферты в порядке, предусмотренном разделом 9.</li>
+  </ul>
+  <h3>5.4. Администрация обязуется:</h3>
+  <ul>
+    <li>использовать поступившие Взносы исключительно в целях, указанных в п. 2.3;</li>
+    <li>формировать и направлять чеки по каждому поступлению в соответствии с ФЗ № 422-ФЗ;</li>
+    <li>обеспечивать конфиденциальность сведений, получаемых от Пользователя в связи с реализацией Оферты.</li>
+  </ul>
+
+  <h2><span class="num">6.</span>Возврат Взноса</h2>
+  <p>6.1. Взнос носит безвозмездный характер и по общему правилу <strong>не подлежит возврату</strong>, за исключением случаев, прямо предусмотренных законодательством Российской Федерации.</p>
+  <p>6.2. В случае ошибочного перечисления Взноса (в том числе двойного списания, перечисления неверной суммы) Пользователь вправе обратиться к Администрации по контактам, указанным в разделе 11, для решения вопроса в индивидуальном порядке.</p>
+  <p>6.3. Для возврата ошибочно перечисленного Взноса Пользователю необходимо предоставить:</p>
+  <ul>
+    <li>описание ситуации и сумму ошибочного перечисления;</li>
+    <li>дату и время операции;</li>
+    <li>скриншот подтверждения перевода из приложения банка.</li>
+  </ul>
+  <p>6.4. Срок рассмотрения обращения — до 10 (десяти) рабочих дней с момента получения полного комплекта сведений.</p>
+
+  <h2><span class="num">7.</span>Ответственность сторон</h2>
+  <p>7.1. Администрация не несёт ответственности за:</p>
+  <ul>
+    <li>задержки, сбои и ошибки, возникшие на стороне банков и платёжной инфраструктуры СБП;</li>
+    <li>невозможность совершения перевода по причинам, не зависящим от Администрации;</li>
+    <li>действия третьих лиц, направленные на нарушение работы сайта Проекта.</li>
+  </ul>
+  <p>7.2. Пользователь несёт ответственность за достоверность предоставляемых сведений и за законность происхождения перечисляемых денежных средств.</p>
+  <p>7.3. Совокупная ответственность Администрации перед Пользователем в любом случае ограничена суммой фактически перечисленного Взноса.</p>
+
+  <h2><span class="num">8.</span>Обстоятельства непреодолимой силы</h2>
+  <p>8.1. Стороны освобождаются от ответственности за неисполнение или ненадлежащее исполнение обязательств по настоящей Оферте, если оно вызвано обстоятельствами непреодолимой силы (форс-мажор): стихийными бедствиями, военными действиями, актами органов государственной власти, блокировками платёжной инфраструктуры, сбоями в работе интернет-провайдеров и иными обстоятельствами, которые Стороны не могли предвидеть или предотвратить.</p>
+  <p>8.2. При наступлении обстоятельств непреодолимой силы срок исполнения обязательств продлевается соразмерно времени действия таких обстоятельств.</p>
+
+  <h2><span class="num">9.</span>Изменение условий Оферты</h2>
+  <p>9.1. Администрация вправе в любой момент изменять условия настоящей Оферты без предварительного уведомления Пользователя.</p>
+  <p>9.2. Изменения вступают в силу с момента публикации новой редакции по адресу <a href="https://rxdyon.dev/offer">rxdyon.dev/offer</a>.</p>
+  <p>9.3. Пользователь обязуется самостоятельно отслеживать актуальную редакцию Оферты. Продолжение использования сервиса после публикации новой редакции означает согласие Пользователя с внесёнными изменениями.</p>
+
+  <h2><span class="num">10.</span>Разрешение споров</h2>
+  <p>10.1. Все споры и разногласия, возникающие в связи с исполнением настоящей Оферты, разрешаются путём переговоров между Пользователем и Администрацией.</p>
+  <p>10.2. Претензионный порядок обязателен. Срок ответа на претензию — 10 (десять) рабочих дней с момента её получения.</p>
+  <p>10.3. При невозможности урегулирования спора путём переговоров спор передаётся на рассмотрение в суд по месту нахождения Администрации в соответствии с законодательством Российской Федерации.</p>
+
+  <h2><span class="num">11.</span>Команда Проекта и реквизиты Администрации</h2>
+  <p>11.1. Проект реализуется командой из трёх человек — студентов МГУ им. адм. Г. И. Невельского.</p>
+
+  <div class="team">
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar">Д</div>
+        <div class="team-name">Суслов Дмитрий</div>
+        <div class="team-role">Разработчик</div>
+        <a class="team-tg" href="https://t.me/RXDYON" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
+          @RXDYON
+        </a>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">Р</div>
+        <div class="team-name">Редько Роман</div>
+        <div class="team-role">Спикер</div>
+        <a class="team-tg" href="https://t.me/r0wa_RED_8002" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
+          @r0wa_RED_8002
+        </a>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">Д</div>
+        <div class="team-name">Яковлева Дарина</div>
+        <div class="team-role">Спикер</div>
+        <a class="team-tg" href="https://t.me/MANDARRINKS" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
+          @MANDARRINKS
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <p style="margin-top:24px">11.2. Ниже приведены актуальные реквизиты Администрации для расчётов и обращений.</p>
+
+  <div class="requisites">
+    <div class="req-title">
+      <div class="req-title-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+        </svg>
+      </div>
+      <div>
+        <h4>Реквизиты</h4>
+        <p>Актуальные данные Администрации Проекта</p>
+      </div>
+    </div>
+
+    <div class="req-grid">
+      <div class="req-card">
+        <div class="req-card-label">Администрация</div>
+        <div class="req-card-value">Суслов Дмитрий Витальевич</div>
+        <div class="req-card-note">Ответственное лицо Проекта</div>
+      </div>
+      <div class="req-card">
+        <div class="req-card-label">Налоговый статус</div>
+        <div class="req-card-value">Самозанятый</div>
+        <div class="req-card-note">ФЗ № 422-ФЗ от 27.11.2018 · НПД</div>
+      </div>
+      <div class="req-card">
+        <div class="req-card-label">ИНН</div>
+        <div class="req-card-value">253813304625</div>
+        <div class="req-card-note">Идентификационный номер налогоплательщика</div>
+      </div>
+      <div class="req-card">
+        <div class="req-card-label">Телефон для СБП</div>
+        <div class="req-card-value">+7 999 614-28-47</div>
+        <div class="req-card-note">Номер получателя взносов</div>
+      </div>
+      <div class="req-card">
+        <div class="req-card-label">Email</div>
+        <div class="req-card-value"><a href="mailto:me.rxdyon@gmail.com">me.rxdyon@gmail.com</a></div>
+        <div class="req-card-note">Для вопросов и претензий</div>
+      </div>
+      <div class="req-card">
+        <div class="req-card-label">Сайт проекта</div>
+        <div class="req-card-value"><a href="https://rxdyon.dev" target="_blank" rel="noopener">rxdyon.dev</a></div>
+        <div class="req-card-note">Официальный адрес публикации</div>
+      </div>
+    </div>
+
+    <div class="req-footnote">
+      <div class="fn-ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="16" x2="12" y2="12"/>
+          <line x1="12" y1="8" x2="12.01" y2="8"/>
+        </svg>
+      </div>
+      <div>
+        <strong>Про акцепт и чеки.</strong> Подпись Сторон и проставление даты не требуются: акцепт Оферты совершается Пользователем путём совершения конклюдентных действий, предусмотренных разделом 3. Чеки по каждому поступлению формируются Администрацией в приложении «Мой налог» в соответствии с ФЗ № 422-ФЗ.
+      </div>
+    </div>
+  </div>
+
+  <h2><span class="num">12.</span>Заключительные положения</h2>
+  <p>12.1. Настоящая Оферта вступает в силу с момента её публикации по адресу <a href="https://rxdyon.dev/offer">rxdyon.dev/offer</a> и действует до её отзыва или замены новой редакцией.</p>
+  <p>12.2. Во всём, что не урегулировано настоящей Офертой, Стороны руководствуются действующим законодательством Российской Федерации.</p>
+  <p>12.3. Если какое-либо положение Оферты будет признано недействительным, это не влечёт недействительности остальных положений.</p>
+  <p>12.4. Язык Оферты — русский. Все документы и переписка по Оферте ведутся на русском языке.</p>
+
+  <div class="foot">
+    forSoul · Публичная оферта · Редакция от 01.01.2026 · МГУ им. адм. Г. И. Невельского
+  </div>
+</div>
+
+<script>
+(function(){
+  const bar=document.getElementById('scrollProgress');
+  if(bar){
+    function update(){
+      const h=document.documentElement;
+      const max=h.scrollHeight-h.clientHeight;
+      const pct=max>0?(h.scrollTop/max)*100:0;
+      bar.style.width=pct+'%';
+    }
+    window.addEventListener('scroll',update,{passive:true});
+    window.addEventListener('resize',update);
+    update();
+  }
+  const targets=document.querySelectorAll('h2, .requisites, .req-card, .req-footnote, .team-card, .preamble, .doc-head');
+  if('IntersectionObserver' in window){
+    const io=new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.style.opacity='1';
+          e.target.style.transform='translateY(0)';
+          io.unobserve(e.target);
+        }
+      });
+    },{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+    targets.forEach(t=>{
+      t.style.opacity='0';
+      t.style.transform='translateY(24px)';
+      t.style.transition='opacity .7s cubic-bezier(.2,1,.4,1), transform .7s cubic-bezier(.2,1,.4,1)';
+      io.observe(t);
+    });
+  }
+})();
+</script>
+</body>
+</html>
